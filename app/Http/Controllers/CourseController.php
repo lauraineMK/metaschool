@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CourseController extends Controller
 {
     /**
-     * Display the teacher's course list
+     * Display the course list
      *
      * @return void
      */
