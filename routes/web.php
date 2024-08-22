@@ -11,9 +11,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-
-
-
+// Teacher and student dashboards
+Route::get('/teachers/dashboard', [CourseController::class, 'teacher_dashboard'])->name('teacher.dashboard');
+Route::get('/students/dashboard', [CourseController::class, 'student_dashboard'])->name('student.dashboard');
 
 
 Route::prefix('teachers')->middleware('role:teacher')->group(function () {

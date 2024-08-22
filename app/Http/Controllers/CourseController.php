@@ -11,6 +11,28 @@ use Illuminate\Http\Request;
 class CourseController extends Controller
 {
     /**
+     * Teachers' access
+     *
+     * @return void
+     */
+    public function teacher_dashboard()
+    {
+        // Return the view for the teacher dashboard
+        return view('teacher.dashboard');
+    }
+
+    /**
+     * Students' access
+     *
+     * @return void
+     */
+    public function student_dashboard()
+    {
+        // Return the view for the student dashboard
+        return view('student.dashboard');
+    }
+
+    /**
      * Display the course list
      *
      * @return \Illuminate\Http\JsonResponse

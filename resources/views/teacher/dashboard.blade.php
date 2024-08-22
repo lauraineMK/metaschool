@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
+@section('title', 'Teacher Dashboard')
+
 @section('content')
     <div class="container">
-        <h1>Dashboard Enseignant</h1>
-        <p>Bienvenue, {{ Auth::user()->firstname }} !</p>
+        <h1>Teacher Dashboard</h1>
+
         <!-- Contenu spécifique aux enseignants -->
     </div>
 @endsection
