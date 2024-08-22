@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Section;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -154,6 +155,11 @@ class CourseController extends Controller
             return response()->json(['message' => 'Course not found'], 404);
         }
 
+        // Check if the authenticated user is the author of the course
+        if (Auth::user()->id !== $course->author_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         // Course update
         $course->update($request->only(['title', 'description', 'level', 'price', 'creation_date', 'author_id']));
 
@@ -170,16 +176,16 @@ class CourseController extends Controller
                         ]);
                     }
                 } else {
-                // New section creation if id is not provided
-                Section::create([
-                    'title' => $sectionData['title'],
-                    'description' => $sectionData['description'],
-                    'course_id' => $course->id,
-                    'level' => $sectionData['level'],
-                ]);
+                    // New section creation if id is not provided
+                    Section::create([
+                        'title' => $sectionData['title'],
+                        'description' => $sectionData['description'],
+                        'course_id' => $course->id,
+                        'level' => $sectionData['level'],
+                    ]);
+                }
             }
         }
-    }
 
         // Module update
         if ($request->has('modules')) {
@@ -194,17 +200,17 @@ class CourseController extends Controller
                         ]);
                     }
                 } else {
-                // New module creation if id is not provided
-                Module::create([
-                    'title' => $moduleData['title'],
-                    'description' => $moduleData['description'],
-                    'course_id' => $course->id,
-                    'section_id' => $moduleData['section_id'] ?? null,
-                    'level' => $moduleData['level'],
-                ]);
+                    // New module creation if id is not provided
+                    Module::create([
+                        'title' => $moduleData['title'],
+                        'description' => $moduleData['description'],
+                        'course_id' => $course->id,
+                        'section_id' => $moduleData['section_id'] ?? null,
+                        'level' => $moduleData['level'],
+                    ]);
+                }
             }
         }
-    }
 
         return response()->json($course);
     }
@@ -221,6 +227,12 @@ class CourseController extends Controller
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
         }
+
+        // Check if the authenticated user is the author of the course
+        if (Auth::user()->id !== $course->author_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
 
         $course->delete();
         return response()->json(['message' => 'Course deleted']);
