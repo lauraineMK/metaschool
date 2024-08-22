@@ -32,7 +32,14 @@ class AuthenticationController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('home');
+            $user = Auth::user();
+
+        // Role-based redirection
+        if ($user->role === 'teacher') {
+            return redirect()->route('teacher.dashboard');
+        }
+
+        return redirect()->route('student.dashboard');
         }
 
         return redirect('login')->withErrors(['email' => 'Invalid credentials.']);
@@ -71,6 +78,7 @@ class AuthenticationController extends Controller
             'surname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
+            'role' => 'required|in:student,teacher',
         ]);
 
         if ($validator->fails()) {
@@ -84,10 +92,16 @@ class AuthenticationController extends Controller
             'surname' => $request->surname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         Auth::login($user);
 
-        return redirect()->intended('home');
+        // Role-based redirection
+        if ($user->role === 'teacher') {
+            return redirect()->route('teacher.dashboard');
+        }
+
+        return redirect()->route('student.dashboard');
     }
 }

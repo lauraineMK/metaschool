@@ -29,6 +29,13 @@
             <input type="text" class="form-control" id="surname" name="surname" required>
         </div>
         <div class="form-group">
+            <label for="role">Role</label>
+            <select class="form-control" id="role" name="role" required>
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="email">Email address</label>
             <input type="email" class="form-control" id="email" name="email" required>
         </div>

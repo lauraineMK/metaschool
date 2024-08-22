@@ -12,15 +12,34 @@
 
         <ul class="navbar-nav ml-auto">
             @guest
-                <!-- Links for guests -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/login') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/register') }}">Register</a>
-                </li>
+                <!-- Links for Guests -->
+                @if(Request::is('login'))
+                    <!-- On the login page -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">Back</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/register') }}">Register</a>
+                    </li>
+                @elseif(Request::is('register'))
+                    <!-- On the register page -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">Back</a>
+                    </li>
+                @else
+                    <!-- Default Links for Guests -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/register') }}">Register</a>
+                    </li>
+                @endif
             @else
-                <!-- Links for authenticated users -->
+                <!-- Links for Authenticated Users -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/profile') }}">Profile</a>
                 </li>
