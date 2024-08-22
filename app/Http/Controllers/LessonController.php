@@ -11,7 +11,7 @@ class LessonController extends Controller
     /**
      * Display the lesson list
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class LessonController extends Controller
      * Show details of a specific lesson by its id
      *
      * @param [type] $id
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -38,7 +38,7 @@ class LessonController extends Controller
      * Create a new lesson
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -61,7 +61,7 @@ class LessonController extends Controller
      *
      * @param Request $request
      * @param [type] $id
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -88,7 +88,7 @@ class LessonController extends Controller
      * Delete a lesson by its id
      *
      * @param [type] $id
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
