@@ -3,13 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LessonController;
-use App\Http\Controllers\ModuleController;
-use App\Http\Controllers\SectionController;
+use App\Http\Controllers\AuthenticationController;
 
 
 Route::get('/', function () {
     return view('home');
 });
+
+// Auth Routes
+Route::get('login', [App\Http\Controllers\AuthenticationController::class, 'showLoginForm'])->name('login');
+Route::post('login', [App\Http\Controllers\AuthenticationController::class, 'login']);
+Route::post('logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('logout');
+Route::get('register', [App\Http\Controllers\AuthenticationController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [App\Http\Controllers\AuthenticationController::class, 'register']);
+
 
 // Teacher and student dashboards
 Route::get('/teachers/dashboard', [CourseController::class, 'teacher_dashboard'])->name('teacher.dashboard');
