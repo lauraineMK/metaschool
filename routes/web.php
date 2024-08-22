@@ -22,17 +22,25 @@ Route::post('register', [App\Http\Controllers\AuthenticationController::class, '
 Route::get('/teachers/dashboard', [CourseController::class, 'teacher_dashboard'])->name('teacher.dashboard');
 Route::get('/students/dashboard', [CourseController::class, 'student_dashboard'])->name('student.dashboard');
 
-
+// Teacher routes
 Route::prefix('teachers')->middleware('role:teacher')->group(function () {
+    // Teacher dashboard
+
+    // Routes for managing courses
     Route::get('courses', [CourseController::class, 'index']);
     Route::get('courses/{id}', [CourseController::class, 'show']);
     Route::post('courses', [CourseController::class, 'store']);
     Route::put('courses/{id}', [CourseController::class, 'update']);
     Route::delete('courses/{id}', [CourseController::class, 'destroy']);
 
+    // Routes for managing lessons
     Route::get('lessons', [LessonController::class, 'index']);
     Route::get('lessons/{id}', [LessonController::class, 'show']);
     Route::post('lessons', [LessonController::class, 'store']);
     Route::put('lessons/{id}', [LessonController::class, 'update']);
     Route::delete('lessons/{id}', [LessonController::class, 'destroy']);
 });
+
+// Student routes
+
+    // Student dashboard
