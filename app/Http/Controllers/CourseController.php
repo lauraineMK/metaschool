@@ -71,6 +71,7 @@ class CourseController extends Controller
      */
     public function create()
     {
+        dd('Create method called');
         return view('teacher.courses.create');
     }
 
@@ -133,6 +134,16 @@ class CourseController extends Controller
         }
 
         return response()->json($course, 201);
+    }
+
+    /**
+     * Display the new course edition form
+     *
+     * @return \Illuminate\View\View
+     */
+    public function edit()
+    {
+        return view('teacher.courses.edit');
     }
 
     /**
