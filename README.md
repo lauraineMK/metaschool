@@ -112,10 +112,10 @@ Authentication routes are defined in routes/web.php. You can customize authentic
 
 ## Usage
 
-* Create a Course: Go to http://localhost:8000/teachers/courses/create to add a new course.
-* View Courses: Go to http://localhost:8000/teachers/courses to see the list of courses.
-* Edit a Course: Go to http://localhost:8000/teachers/courses/{id}/edit to edit an existing course.
-* Delete a Course: Use the delete button on the course list page.
+- Create a Course: Go to http://localhost:8000/teachers/courses/create to add a new course.
+- View Courses: Go to http://localhost:8000/teachers/courses to see the list of courses.
+- Edit a Course: Go to http://localhost:8000/teachers/courses/{id}/edit to edit an existing course.
+- Delete a Course: Use the delete button on the course list page.
 
 ## Contributions
 
