@@ -16,7 +16,7 @@ class LessonController extends Controller
     public function index()
     {
         $lessons = Lesson::all();
-        return response()->json($lessons);
+        return view('teacher.lessons.index', ['lessons' => $lessons]);
     }
 
     /**
@@ -27,11 +27,15 @@ class LessonController extends Controller
      */
     public function show($id)
     {
+        // Retrieve the lesson
         $lesson = Lesson::find($id);
+
+        // If the lesson is not found, redirect or show an error page
         if (!$lesson) {
             return response()->json(['message' => 'Lesson not found'], 404);
         }
-        return response()->json($lesson);
+        // Pass the lesson details to the view
+        return view('teacher.lessons.show', ['lesson' => $lesson]);
     }
 
     /**
@@ -48,7 +52,7 @@ class LessonController extends Controller
             'video_url' => 'nullable|string|url',
             'section_id' => 'nullable|exists:sections,id',
             'module_id' => 'nullable|exists:modules,id',
-            'course_id' => 'required|exists:courses,id',
+            'lesson_id' => 'required|exists:courses,id',
             'level' => 'nullable|integer',
         ]);
 

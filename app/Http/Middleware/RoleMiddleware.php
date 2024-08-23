@@ -3,26 +3,34 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $role
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (! Auth::user() || ! Auth::user()->hasRole($role)) {
-            return redirect('home');
+        // Check if the user is logged in
+        if (!Auth::check()) {
+            return redirect('login');
         }
 
+        // Get the currently authenticated user
+        $user = Auth::user();
+
+        // Check if the user's role matches the required one
+        if ($user->role !== $role) {
+            // Redirect to an error page or home page
+            return redirect('home')->with('error', "You do not have access to this section.");
+        }
+
+        // If the role matches, proceed with the request
         return $next($request);
     }
 }
-
-//! Attempt to solve middleware problem: New file

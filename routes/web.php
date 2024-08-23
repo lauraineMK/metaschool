@@ -54,8 +54,3 @@ Route::prefix('teachers')->middleware('role:teacher')->group(function () {
 Route::get('/phpinfo', function () {
     phpinfo();
 });
-
-//! Attempting to solve the middleware problem: New data
-Route::middleware(['role:teacher'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index']);
-});
