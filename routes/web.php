@@ -45,3 +45,10 @@ Route::prefix('teachers')->middleware('role:teacher')->group(function () {
 // Student routes
 
     // Student dashboard
+    Route::get('/phpinfo', function () {
+        phpinfo();
+    });
+    //! Attempting to solve the middleware problem: New data
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/admin', [AdminController::class, 'index']);
+    });

@@ -52,7 +52,7 @@ class LessonController extends Controller
             'level' => 'nullable|integer',
         ]);
 
-        $lesson = Lesson::create($request->all());
+        $lesson = Lesson::create($request->only(['title', 'content', 'video_url', 'section_id', 'module_id', 'course_id', 'level']));
         return response()->json($lesson, 201);
     }
 
