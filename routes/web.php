@@ -23,7 +23,6 @@ Route::get('/teachers/dashboard', [CourseController::class, 'teacher_dashboard']
 Route::get('/students/dashboard', [CourseController::class, 'student_dashboard'])->name('student.dashboard');
 
 // Teacher routes
-//! Issue: Middleware problem to be dealt with delicately
 Route::prefix('teachers')->middleware('role:teacher')->group(function () {
     // Teacher dashboard
 
