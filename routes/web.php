@@ -11,11 +11,11 @@ Route::get('/', function () {
 });
 
 // Auth Routes
-Route::get('login', [App\Http\Controllers\AuthenticationController::class, 'showLoginForm'])->name('login');
-Route::post('login', [App\Http\Controllers\AuthenticationController::class, 'login']);
-Route::post('logout', [App\Http\Controllers\AuthenticationController::class, 'logout'])->name('logout');
-Route::get('register', [App\Http\Controllers\AuthenticationController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [App\Http\Controllers\AuthenticationController::class, 'register']);
+Route::get('login', [AuthenticationController::class, 'showLoginForm'])->name('login');
+Route::post('login', [AuthenticationController::class, 'login']);
+Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
+Route::get('register', [AuthenticationController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [AuthenticationController::class, 'register']);
 
 
 // Teacher and student dashboards
@@ -45,10 +45,17 @@ Route::prefix('teachers')->middleware('role:teacher')->group(function () {
 // Student routes
 
     // Student dashboard
-    Route::get('/phpinfo', function () {
-        phpinfo();
-    });
-    //! Attempting to solve the middleware problem: New data
-    Route::middleware(['role:admin'])->group(function () {
-        Route::get('/admin', [AdminController::class, 'index']);
-    });
+
+    // Routes for managing courses
+
+    // Routes for managing lessons
+
+// Verification route for php information
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
+//! Attempting to solve the middleware problem: New data
+Route::middleware(['role:teacher'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index']);
+});
