@@ -64,6 +64,7 @@ class CourseController extends Controller
         return view('teacher.courses.show', ['course' => $course]);
     }
 
+    //! Not working------------------------------
     /**
      * Display the new course creation form
      *
@@ -71,9 +72,9 @@ class CourseController extends Controller
      */
     public function create()
     {
-        dd('Create method called');
         return view('teacher.courses.create');
     }
+    //! -----------------------------------------
 
     /**
      * Create a new course
@@ -136,6 +137,7 @@ class CourseController extends Controller
         return response()->json($course, 201);
     }
 
+    //! To be checked----------------------------
     /**
      * Display the new course edition form
      *
@@ -145,6 +147,7 @@ class CourseController extends Controller
     {
         return view('teacher.courses.edit');
     }
+    //! -----------------------------------------
 
     /**
      * Update an existing course by its id

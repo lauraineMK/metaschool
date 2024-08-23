@@ -38,6 +38,18 @@ class LessonController extends Controller
         return view('teacher.lessons.show', ['lesson' => $lesson]);
     }
 
+    //! To be checked----------------------------
+    /**
+     * Display the new lesson creation form
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('teacher.lessons.create');
+    }
+    //! -----------------------------------------
+
     /**
      * Create a new lesson
      *
@@ -59,6 +71,18 @@ class LessonController extends Controller
         $lesson = Lesson::create($request->only(['title', 'content', 'video_url', 'section_id', 'module_id', 'course_id', 'level']));
         return response()->json($lesson, 201);
     }
+
+    //! To be checked----------------------------
+    /**
+     * Display the new lesson edition form
+     *
+     * @return \Illuminate\View\View
+     */
+    public function edit()
+    {
+        return view('teacher.lessons.edit');
+    }
+    //! -----------------------------------------
 
     /**
      * Update an existing lesson by its id
