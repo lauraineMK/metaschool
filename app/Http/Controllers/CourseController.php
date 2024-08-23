@@ -65,6 +65,16 @@ class CourseController extends Controller
     }
 
     /**
+     * Display the new course creation form
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('teacher.courses.create');
+    }
+
+    /**
      * Create a new course
      *
      * @param Request $request

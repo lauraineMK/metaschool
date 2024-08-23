@@ -30,14 +30,18 @@ Route::prefix('teachers')->middleware('role:teacher')->group(function () {
     // Routes for managing courses
     Route::get('courses', [CourseController::class, 'index'])->name('teacher.courses.index');
     Route::get('courses/{id}', [CourseController::class, 'show'])->name('teacher.courses.show');
+    Route::get('courses/create', [CourseController::class, 'create'])->name('teacher.courses.create');
     Route::post('courses', [CourseController::class, 'store'])->name('teacher.courses.store');
+    Route::put('courses/{id}/edit', [CourseController::class, 'edit'])->name('teacher.courses.edit');
     Route::put('courses/{id}', [CourseController::class, 'update'])->name('teacher.courses.update');
     Route::delete('courses/{id}', [CourseController::class, 'destroy'])->name('teacher.courses.destroy');
 
     // Routes for managing lessons
     Route::get('lessons', [LessonController::class, 'index'])->name('teacher.lessons.index');
     Route::get('lessons/{id}', [LessonController::class, 'show'])->name('teacher.lessons.show');
+    Route::get('lessons/create', [LessonController::class, 'create'])->name('teacher.lessons.create');
     Route::post('lessons', [LessonController::class, 'store'])->name('teacher.lessons.store');
+    Route::put('lessons/{id}/edit', [LessonController::class, 'edit'])->name('teacher.lessons.edit');
     Route::put('lessons/{id}', [LessonController::class, 'update'])->name('teacher.lessons.update');
     Route::delete('lessons/{id}', [LessonController::class, 'destroy'])->name('teacher.lessons.destroy');
 });
