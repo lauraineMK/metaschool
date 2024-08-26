@@ -59,10 +59,10 @@ class LessonController extends Controller
     //! -----------------------------------------
 
     /**
-     * Create a new lesson
+     * Store a newly created lesson
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -77,10 +77,11 @@ class LessonController extends Controller
         ]);
 
         $lesson = Lesson::create($request->only(['title', 'content', 'video_url', 'section_id', 'module_id', 'course_id', 'level']));
-        return response()->json($lesson, 201);
+
+        return redirect()->route('teacher.lessons.show', $lesson->id)
+                     ->with('success', 'Lesson created successfully.');
     }
 
-    //! To be checked----------------------------
     /**
      * Display the new lesson edition form
      *
@@ -99,7 +100,6 @@ class LessonController extends Controller
 
         return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }
-    //! -----------------------------------------
 
     /**
      * Update an existing lesson by its id

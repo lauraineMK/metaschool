@@ -55,6 +55,14 @@
             </div>
 
             <div class="form-group">
+                <label for="section_description">Section Description:</label>
+                <textarea id="section_description" name="section_description" class="form-control">{{ old('section_description', $section->description ?? '') }}</textarea>
+                @error('section_description')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <label for="section_level">Section Level:</label>
                 <input type="number" id="section_level" name="section_level" class="form-control" value="{{ old('section_level', $section->level ?? '') }}">
                 @error('section_level')

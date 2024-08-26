@@ -72,15 +72,17 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('teacher.courses.create');
+        $modules = Module::all();
+        $sections = Section::all();
+        return view('teacher.courses.create', compact('modules', 'sections'));
     }
     //! -----------------------------------------
 
     /**
-     * Create a new course
+     * Store a newly created course
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -134,10 +136,10 @@ class CourseController extends Controller
             }
         }
 
-        return response()->json($course, 201);
+        return redirect()->route('teacher.courses.show', $course->id)
+            ->with('success', 'Course created successfully.');
     }
 
-    //! To be checked----------------------------
     /**
      * Display the new course edition form
      *
@@ -150,7 +152,6 @@ class CourseController extends Controller
 
         return view('teacher.courses.edit', compact('course'));
     }
-    //! -----------------------------------------
 
     /**
      * Update an existing course by its id
@@ -245,7 +246,7 @@ class CourseController extends Controller
         }
 
         return redirect()->route('teacher.courses.show', $course->id)
-                     ->with('success', 'Course updated successfully.');
+            ->with('success', 'Course updated successfully.');
     }
 
     /**
