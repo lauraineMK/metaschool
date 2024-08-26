@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
@@ -20,17 +20,6 @@ class CourseController extends Controller
     {
         // Return the view for the teacher dashboard
         return view('teacher.dashboard');
-    }
-
-    /**
-     * Students' access
-     *
-     * @return void
-     */
-    public function student_dashboard()
-    {
-        // Return the view for the student dashboard
-        return view('student.dashboard');
     }
 
     /**
