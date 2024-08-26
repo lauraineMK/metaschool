@@ -8,6 +8,9 @@
                 <a class="nav-link" href="{{ url('teachers/courses') }}">Courses</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ url('teachers/lessons') }}">Lessons</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ url('/about') }}">About</a>
             </li>
         </ul>
