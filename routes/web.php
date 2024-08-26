@@ -50,7 +50,8 @@ Route::prefix('students')->middleware('role:student')->group(function () {
     Route::get('courses', [StudentCourseController::class, 'index'])->name('student.courses.index');
     Route::get('courses/{id}', [StudentCourseController::class, 'show'])->name('student.courses.show');
     // Routes for managing lessons
-
+    Route::get('lessons', [StudentLessonController::class, 'index'])->name('student.lessons.index');
+    Route::get('lessons/{id}', [StudentLessonController::class, 'show'])->name('student.lessons.show');
 });
 
 // Verification route for php information
