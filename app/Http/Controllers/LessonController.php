@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Module;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class LessonController extends Controller
 {
@@ -42,11 +45,16 @@ class LessonController extends Controller
     /**
      * Display the new lesson creation form
      *
+     * @param  int  $id
      * @return \Illuminate\View\View
      */
     public function create()
     {
-        return view('teacher.lessons.create');
+        $courses = Course::all();
+        $modules = Module::all();
+        $sections = Section::all();
+
+        return view('teacher.lessons.create', compact('courses', 'modules', 'sections'));
     }
     //! -----------------------------------------
 
@@ -76,11 +84,20 @@ class LessonController extends Controller
     /**
      * Display the new lesson edition form
      *
+     * @param  int  $id
      * @return \Illuminate\View\View
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('teacher.lessons.edit');
+        // Find lesson by ID
+        $lesson = Lesson::findOrFail($id);
+
+        // Retrieve lists of courses, modules and sections
+        $courses = Course::all();
+        $modules = Module::all();
+        $sections = Section::all();
+
+        return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }
     //! -----------------------------------------
 
@@ -109,7 +126,9 @@ class LessonController extends Controller
         }
 
         $lesson->update($request->all());
-        return response()->json($lesson);
+
+        return redirect()->route('teacher.lessons.show', $lesson->id)
+                     ->with('success', 'Lesson updated successfully.');
     }
 
     /**

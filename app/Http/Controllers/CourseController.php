@@ -141,11 +141,14 @@ class CourseController extends Controller
     /**
      * Display the new course edition form
      *
+     * @param  int  $id
      * @return \Illuminate\View\View
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('teacher.courses.edit');
+        $course = Course::findOrFail($id);
+
+        return view('teacher.courses.edit', compact('course'));
     }
     //! -----------------------------------------
 
@@ -154,7 +157,7 @@ class CourseController extends Controller
      *
      * @param Request $request
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -241,7 +244,8 @@ class CourseController extends Controller
             }
         }
 
-        return response()->json($course);
+        return redirect()->route('teacher.courses.show', $course->id)
+                     ->with('success', 'Course updated successfully.');
     }
 
     /**
