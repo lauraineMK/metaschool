@@ -67,7 +67,14 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'You must be logged in to create a lesson.');
+        }
+
+        // Data validation
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
             'video_url' => 'nullable|string|url',
@@ -77,10 +84,24 @@ class LessonController extends Controller
             'level' => 'nullable|integer',
         ]);
 
-        $lesson = Lesson::create($request->only(['title', 'content', 'video_url', 'section_id', 'module_id', 'course_id', 'level']));
+        // Check whether the course associated with the lesson belongs to the authenticated user
+        $course = Course::find($validated['course_id']);
+        if (!$course || Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Unauthorized');
+        }
+
+        try {
+        // Lesson creation
+        $lesson = Lesson::create($validated);
+    } catch (\Exception $e) {
+        // In case of creation error, redirection with error message
+        return redirect()->route('teacher.lessons.index')
+            ->with('error', 'Failed to create lesson');
+    }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
-                     ->with('success', 'Lesson created successfully.');
+            ->with('success', 'Lesson created successfully.');
     }
 
     /**
@@ -124,7 +145,7 @@ class LessonController extends Controller
         $lesson = Lesson::find($id);
         if (!$lesson) {
             return redirect()->route('teacher.lessons.index')
-            ->with('error', 'Lesson not found');
+                ->with('error', 'Lesson not found');
         }
 
         // Check whether the course associated with the lesson belongs to the authenticated user
@@ -151,7 +172,7 @@ class LessonController extends Controller
         }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
-                     ->with('success', 'Lesson updated successfully.');
+            ->with('success', 'Lesson updated successfully.');
     }
 
     /**
@@ -163,40 +184,40 @@ class LessonController extends Controller
     public function destroy($id)
     {
         $lesson = Lesson::find($id);
-    if (!$lesson) {
-        return redirect()->route('teacher.lessons.index')
-            ->with('error', 'Lesson not found');
-    }
+        if (!$lesson) {
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Lesson not found');
+        }
 
-    // Initialize course as null
-    $course = null;
+        // Initialize course as null
+        $course = null;
 
-    // Check if the lesson is associated with a module
-    if ($lesson->module) {
-        // Check if the module is associated with a section and then a course
-        if ($lesson->module->section) {
-            $course = $lesson->module->section->course;
+        // Check if the lesson is associated with a module
+        if ($lesson->module) {
+            // Check if the module is associated with a section and then a course
+            if ($lesson->module->section) {
+                $course = $lesson->module->section->course;
+            } else {
+                // If no section, check if the module is directly associated with a course
+                $course = $lesson->module->course;
+            }
         } else {
-            // If no section, check if the module is directly associated with a course
-            $course = $lesson->module->course;
+            // If no module, check if the lesson is directly associated with a course
+            if ($lesson->course) {
+                $course = $lesson->course;
+            }
         }
-    } else {
-        // If no module, check if the lesson is directly associated with a course
-        if ($lesson->course) {
-            $course = $lesson->course;
-        }
-    }
 
-    // Check if the authenticated user is the author of the course
-    if ($course && Auth::user()->id !== $course->author_id) {
+        // Check if the authenticated user is the author of the course
+        if ($course && Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Unauthorized');
+        }
+
+        // Delete the lesson
+        $lesson->delete();
+
         return redirect()->route('teacher.lessons.index')
-            ->with('error', 'Unauthorized');
-    }
-
-    // Delete the lesson
-    $lesson->delete();
-
-    return redirect()->route('teacher.lessons.index')
-        ->with('success', 'Lesson deleted successfully.');
+            ->with('success', 'Lesson deleted successfully.');
     }
 }

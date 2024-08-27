@@ -76,8 +76,14 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'You must be logged in to create a course.');
+        }
+
         // Data validation
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'level' => 'nullable|integer',
@@ -96,8 +102,11 @@ class CourseController extends Controller
 
         ]);
 
+        // Ensure the authenticated user is the author of the course
+        $validated['author_id'] = Auth::id(); // Set the author_id to the authenticated user
+
         // Course creation
-        $course = Course::create($request->only(['title', 'description', 'level', 'price', 'creation_date', 'author_id']));
+        $course = Course::create($validated);
 
         // Section creation if provided
         if ($request->has('sections')) {
@@ -176,75 +185,74 @@ class CourseController extends Controller
         $course = Course::find($id);
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-            ->with('error', 'Course not found');
+                ->with('error', 'Course not found');
         }
 
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.courses.index')
-            ->with('error', 'Unauthorized');
+                ->with('error', 'Unauthorized');
         }
 
         try {
-        // Course update
-        $course->update($validated);
+            // Course update
+            $course->update($validated);
 
-        // Section update
-        if ($request->has('sections')) {
-            foreach ($request->sections as $sectionData) {
-                if (isset($sectionData['id'])) {
-                    $section = Section::find($sectionData['id']);
-                    if ($section) {
-                        $section->update([
-                            'title' => $sectionData['title'] ?? $section->title,
-                            'description' => $sectionData['description'] ?? $section->description,
-                            'level' => $sectionData['level'] ?? $section->level,
+            // Section update
+            if ($request->has('sections')) {
+                foreach ($request->sections as $sectionData) {
+                    if (isset($sectionData['id'])) {
+                        $section = Section::find($sectionData['id']);
+                        if ($section) {
+                            $section->update([
+                                'title' => $sectionData['title'] ?? $section->title,
+                                'description' => $sectionData['description'] ?? $section->description,
+                                'level' => $sectionData['level'] ?? $section->level,
+                            ]);
+                        }
+                    } else {
+                        // New section creation if id is not provided
+                        Section::create([
+                            'title' => $sectionData['title'],
+                            'description' => $sectionData['description'],
+                            'course_id' => $course->id,
+                            'level' => $sectionData['level'],
                         ]);
                     }
-                } else {
-                    // New section creation if id is not provided
-                    Section::create([
-                        'title' => $sectionData['title'],
-                        'description' => $sectionData['description'],
-                        'course_id' => $course->id,
-                        'level' => $sectionData['level'],
-                    ]);
                 }
             }
-        }
 
-        // Module update
-        if ($request->has('modules')) {
-            foreach ($request->modules as $moduleData) {
-                if (isset($moduleData['id'])) {
-                    $module = Module::find($moduleData['id']);
-                    if ($module) {
-                        $module->update([
-                            'title' => $moduleData['title'] ?? $module->title,
-                            'description' => $moduleData['description'] ?? $module->description,
-                            'level' => $moduleData['level'] ?? $module->level,
+            // Module update
+            if ($request->has('modules')) {
+                foreach ($request->modules as $moduleData) {
+                    if (isset($moduleData['id'])) {
+                        $module = Module::find($moduleData['id']);
+                        if ($module) {
+                            $module->update([
+                                'title' => $moduleData['title'] ?? $module->title,
+                                'description' => $moduleData['description'] ?? $module->description,
+                                'level' => $moduleData['level'] ?? $module->level,
+                            ]);
+                        }
+                    } else {
+                        // New module creation if id is not provided
+                        Module::create([
+                            'title' => $moduleData['title'],
+                            'description' => $moduleData['description'],
+                            'course_id' => $course->id,
+                            'section_id' => $moduleData['section_id'] ?? null,
+                            'level' => $moduleData['level'],
                         ]);
                     }
-                } else {
-                    // New module creation if id is not provided
-                    Module::create([
-                        'title' => $moduleData['title'],
-                        'description' => $moduleData['description'],
-                        'course_id' => $course->id,
-                        'section_id' => $moduleData['section_id'] ?? null,
-                        'level' => $moduleData['level'],
-                    ]);
                 }
             }
-        }
+        } catch (\Exception $e) {
+            // Log the exception for debugging purposes
+            Log::error('Failed to update course: ' . $e->getMessage());
 
-    } catch (\Exception $e) {
-        // Log the exception for debugging purposes
-        Log::error('Failed to update course: ' . $e->getMessage());
-
-        // Redirect on update error with error message
-        return redirect()->route('teacher.courses.index')
-            ->with('error', 'Failed to update course');
+            // Redirect on update error with error message
+            return redirect()->route('teacher.courses.index')
+                ->with('error', 'Failed to update course');
         }
 
         // Redirect to course view with success message

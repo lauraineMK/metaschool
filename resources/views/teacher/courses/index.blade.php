@@ -9,19 +9,6 @@
     <!-- Button to create a new course -->
     <a href="{{ route('teacher.courses.create') }}" class="btn btn-primary mb-3">Create New Course</a>
 
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-    @endif
-
-
     @if ($courses->isEmpty())
     <p>No courses available.</p>
     @else
