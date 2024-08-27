@@ -37,9 +37,21 @@
             @method('DELETE')
             <button type="submit" class="btn btn-danger mb-3" onclick="return confirm('Are you sure you want to delete this lesson?')">Delete Lesson</button>
         </form>
+    </div>
 
-        <!-- Button to go back to lessons course details -->
+    <!-- Navigation Buttons -->
+    <div class="mt-4">
+        @if ($previousLesson)
+        <a href="{{ route('teacher.lessons.show', $previousLesson->id) }}" class="btn btn-primary">Previous Lesson</a>
+        @endif
 
+        @if ($nextLesson)
+        <a href="{{ route('teacher.lessons.show', $nextLesson->id) }}" class="btn btn-primary">Next Lesson</a>
+        @endif
+    </div>
+
+    <!-- Button to go back to lessons course details -->
+    <div class="mt-4">
         <a href="{{ route('teacher.lessons.index') }}" class="btn btn-secondary mb-3">Back to Lessons</a>
         <a href="{{ route('teacher.courses.show', $lesson->course->id) }}" class="btn btn-secondary mb-3">Back to Course</a>
     </div>

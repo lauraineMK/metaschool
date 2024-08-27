@@ -27,10 +27,20 @@
     </div>
     @endif
 
+    <!-- Navigation Buttons -->
     <div class="mt-4">
+        @if ($previousLesson)
+        <a href="{{ route('student.lessons.show', $previousLesson->id) }}" class="btn btn-primary">Previous Lesson</a>
+        @endif
 
-        <!-- Button to go back to lessons course details -->
+        @if ($nextLesson)
+        <a href="{{ route('student.lessons.show', $nextLesson->id) }}" class="btn btn-primary">Next Lesson</a>
+        @endif
+    </div>
 
+
+    <!-- Button to go back to lessons course details -->
+    <div class="mt-4">
         <a href="{{ route('student.lessons.index') }}" class="btn btn-secondary mb-3">Back to Lessons</a>
         <a href="{{ route('student.courses.show', $lesson->course->id) }}" class="btn btn-secondary mb-3">Back to Course</a>
     </div>

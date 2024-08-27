@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('progress', function (Blueprint $table) {
-            // $table->id();
+            // $table->id(); // Commented because we are using a composite primary key
+
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('lesson_id');
             $table->boolean('completed')->default(false);
