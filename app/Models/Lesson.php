@@ -12,6 +12,7 @@ class Lesson extends Model
     protected $fillable = [
         'title',
         'content',
+        'order',
         'section_id',
         'module_id',
         'course_id',
@@ -42,4 +43,11 @@ class Lesson extends Model
     {
         return $this->morphMany(Document::class, 'entity');
     }
+
+    public function users()
+{
+    return $this->belongsToMany(User::class, 'progress')
+                ->withPivot('completed', 'completion_date')
+                ->withTimestamps();
+}
 }

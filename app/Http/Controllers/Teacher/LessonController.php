@@ -40,8 +40,31 @@ class LessonController extends Controller
                 ->with('error', 'Lesson not found');
         }
 
+        // Retrieve the course associated with the lesson
+        $course = $lesson->course;
+
+        if ($course) {
+            // Sort lessons by their order within the course
+            $lessons = $course->lessons->sortBy('order');
+
+            // Find the index of the current lesson
+            $lessonIndex = $lessons->search(fn($item) => $item->id === $lesson->id);
+
+            // Determine the previous and next lessons
+            $previousLesson = $lessonIndex > 0 ? $lessons->slice($lessonIndex - 1, 1)->first() : null;
+            $nextLesson = $lessonIndex < $lessons->count() - 1 ? $lessons->slice($lessonIndex + 1, 1)->first() : null;
+        } else {
+            $previousLesson = null;
+            $nextLesson = null;
+        }
+
         // Pass the lesson details to the view
-        return view('teacher.lessons.show', ['lesson' => $lesson]);
+        return view('teacher.lessons.show', [
+            'lesson' => $lesson,
+            'course' => $lesson->course,
+            'previousLesson' => $previousLesson,
+            'nextLesson' => $nextLesson
+        ]);
     }
 
     //! To be checked----------------------------
@@ -94,8 +117,13 @@ class LessonController extends Controller
         }
 
         try {
-            // Lesson creation
-            $lesson = Lesson::create($validated);
+            // Calculate the order for the new lesson
+            $maxOrder = Lesson::where('module_id', $validated['module_id'])
+                ->max('order') ?? 0;
+            $order = $maxOrder + 1;
+
+            // Create the lesson with the calculated order
+            $lesson = Lesson::create(array_merge($validated, ['order' => $order]));
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message
             return redirect()->route('teacher.lessons.index')
