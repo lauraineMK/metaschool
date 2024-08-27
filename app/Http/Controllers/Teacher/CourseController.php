@@ -7,6 +7,7 @@ use App\Models\Section;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class CourseController extends Controller
@@ -152,7 +153,7 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         // Data validation
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'level' => 'nullable|integer',
@@ -174,16 +175,19 @@ class CourseController extends Controller
 
         $course = Course::find($id);
         if (!$course) {
-            return response()->json(['message' => 'Course not found'], 404);
+            return redirect()->route('teacher.courses.index')
+            ->with('error', 'Course not found');
         }
 
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return redirect()->route('teacher.courses.index')
+            ->with('error', 'Unauthorized');
         }
 
+        try {
         // Course update
-        $course->update($request->only(['title', 'description', 'level', 'price', 'creation_date', 'author_id']));
+        $course->update($validated);
 
         // Section update
         if ($request->has('sections')) {
@@ -234,6 +238,16 @@ class CourseController extends Controller
             }
         }
 
+    } catch (\Exception $e) {
+        // Log the exception for debugging purposes
+        Log::error('Failed to update course: ' . $e->getMessage());
+
+        // Redirect on update error with error message
+        return redirect()->route('teacher.courses.index')
+            ->with('error', 'Failed to update course');
+        }
+
+        // Redirect to course view with success message
         return redirect()->route('teacher.courses.show', $course->id)
             ->with('success', 'Course updated successfully.');
     }

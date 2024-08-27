@@ -107,11 +107,11 @@ class LessonController extends Controller
      *
      * @param Request $request
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'content' => 'nullable|string',
             'video_url' => 'nullable|string|url',
@@ -123,10 +123,32 @@ class LessonController extends Controller
 
         $lesson = Lesson::find($id);
         if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
+            return redirect()->route('teacher.lessons.index')
+            ->with('error', 'Lesson not found');
         }
 
-        $lesson->update($request->all());
+        // Check whether the course associated with the lesson belongs to the authenticated user
+        if ($lesson->course_id) {
+            $course = Course::find($lesson->course_id);
+            if (!$course) {
+                return redirect()->route('teacher.lessons.index')
+                    ->with('error', 'Course associated with the lesson not found');
+            }
+
+            if (Auth::user()->id !== $course->author_id) {
+                return redirect()->route('teacher.lessons.index')
+                    ->with('error', 'Unauthorized');
+            }
+        }
+
+        try {
+            // Update lesson
+            $lesson->update($validated);
+        } catch (\Exception $e) {
+            // Redirect on update error with error message
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Failed to update lesson');
+        }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
                      ->with('success', 'Lesson updated successfully.');
