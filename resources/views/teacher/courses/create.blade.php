@@ -15,7 +15,7 @@
             <h2>Course Details</h2>
 
             <div class="form-group">
-                <label for="course_title">Course Title:</label>
+                <label for="course_title">Course Name:</label>
                 <input type="text" id="course_title" name="title" class="form-control" required>
             </div>
 
@@ -42,7 +42,7 @@
             <h2>Section Details (Optional)</h2>
 
             <div class="form-group">
-                <label for="section_title">Section Title:</label>
+                <label for="section_title">Section Name:</label>
                 <input type="text" id="section_title" name="section_title" class="form-control">
             </div>
 
@@ -57,7 +57,7 @@
             <h2>Module Details (Optional)</h2>
 
             <div class="form-group">
-                <label for="module_title">Module Title:</label>
+                <label for="module_title">Module Name:</label>
                 <input type="text" id="module_title" name="module_title" class="form-control">
             </div>
 

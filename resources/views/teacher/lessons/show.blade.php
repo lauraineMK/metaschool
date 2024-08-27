@@ -12,18 +12,18 @@
     <!-- Lesson Information -->
     <div class="mb-3">
         <strong>Course:</strong>
-        <a href="{{ route('teacher.courses.show', $lesson->course->id) }}">{{ $lesson->course->title }}</a>
+        <a href="{{ route('teacher.courses.show', $lesson->course->id) }}">{{ $lesson->course->name }}</a>
     </div>
 
     @if($lesson->module)
     <div class="mb-3">
-        <strong>Module:</strong> {{ $lesson->module->title }}
+        <strong>Module:</strong> {{ $lesson->module->name }}
     </div>
     @endif
 
     @if($lesson->section)
     <div class="mb-3">
-        <strong>Section:</strong> {{ $lesson->section->title }}
+        <strong>Section:</strong> {{ $lesson->section->name }}
     </div>
     @endif
 

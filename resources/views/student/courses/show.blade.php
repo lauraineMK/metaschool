@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1>{{ $course->title }}</h1>
+    <h1>{{ $course->name }}</h1>
 
     <!-- Course Description -->
     <p>{{ $course->description }}</p>
@@ -16,12 +16,12 @@
     @if (!$course->sections->isEmpty())
         @foreach ($course->sections as $section)
             <div class="section mb-4">
-                <h3>Section: {{ $section->title }}</h3>
+                <h3>Section: {{ $section->name }}</h3>
 
                 @if (!$section->modules->isEmpty())
                     @foreach ($section->modules as $module)
                         <div class="module ml-4 mb-3">
-                            <h4>Module: {{ $module->title }}</h4>
+                            <h4>Module: {{ $module->name }}</h4>
 
                             @if (!$module->lessons->isEmpty())
                                 <ul class="list-group ml-4">
@@ -45,7 +45,7 @@
     @elseif (!$course->modules->isEmpty())
         @foreach ($course->modules as $module)
             <div class="module mb-4">
-                <h4>Module: {{ $module->title }}</h4>
+                <h4>Module: {{ $module->name }}</h4>
 
                 @if (!$module->lessons->isEmpty())
                     <ul class="list-group ml-4">

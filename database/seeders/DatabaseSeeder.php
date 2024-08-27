@@ -34,5 +34,7 @@ class DatabaseSeeder extends Seeder
                 'role' => 'student',
             ]);
         }
+
+        $this->call(CourseSeeder::class);
     }
 }
