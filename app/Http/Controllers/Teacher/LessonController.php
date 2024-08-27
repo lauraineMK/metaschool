@@ -7,6 +7,7 @@ use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
 class LessonController extends Controller
@@ -140,11 +141,40 @@ class LessonController extends Controller
     public function destroy($id)
     {
         $lesson = Lesson::find($id);
-        if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
-        }
+    if (!$lesson) {
+        return redirect()->route('teacher.lessons.index')
+            ->with('error', 'Lesson not found');
+    }
 
-        $lesson->delete();
-        return response()->json(['message' => 'Lesson deleted']);
+    // Initialize course as null
+    $course = null;
+
+    // Check if the lesson is associated with a module
+    if ($lesson->module) {
+        // Check if the module is associated with a section and then a course
+        if ($lesson->module->section) {
+            $course = $lesson->module->section->course;
+        } else {
+            // If no section, check if the module is directly associated with a course
+            $course = $lesson->module->course;
+        }
+    } else {
+        // If no module, check if the lesson is directly associated with a course
+        if ($lesson->course) {
+            $course = $lesson->course;
+        }
+    }
+
+    // Check if the authenticated user is the author of the course
+    if ($course && Auth::user()->id !== $course->author_id) {
+        return redirect()->route('teacher.lessons.index')
+            ->with('error', 'Unauthorized');
+    }
+
+    // Delete the lesson
+    $lesson->delete();
+
+    return redirect()->route('teacher.lessons.index')
+        ->with('success', 'Lesson deleted successfully.');
     }
 }

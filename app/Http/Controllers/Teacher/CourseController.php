@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Teacher;
 
-use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Section;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class CourseController extends Controller
 {
@@ -248,16 +248,20 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         if (!$course) {
-            return response()->json(['message' => 'Course not found'], 404);
+            return redirect()->route('teacher.courses.index')
+                ->with('error', 'Course not found');
         }
 
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return redirect()->route('teacher.courses.index')
+                ->with('error', 'Unauthorized');
         }
 
 
         $course->delete();
-        return response()->json(['message' => 'Course deleted']);
+
+        return redirect()->route('teacher.courses.index')
+            ->with('success', 'Course deleted successfully.');
     }
 }
