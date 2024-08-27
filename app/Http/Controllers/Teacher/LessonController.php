@@ -34,10 +34,12 @@ class LessonController extends Controller
         // Retrieve the lesson
         $lesson = Lesson::find($id);
 
-        // If the lesson is not found, redirect or show an error page
+        // If the lesson is not found, redirect to the lesson index with an error message
         if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Lesson not found');
         }
+
         // Pass the lesson details to the view
         return view('teacher.lessons.show', ['lesson' => $lesson]);
     }
@@ -92,13 +94,13 @@ class LessonController extends Controller
         }
 
         try {
-        // Lesson creation
-        $lesson = Lesson::create($validated);
-    } catch (\Exception $e) {
-        // In case of creation error, redirection with error message
-        return redirect()->route('teacher.lessons.index')
-            ->with('error', 'Failed to create lesson');
-    }
+            // Lesson creation
+            $lesson = Lesson::create($validated);
+        } catch (\Exception $e) {
+            // In case of creation error, redirection with error message
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Failed to create lesson');
+        }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
             ->with('success', 'Lesson created successfully.');
@@ -115,10 +117,19 @@ class LessonController extends Controller
         // Find lesson by ID
         $lesson = Lesson::findOrFail($id);
 
+        // Retrieve the course associated with the lesson
+        $course = Course::find($lesson->course_id);
+
+        // Check if the authenticated user is the author of the course
+        if ($course && Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Unauthorized');
+        }
+
         // Retrieve lists of courses, modules and sections
         $courses = Course::all();
-        $modules = Module::all();
         $sections = Section::all();
+        $modules = Module::all();
 
         return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }

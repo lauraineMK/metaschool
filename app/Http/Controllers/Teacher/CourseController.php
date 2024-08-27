@@ -31,6 +31,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
+
         return view('teacher.courses.index', ['courses' => $courses]);
     }
 
@@ -45,9 +46,10 @@ class CourseController extends Controller
         // Retrieve the course with related sections, modules, and lessons
         $course = Course::with('sections.modules.lessons')->find($id);
 
-        // If the course is not found, redirect or show an error page
+        // If the course is not found, redirect to the course index with an error message
         if (!$course) {
-            return response()->json(['message' => 'Course not found'], 404);
+            return redirect()->route('teacher.courses.index')
+                ->with('error', 'Course not found');
         }
 
         // Pass the course details to the view

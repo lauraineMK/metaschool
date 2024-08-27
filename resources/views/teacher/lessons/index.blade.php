@@ -9,19 +9,6 @@
     <!-- Button to create a new lesson -->
     <a href="{{ route('teacher.lessons.create') }}" class="btn btn-primary mb-3">Create New Lesson</a>
 
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-    @endif
-
-
     @if ($lessons->isEmpty())
     <p>No lessons available.</p>
     @else
