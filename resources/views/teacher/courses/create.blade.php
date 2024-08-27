@@ -5,7 +5,7 @@
 @section('content')
     <div class="container">
         <h1>Create a New Course</h1>
-        <form action="{{ route('teachers.courses.store') }}" method="POST">
+        <form action="{{ route('teacher.courses.store') }}" method="POST">
             @csrf
 
             <!-- Course Details -->

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{ url('/') }}">My Application</a>
+    <a class="navbar-brand" href="{{ url('/') }}">MetaSchool</a>
     <div class="collapse navbar-collapse">
         @auth
         <!-- Links for Authenticated Users -->
