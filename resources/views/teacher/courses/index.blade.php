@@ -1,50 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Courses - MetaSchool')
+@section('title', 'Course Details - MetaSchool')
 
 @section('content')
-<div class="container mt-5">
-    <h1>Courses</h1>
+<div class="container mt-5 teacher-section">
+    <h1>{{ $course->title }}</h1>
 
-    <!-- Button to create a new course -->
-    <a href="{{ route('teacher.courses.create') }}" class="btn btn-primary mb-3">Create New Course</a>
+    <!-- Course Description -->
+    <p>{{ $course->description }}</p>
 
-    @if ($courses->isEmpty())
-        <p>No courses available.</p>
-    @else
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Course Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($courses as $course)
-                    <tr>
-                        <td>{{ $course->id }}</td>
-                        <td>{{ $course->title }}</td>
-                        <td>{{ $course->description }}</td>
-                        <td>
-                            <!-- View Button -->
-                            <a href="{{ route('teacher.courses.show', $course->id) }}" class="btn btn-info btn-sm">View</a>
+    <!-- Button to edit the course -->
+    <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-warning mb-3">Edit Course</a>
 
-                            <!-- Edit Button -->
-                            <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-warning btn-sm">Edit</a>
+    <!-- Button to delete the course -->
+    <form action="{{ route('teacher.courses.destroy', $course->id) }}" method="POST" style="display: inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger mb-3" onclick="return confirm('Are you sure you want to delete this course?')">Delete Course</button>
+    </form>
 
-                            <!-- Delete Button -->
-                            <form action="{{ route('teacher.courses.destroy', $course->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+    <!-- Course Content -->
+    <h2 class="mt-5">Course Content</h2>
+
+    <!-- Content display logic -->
+    <!-- ... (rest of your content) -->
 </div>
 @endsection
