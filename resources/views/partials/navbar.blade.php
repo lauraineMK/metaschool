@@ -4,12 +4,28 @@
         @auth
         <!-- Links for Authenticated Users -->
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('teachers/courses') }}">Courses</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('/about') }}">About</a>
-            </li>
+            <!-- Check if the user is a teacher -->
+    @if (auth()->user()->role == 'teacher')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('teachers/courses') }}">Courses</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('teachers/lessons') }}">Lessons</a>
+        </li>
+    <!-- Check if the user is a student -->
+    @elseif (auth()->user()->role == 'student')
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('students/courses') }}">Courses</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('students/lessons') }}">Lessons</a>
+        </li>
+    @endif
+
+    <!-- Common links for all users -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('/about') }}">About</a>
+    </li>
         </ul>
         @endauth
 
