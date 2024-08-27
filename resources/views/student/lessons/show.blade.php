@@ -15,15 +15,15 @@
         <a href="{{ route('student.courses.show', $lesson->course->id) }}">{{ $lesson->course->title }}</a>
     </div>
 
-    @if($lesson->module)
+    @if($lesson->section)
     <div class="mb-3">
-        <strong>Module:</strong> {{ $lesson->module->title }}
+        <strong>Section:</strong> {{ $lesson->section->name }}
     </div>
     @endif
 
-    @if($lesson->section)
+    @if($lesson->module)
     <div class="mb-3">
-        <strong>Section:</strong> {{ $lesson->section->title }}
+        <strong>Module:</strong> {{ $lesson->module->name }}
     </div>
     @endif
 

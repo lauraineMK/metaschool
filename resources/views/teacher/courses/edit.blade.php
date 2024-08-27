@@ -11,7 +11,7 @@
 
             <!-- Course Details -->
             <div class="form-group">
-                <label for="course_title">Course Title:</label>
+                <label for="course_title">Course Name:</label>
                 <input type="text" id="course_title" name="title" class="form-control" value="{{ old('title', $course->title) }}" required>
                 @error('title')
                     <small class="text-danger">{{ $message }}</small>
@@ -47,7 +47,7 @@
                 <input type="hidden" name="section_id" value="{{ $section->id }}">
             @endif
             <div class="form-group">
-                <label for="section_title">Section Title:</label>
+                <label for="section_title">Section Name:</label>
                 <input type="text" id="section_title" name="section_title" class="form-control" value="{{ old('section_title', $section->title ?? '') }}">
                 @error('section_title')
                     <small class="text-danger">{{ $message }}</small>
@@ -75,7 +75,7 @@
                 <input type="hidden" name="module_id" value="{{ $module->id }}">
             @endif
             <div class="form-group">
-                <label for="module_title">Module Title:</label>
+                <label for="module_title">Module Name:</label>
                 <input type="text" id="module_title" name="module_title" class="form-control" value="{{ old('module_title', $module->title ?? '') }}">
                 @error('module_title')
                     <small class="text-danger">{{ $message }}</small>

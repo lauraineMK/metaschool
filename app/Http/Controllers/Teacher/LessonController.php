@@ -7,6 +7,7 @@ use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
 class LessonController extends Controller
@@ -33,10 +34,12 @@ class LessonController extends Controller
         // Retrieve the lesson
         $lesson = Lesson::find($id);
 
-        // If the lesson is not found, redirect or show an error page
+        // If the lesson is not found, redirect to the lesson index with an error message
         if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Lesson not found');
         }
+
         // Pass the lesson details to the view
         return view('teacher.lessons.show', ['lesson' => $lesson]);
     }
@@ -66,7 +69,14 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'You must be logged in to create a lesson.');
+        }
+
+        // Data validation
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
             'video_url' => 'nullable|string|url',
@@ -76,10 +86,24 @@ class LessonController extends Controller
             'level' => 'nullable|integer',
         ]);
 
-        $lesson = Lesson::create($request->only(['title', 'content', 'video_url', 'section_id', 'module_id', 'course_id', 'level']));
+        // Check whether the course associated with the lesson belongs to the authenticated user
+        $course = Course::find($validated['course_id']);
+        if (!$course || Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Unauthorized');
+        }
+
+        try {
+            // Lesson creation
+            $lesson = Lesson::create($validated);
+        } catch (\Exception $e) {
+            // In case of creation error, redirection with error message
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Failed to create lesson');
+        }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
-                     ->with('success', 'Lesson created successfully.');
+            ->with('success', 'Lesson created successfully.');
     }
 
     /**
@@ -93,10 +117,19 @@ class LessonController extends Controller
         // Find lesson by ID
         $lesson = Lesson::findOrFail($id);
 
+        // Retrieve the course associated with the lesson
+        $course = Course::find($lesson->course_id);
+
+        // Check if the authenticated user is the author of the course
+        if ($course && Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Unauthorized');
+        }
+
         // Retrieve lists of courses, modules and sections
         $courses = Course::all();
-        $modules = Module::all();
         $sections = Section::all();
+        $modules = Module::all();
 
         return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }
@@ -106,11 +139,11 @@ class LessonController extends Controller
      *
      * @param Request $request
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'content' => 'nullable|string',
             'video_url' => 'nullable|string|url',
@@ -122,13 +155,35 @@ class LessonController extends Controller
 
         $lesson = Lesson::find($id);
         if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Lesson not found');
         }
 
-        $lesson->update($request->all());
+        // Check whether the course associated with the lesson belongs to the authenticated user
+        if ($lesson->course_id) {
+            $course = Course::find($lesson->course_id);
+            if (!$course) {
+                return redirect()->route('teacher.lessons.index')
+                    ->with('error', 'Course associated with the lesson not found');
+            }
+
+            if (Auth::user()->id !== $course->author_id) {
+                return redirect()->route('teacher.lessons.index')
+                    ->with('error', 'Unauthorized');
+            }
+        }
+
+        try {
+            // Update lesson
+            $lesson->update($validated);
+        } catch (\Exception $e) {
+            // Redirect on update error with error message
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Failed to update lesson');
+        }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
-                     ->with('success', 'Lesson updated successfully.');
+            ->with('success', 'Lesson updated successfully.');
     }
 
     /**
@@ -141,10 +196,39 @@ class LessonController extends Controller
     {
         $lesson = Lesson::find($id);
         if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Lesson not found');
         }
 
+        // Initialize course as null
+        $course = null;
+
+        // Check if the lesson is associated with a module
+        if ($lesson->module) {
+            // Check if the module is associated with a section and then a course
+            if ($lesson->module->section) {
+                $course = $lesson->module->section->course;
+            } else {
+                // If no section, check if the module is directly associated with a course
+                $course = $lesson->module->course;
+            }
+        } else {
+            // If no module, check if the lesson is directly associated with a course
+            if ($lesson->course) {
+                $course = $lesson->course;
+            }
+        }
+
+        // Check if the authenticated user is the author of the course
+        if ($course && Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.lessons.index')
+                ->with('error', 'Unauthorized');
+        }
+
+        // Delete the lesson
         $lesson->delete();
-        return response()->json(['message' => 'Lesson deleted']);
+
+        return redirect()->route('teacher.lessons.index')
+            ->with('success', 'Lesson deleted successfully.');
     }
 }

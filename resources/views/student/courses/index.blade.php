@@ -24,7 +24,7 @@
                 @foreach ($courses as $course)
                     <tr>
                         <td>{{ $course->id }}</td>
-                        <td>{{ $course->title }}</td>
+                        <td>{{ $course->name }}</td>
                         <td>{{ $course->description }}</td>
                         <td>
                             <!-- View Button -->

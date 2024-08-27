@@ -1,6 +1,8 @@
 <?php
 
 namespace Database\Seeders;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -13,12 +15,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        if (DB::table('users')->where('email', 'admin@teacher.com')->doesntExist()) {
+            DB::table('users')->insert([
+                'firstname' => 'Teacher',
+                'surname' => 'Teacher',
+                'email' => 'admin@teacher.com',
+                'password' => Hash::make('teacher'),
+                'role' => 'teacher',
+            ]);
+        }
 
-        User::factory()->create([
-            'firstname' => 'Test User\'s firstname',
-            'surname' => 'Test User\'s surname',
-            'email' => 'test@example.com',
-        ]);
+        if (DB::table('users')->where('email', 'admin@student.com')->doesntExist()) {
+            DB::table('users')->insert([
+                'firstname' => 'Student',
+                'surname' => 'Student',
+                'email' => 'admin@student.com',
+                'password' => Hash::make('student'),
+                'role' => 'student',
+            ]);
+        }
+
+        $this->call(CourseSeeder::class);
     }
 }

@@ -29,10 +29,12 @@ class LessonController extends Controller
         // Retrieve the lesson
         $lesson = Lesson::find($id);
 
-        // If the lesson is not found, redirect or show an error page
+        // If the lesson is not found, redirect to the lesson index with an error message
         if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
+            return redirect()->route('student.lessons.index')
+                ->with('error', 'Lesson not found');
         }
+
         // Pass the lesson details to the view
         return view('student.lessons.show', ['lesson' => $lesson]);
     }
