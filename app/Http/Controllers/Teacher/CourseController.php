@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
@@ -20,17 +20,6 @@ class CourseController extends Controller
     {
         // Return the view for the teacher dashboard
         return view('teacher.dashboard');
-    }
-
-    /**
-     * Students' access
-     *
-     * @return void
-     */
-    public function student_dashboard()
-    {
-        // Return the view for the student dashboard
-        return view('student.dashboard');
     }
 
     /**
@@ -64,6 +53,7 @@ class CourseController extends Controller
         return view('teacher.courses.show', ['course' => $course]);
     }
 
+    //! Not working------------------------------
     /**
      * Display the new course creation form
      *
@@ -71,14 +61,17 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('teacher.courses.create');
+        $modules = Module::all();
+        $sections = Section::all();
+        return view('teacher.courses.create', compact('modules', 'sections'));
     }
+    //! -----------------------------------------
 
     /**
-     * Create a new course
+     * Store a newly created course
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -132,7 +125,21 @@ class CourseController extends Controller
             }
         }
 
-        return response()->json($course, 201);
+        return redirect()->route('teacher.courses.show', $course->id)
+            ->with('success', 'Course created successfully.');
+    }
+
+    /**
+     * Display the new course edition form
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        $course = Course::findOrFail($id);
+
+        return view('teacher.courses.edit', compact('course'));
     }
 
     /**
@@ -140,7 +147,7 @@ class CourseController extends Controller
      *
      * @param Request $request
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -227,7 +234,8 @@ class CourseController extends Controller
             }
         }
 
-        return response()->json($course);
+        return redirect()->route('teacher.courses.show', $course->id)
+            ->with('success', 'Course updated successfully.');
     }
 
     /**

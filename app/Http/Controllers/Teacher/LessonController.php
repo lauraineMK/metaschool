@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Teacher;
 
-use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Module;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class LessonController extends Controller
 {
@@ -38,11 +41,28 @@ class LessonController extends Controller
         return view('teacher.lessons.show', ['lesson' => $lesson]);
     }
 
+    //! To be checked----------------------------
     /**
-     * Create a new lesson
+     * Display the new lesson creation form
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        $courses = Course::all();
+        $modules = Module::all();
+        $sections = Section::all();
+
+        return view('teacher.lessons.create', compact('courses', 'modules', 'sections'));
+    }
+    //! -----------------------------------------
+
+    /**
+     * Store a newly created lesson
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -57,7 +77,28 @@ class LessonController extends Controller
         ]);
 
         $lesson = Lesson::create($request->only(['title', 'content', 'video_url', 'section_id', 'module_id', 'course_id', 'level']));
-        return response()->json($lesson, 201);
+
+        return redirect()->route('teacher.lessons.show', $lesson->id)
+                     ->with('success', 'Lesson created successfully.');
+    }
+
+    /**
+     * Display the new lesson edition form
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        // Find lesson by ID
+        $lesson = Lesson::findOrFail($id);
+
+        // Retrieve lists of courses, modules and sections
+        $courses = Course::all();
+        $modules = Module::all();
+        $sections = Section::all();
+
+        return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }
 
     /**
@@ -85,7 +126,9 @@ class LessonController extends Controller
         }
 
         $lesson->update($request->all());
-        return response()->json($lesson);
+
+        return redirect()->route('teacher.lessons.show', $lesson->id)
+                     ->with('success', 'Lesson updated successfully.');
     }
 
     /**
