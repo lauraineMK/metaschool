@@ -13,6 +13,7 @@ class SectionFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
+            'description' => $this->faker->paragraph,
             'course_id' => \App\Models\Course::factory(),
         ];
     }
