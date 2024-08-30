@@ -1,66 +1,133 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MetaSchool
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**MetaSchool** is a web application for managing courses, sections, modules, and lessons, developed with Laravel. It allows teachers to create and manage courses and students to view available courses.
 
-## About Laravel
+## Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Contributions](#contributions)
+- [License](#license)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Introduction
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+MetaSchool provides an interface for teachers to create and organize courses, as well as for students to explore and follow courses.
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prerequisites
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- PHP >= 7.4
+- Composer
+- Node.js (for frontend assets, if applicable)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Clone the Repository
 
-## Laravel Sponsors
+Clone the Git repository to your local machine:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/yourusername/metaschool.git
+cd metaschool
+```
 
-### Premium Partners
+### Install Dependencies
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+#### Install PHP dependencies via Composer
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Install JavaScript dependencies via npm (or Yarn)
 
-## Code of Conduct
+```bash
+npm install
+# ou
+yarn install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### After installing JavaScript dependencies, you may also need to build frontend assets:
 
-## Security Vulnerabilities
+```bash
+npm run dev
+# or
+yarn run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Configure the Environment
+
+Copy the .env.example file to .env:
+
+```bash
+cp .env.example .env
+```
+
+### Generate the Application Key
+
+```bash
+php artisan key:generate
+```
+
+Configure your environment settings in the .env file. Make sure to set your database connection details and other specific parameters.
+
+### Database Migration
+
+Run migrations to set up your database:
+
+```bash
+php artisan migrate
+```
+
+If you have test data, you can import it using seeders:
+
+```bash
+php artisan db:seed
+```
+
+### Run the Server
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+Access the application at http://localhost:8000.
+
+## Configuration
+
+### Routes
+
+The main routes of the application are defined in routes/web.php.
+
+### Middleware
+
+The application's middleware is configured in app/Http/Kernel.php. Ensure that protected routes are correctly set up for roles and permissions.
+
+### Authentication
+
+Authentication routes are defined in routes/web.php. You can customize authentication views and controllers in the app/Http/Controllers/Auth directory.
+
+## Usage
+
+- Create a Course: Go to http://localhost:8000/teachers/courses/create to add a new course.
+- View Courses: Go to http://localhost:8000/teachers/courses to see the list of courses.
+- Edit a Course: Go to http://localhost:8000/teachers/courses/{id}/edit to edit an existing course.
+- Delete a Course: Use the delete button on the course list page.
+
+## Contributions
+
+Contributions are welcome! Please follow these steps to contribute:
+
+1. Fork the repository
+2. Create a branch (git checkout -b feature/amazing-feature)
+3. Make your changes
+4. Commit your changes (git commit -am 'Add some amazing feature')
+5. Push to the branch (git push origin feature/amazing-feature)
+6. Open a Pull Request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License.
