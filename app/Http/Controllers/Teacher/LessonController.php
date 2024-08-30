@@ -23,7 +23,7 @@ class LessonController extends Controller
         return view('teacher.lessons.index', ['lessons' => $lessons]);
     }
 
-    /**
+    /** //? previous/next module buttons to be added
      * Show details of a specific lesson
      *
      * @param [type] $id
