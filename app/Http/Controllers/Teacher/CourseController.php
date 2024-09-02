@@ -133,8 +133,8 @@ class CourseController extends Controller
                             Module::create([
                                 'name' => $moduleData['name'],
                                 'description' => $moduleData['description'],
-                                'section_id' => $section->id,
                                 'course_id' => $course->id,
+                                'section_id' => $section->id,
                                 'level' => $moduleData['level'] ?? null,
                             ]);
                         }
