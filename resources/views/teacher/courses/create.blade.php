@@ -15,8 +15,8 @@
             <h2>Course Details</h2>
 
             <div class="form-group">
-                <label for="course_title">Course Name:</label>
-                <input type="text" id="course_title" name="title" class="form-control" required>
+                <label for="course_name">Course Name:</label>
+                <input type="text" id="course_name" name="name" class="form-control" required>
             </div>
 
             <div class="form-group">
@@ -170,8 +170,8 @@
             newSection.innerHTML = `
             <h2>Section Details</h2>
             <div class="form-group">
-                <label for="section_title_${sectionCount}">Section Name:</label>
-                <input type="text" id="section_title_${sectionCount}" name="section_title[]" class="form-control">
+                <label for="section_name_${sectionCount}">Section Name:</label>
+                <input type="text" id="section_name_${sectionCount}" name="section_name[]" class="form-control">
             </div>
             <div class="form-group">
                 <label for="section_description_${sectionCount}">Section Description:</label>
@@ -200,8 +200,8 @@
             newModule.innerHTML = `
             <h2>Module Details</h2>
             <div class="form-group">
-                <label for="module_title_${moduleCount}">Module Name:</label>
-                <input type="text" id="module_title_${moduleCount}" name="module_title[]" class="form-control">
+                <label for="module_name_${moduleCount}">Module Name:</label>
+                <input type="text" id="module_name_${moduleCount}" name="module_name[]" class="form-control">
             </div>
             <div class="form-group">
                 <label for="module_description_${moduleCount}">Module Description:</label>
@@ -240,8 +240,8 @@
                 newModule.innerHTML = `
                 <h2>Module Details</h2>
                 <div class="form-group">
-                    <label for="module_title_${moduleCount}">Module Name:</label>
-                    <input type="text" id="module_title_${moduleCount}" name="module_title[]" class="form-control">
+                    <label for="module_name_${moduleCount}">Module Name:</label>
+                    <input type="text" id="module_name_${moduleCount}" name="module_name[]" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="module_description_${moduleCount}">Module Description:</label>
