@@ -64,101 +64,100 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $modules = Module::all();
         $sections = Section::all();
+        $modules = Module::all();
         return view('teacher.courses.create', compact('modules', 'sections'));
     }
     //! -----------------------------------------
 
     /**
- * Store a newly created course
- *
- * @param Request $request
- * @return \Illuminate\Http\RedirectResponse
- */
-public function store(Request $request)
-{
-    // Check if the user is authenticated
-    if (!Auth::check()) {
-        return redirect()->route('login')
-            ->with('error', 'You must be logged in to create a course.');
-    }
+     * Store a newly created course
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'You must be logged in to create a course.');
+        }
 
-    // Data validation
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'price' => 'nullable|numeric',
-        'creation_date' => 'nullable|date',
-        'author_id' => 'required|exists:users,id',
-        'sections' => 'nullable|array',
-        'sections.*.name' => 'nullable|string|max:255',
-        'sections.*.description' => 'nullable|string',
-        'sections.*.level' => 'nullable|integer',
-        'sections.*.modules' => 'nullable|array',
-        'sections.*.modules.*.name' => 'nullable|string|max:255',
-        'sections.*.modules.*.description' => 'nullable|string',
-        'sections.*.modules.*.level' => 'nullable|integer',
-        'modules' => 'nullable|array',
-        'modules.*.name' => 'nullable|string|max:255',
-        'modules.*.description' => 'nullable|string',
-        'modules.*.level' => 'nullable|integer',
-    ]);
+        // Data validation
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'nullable|numeric',
+            'creation_date' => 'nullable|date',
+            'author_id' => 'required|exists:users,id',
+            'sections' => 'nullable|array',
+            'sections.*.name' => 'nullable|string|max:255',
+            'sections.*.description' => 'nullable|string',
+            'sections.*.level' => 'nullable|integer',
+            'sections.*.modules' => 'nullable|array',
+            'sections.*.modules.*.name' => 'nullable|string|max:255',
+            'sections.*.modules.*.description' => 'nullable|string',
+            'sections.*.modules.*.level' => 'nullable|integer',
+            'modules' => 'nullable|array',
+            'modules.*.name' => 'nullable|string|max:255',
+            'modules.*.description' => 'nullable|string',
+            'modules.*.level' => 'nullable|integer',
+        ]);
 
-    // Set the author_id to the authenticated user
-    $validated['author_id'] = Auth::id();
+        // Set the author_id to the authenticated user
+        $validated['author_id'] = Auth::id();
 
-    // Course creation
-    $course = Course::create([
-        'name' => $validated['name'],
-        'description' => $validated['description'],
-        'price' => $validated['price'],
-        'creation_date' => $validated['creation_date'],
-        'author_id' => $validated['author_id'],
-    ]);
+        // Course creation
+        $course = Course::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'creation_date' => $validated['creation_date'],
+            'author_id' => $validated['author_id'],
+        ]);
 
-    // Section creation if provided
-    if (!empty($validated['sections'])) {
-        foreach ($validated['sections'] as $sectionData) {
-            $section = Section::create([
-                'name' => $sectionData['name'],
-                'description' => $sectionData['description'],
-                'course_id' => $course->id,
-                'level' => $sectionData['level'] ?? null,
-            ]);
+        // Section creation if provided
+        if (!empty($validated['sections'])) {
+            foreach ($validated['sections'] as $sectionData) {
+                $section = Section::create([
+                    'name' => $sectionData['name'],
+                    'description' => $sectionData['description'],
+                    'course_id' => $course->id,
+                    'level' => $sectionData['level'] ?? null,
+                ]);
 
-            // Section module creation
-            if (!empty($sectionData['modules'])) {
-                foreach ($sectionData['modules'] as $moduleData) {
-                    Module::create([
-                        'name' => $moduleData['name'],
-                        'description' => $moduleData['description'],
-                        'course_id' => $course->id,
-                        'section_id' => $section->id,
-                        'level' => $moduleData['level'] ?? null,
-                    ]);
+                // Section module creation
+                if (!empty($sectionData['modules'])) {
+                    foreach ($sectionData['modules'] as $moduleData) {
+                        Module::create([
+                            'name' => $moduleData['name'],
+                            'description' => $moduleData['description'],
+                            'course_id' => $course->id,
+                            'section_id' => $section->id,
+                            'level' => $moduleData['level'] ?? null,
+                        ]);
+                    }
                 }
             }
         }
-    }
 
-    // Standalone Module creation if provided
-    if (!empty($validated['modules'])) {
-        foreach ($validated['modules'] as $moduleData) {
-            Module::create([
-                'name' => $moduleData['name'],
-                'description' => $moduleData['description'],
-                'course_id' => $course->id,
-                'section_id' => null,
-                'level' => $moduleData['level'] ?? null,
-            ]);
+        // Standalone Module creation if provided
+        if (!empty($validated['modules'])) {
+            foreach ($validated['modules'] as $moduleData) {
+                Module::create([
+                    'name' => $moduleData['name'],
+                    'description' => $moduleData['description'],
+                    'course_id' => $course->id,
+                    'section_id' => null,
+                    'level' => $moduleData['level'] ?? null,
+                ]);
+            }
         }
+
+        return redirect()->route('teacher.courses.show', $course->id)
+            ->with('success', 'Course created successfully.');
     }
-
-    return redirect()->route('teacher.courses.show', $course->id)
-        ->with('success', 'Course created successfully.');
-}
-
 
     /**
      * Display the form for editing an existing course

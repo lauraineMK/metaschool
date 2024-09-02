@@ -77,8 +77,8 @@ class LessonController extends Controller
     public function create()
     {
         $courses = Course::all();
-        $modules = Module::all();
         $sections = Section::all();
+        $modules = Module::all();
 
         return view('teacher.lessons.create', compact('courses', 'modules', 'sections'));
     }
