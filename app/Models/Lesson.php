@@ -13,9 +13,9 @@ class Lesson extends Model
         'title',
         'order',
         'content',
+        'course_id',
         'section_id',
         'module_id',
-        'course_id',
         'level',
     ];
 

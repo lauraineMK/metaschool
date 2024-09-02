@@ -13,8 +13,8 @@ class Module extends Model
         'name',
         'order',
         'description',
-        'section_id',
         'course_id',
+        'section_id',
         'level',
     ];
 

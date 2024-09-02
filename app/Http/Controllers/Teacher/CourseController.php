@@ -64,8 +64,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $modules = Module::all();
         $sections = Section::all();
+        $modules = Module::all();
         return view('teacher.courses.create', compact('modules', 'sections'));
     }
     //! -----------------------------------------
@@ -88,7 +88,6 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'level' => 'nullable|integer',
             'price' => 'nullable|numeric',
             'creation_date' => 'nullable|date',
             'author_id' => 'required|exists:users,id',
@@ -96,16 +95,18 @@ class CourseController extends Controller
             'sections.*.name' => 'nullable|string|max:255',
             'sections.*.description' => 'nullable|string',
             'sections.*.level' => 'nullable|integer',
+            'sections.*.modules' => 'nullable|array',
+            'sections.*.modules.*.name' => 'nullable|string|max:255',
+            'sections.*.modules.*.description' => 'nullable|string',
+            'sections.*.modules.*.level' => 'nullable|integer',
             'modules' => 'nullable|array',
             'modules.*.name' => 'nullable|string|max:255',
             'modules.*.description' => 'nullable|string',
             'modules.*.level' => 'nullable|integer',
-            'modules.*.section_id' => 'nullable|exists:sections,id',
-
         ]);
 
-        // Ensure the authenticated user is the author of the course
-        $validated['author_id'] = Auth::id(); // Set the author_id to the authenticated user
+        // Set the author_id to the authenticated user
+        $validated['author_id'] = Auth::id();
 
         // Course creation
         $course = Course::create([
@@ -117,8 +118,8 @@ class CourseController extends Controller
         ]);
 
         // Section creation if provided
-        if ($request->has('sections')) {
-            foreach ($request->sections as $sectionData) {
+        if (!empty($validated['sections'])) {
+            foreach ($validated['sections'] as $sectionData) {
                 $section = Section::create([
                     'name' => $sectionData['name'],
                     'description' => $sectionData['description'],
@@ -126,20 +127,31 @@ class CourseController extends Controller
                     'level' => $sectionData['level'] ?? null,
                 ]);
 
-                // Module creation if provided
-                if ($request->has('modules')) {
-                    foreach ($request->modules as $moduleData) {
-                        if ($moduleData['section_id'] == $section->id) {
-                            Module::create([
-                                'name' => $moduleData['name'],
-                                'description' => $moduleData['description'],
-                                'course_id' => $course->id,
-                                'section_id' => $section->id,
-                                'level' => $moduleData['level'] ?? null,
-                            ]);
-                        }
+                // Section module creation
+                if (!empty($sectionData['modules'])) {
+                    foreach ($sectionData['modules'] as $moduleData) {
+                        Module::create([
+                            'name' => $moduleData['name'],
+                            'description' => $moduleData['description'],
+                            'course_id' => $course->id,
+                            'section_id' => $section->id,
+                            'level' => $moduleData['level'] ?? null,
+                        ]);
                     }
                 }
+            }
+        }
+
+        // Standalone Module creation if provided
+        if (!empty($validated['modules'])) {
+            foreach ($validated['modules'] as $moduleData) {
+                Module::create([
+                    'name' => $moduleData['name'],
+                    'description' => $moduleData['description'],
+                    'course_id' => $course->id,
+                    'section_id' => null,
+                    'level' => $moduleData['level'] ?? null,
+                ]);
             }
         }
 

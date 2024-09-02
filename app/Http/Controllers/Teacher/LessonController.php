@@ -77,8 +77,8 @@ class LessonController extends Controller
     public function create()
     {
         $courses = Course::all();
-        $modules = Module::all();
         $sections = Section::all();
+        $modules = Module::all();
 
         return view('teacher.lessons.create', compact('courses', 'modules', 'sections'));
     }
@@ -105,7 +105,7 @@ class LessonController extends Controller
             'video_url' => 'nullable|string|url',
             'section_id' => 'nullable|exists:sections,id',
             'module_id' => 'nullable|exists:modules,id',
-            'lesson_id' => 'required|exists:courses,id',
+            'course_id' => 'required|exists:courses,id', // Corrected here
             'level' => 'nullable|integer',
         ]);
 
@@ -124,6 +124,17 @@ class LessonController extends Controller
 
             // Create the lesson with the calculated order
             $lesson = Lesson::create(array_merge($validated, ['order' => $order]));
+
+            // Associate the lesson with the selected section and module
+            if ($validated['section_id']) {
+                $lesson->section_id = $validated['section_id'];
+                $lesson->save();
+            }
+
+            if ($validated['module_id']) {
+                $lesson->module_id = $validated['module_id'];
+                $lesson->save();
+            }
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message
             return redirect()->route('teacher.lessons.index')
@@ -133,6 +144,7 @@ class LessonController extends Controller
         return redirect()->route('teacher.lessons.show', $lesson->id)
             ->with('success', 'Lesson created successfully.');
     }
+
 
     /**
      * Display the form for editing an existing lesson

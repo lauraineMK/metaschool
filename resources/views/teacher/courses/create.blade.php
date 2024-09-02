@@ -15,8 +15,8 @@
             <h2>Course Details</h2>
 
             <div class="form-group">
-                <label for="course_title">Course Name:</label>
-                <input type="text" id="course_title" name="title" class="form-control" required>
+                <label for="course_name">Course Name:</label>
+                <input type="text" id="course_name" name="name" class="form-control" required>
             </div>
 
             <div class="form-group">
@@ -87,11 +87,8 @@
         border-radius: 5px;
         background-color: #f4f4f4;
         display: inline-block;
-        /* Align modules horizontally */
         vertical-align: top;
-        /* Aligns module to the top */
         width: calc(33.333% - 20px);
-        /* Adjust width and margin to fit 3 per row */
     }
 
     .form-group {
@@ -133,7 +130,6 @@
     .module-container {
         margin-top: 10px;
         overflow: hidden;
-        /* Clearfix for floating modules */
     }
 
     .module-container .module-group {
@@ -163,96 +159,95 @@
         document.getElementById('include_sections').addEventListener('change', toggleSections);
 
         document.getElementById('add-section-btn').addEventListener('click', function() {
-            sectionCount++;
+            let sectionIndex = sectionCount++;
             let sectionContainer = document.getElementById('section-container');
             let newSection = document.createElement('div');
             newSection.classList.add('form-section', 'section-group');
             newSection.innerHTML = `
-            <h2>Section Details</h2>
-            <div class="form-group">
-                <label for="section_title_${sectionCount}">Section Name:</label>
-                <input type="text" id="section_title_${sectionCount}" name="section_title[]" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="section_description_${sectionCount}">Section Description:</label>
-                <textarea id="section_description_${sectionCount}" name="section_description[]" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="section_level_${sectionCount}">Section Level:</label>
-                <input type="number" id="section_level_${sectionCount}" name="section_level[]" class="form-control">
-            </div>
-            <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary add-module-btn">Add Module</button>
-                <button type="button" class="btn btn-danger remove-section-btn">Remove Section</button>
-            </div>
-            <div class="module-container">
-                <!-- Modules will be added here -->
-            </div>
-        `;
+                <h2>Section Details</h2>
+                <div class="form-group">
+                    <label for="sections[${sectionIndex}][name]">Section Name:</label>
+                    <input type="text" id="sections_${sectionIndex}_name" name="sections[${sectionIndex}][name]" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="sections[${sectionIndex}][description]">Section Description:</label>
+                    <textarea id="sections_${sectionIndex}_description" name="sections[${sectionIndex}][description]" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sections[${sectionIndex}][level]">Section Level:</label>
+                    <input type="number" id="sections_${sectionIndex}_level" name="sections[${sectionIndex}][level]" class="form-control">
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary add-module-btn">Add Module</button>
+                    <button type="button" class="btn btn-danger remove-section-btn">Remove Section</button>
+                </div>
+                <div class="module-container">
+                    <!-- Modules will be added here -->
+                </div>
+            `;
             sectionContainer.appendChild(newSection);
         });
 
         document.getElementById('add-module-btn').addEventListener('click', function() {
-            moduleCount++;
+            let moduleIndex = moduleCount++;
             let moduleContainer = document.getElementById('module-container');
             let newModule = document.createElement('div');
             newModule.classList.add('form-section', 'module-group');
             newModule.innerHTML = `
-            <h2>Module Details</h2>
-            <div class="form-group">
-                <label for="module_title_${moduleCount}">Module Name:</label>
-                <input type="text" id="module_title_${moduleCount}" name="module_title[]" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="module_description_${moduleCount}">Module Description:</label>
-                <textarea id="module_description_${moduleCount}" name="module_description[]" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="module_level_${moduleCount}">Module Level:</label>
-                <input type="number" id="module_level_${moduleCount}" name="module_level[]" class="form-control">
-            </div>
-            <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
-        `;
+                <h2>Module Details</h2>
+                <div class="form-group">
+                    <label for="modules[${moduleIndex}][name]">Module Name:</label>
+                    <input type="text" id="modules_${moduleIndex}_name" name="modules[${moduleIndex}][name]" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="modules[${moduleIndex}][description]">Module Description:</label>
+                    <textarea id="modules_${moduleIndex}_description" name="modules[${moduleIndex}][description]" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modules[${moduleIndex}][level]">Module Level:</label>
+                    <input type="number" id="modules_${moduleIndex}_level" name="modules[${moduleIndex}][level]" class="form-control">
+                </div>
+                <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+            `;
             moduleContainer.appendChild(newModule);
         });
 
         document.addEventListener('click', function(event) {
-            // Handle module removal
             if (event.target && event.target.classList.contains('remove-module-btn')) {
                 if (confirm('Are you sure you want to remove this module?')) {
                     event.target.closest('.module-group').remove();
                 }
             }
 
-            // Handle section removal
             if (event.target && event.target.classList.contains('remove-section-btn')) {
                 if (confirm('Are you sure you want to remove this section?')) {
                     event.target.closest('.section-group').remove();
                 }
             }
 
-            // Handle module addition inside sections
             if (event.target && event.target.classList.contains('add-module-btn')) {
-                let moduleContainer = event.target.closest('.section-group').querySelector('.module-container');
-                let moduleCount = moduleContainer.querySelectorAll('.module-group').length + 1;
+                let sectionGroup = event.target.closest('.section-group');
+                let moduleContainer = sectionGroup.querySelector('.module-container');
+                let sectionIndex = Array.from(sectionGroup.parentNode.children).indexOf(sectionGroup);
+                let moduleIndex = moduleContainer.querySelectorAll('.module-group').length;
                 let newModule = document.createElement('div');
                 newModule.classList.add('form-section', 'module-group');
                 newModule.innerHTML = `
-                <h2>Module Details</h2>
-                <div class="form-group">
-                    <label for="module_title_${moduleCount}">Module Name:</label>
-                    <input type="text" id="module_title_${moduleCount}" name="module_title[]" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="module_description_${moduleCount}">Module Description:</label>
-                    <textarea id="module_description_${moduleCount}" name="module_description[]" class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="module_level_${moduleCount}">Module Level:</label>
-                    <input type="number" id="module_level_${moduleCount}" name="module_level[]" class="form-control">
-                </div>
-                <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
-            `;
+                    <h2>Module Details</h2>
+                    <div class="form-group">
+                        <label for="sections[${sectionIndex}][modules][${moduleIndex}][name]">Module Name:</label>
+                        <input type="text" id="sections_${sectionIndex}_modules_${moduleIndex}_name" name="sections[${sectionIndex}][modules][${moduleIndex}][name]" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="sections[${sectionIndex}][modules][${moduleIndex}][description]">Module Description:</label>
+                        <textarea id="sections_${sectionIndex}_modules_${moduleIndex}_description" name="sections[${sectionIndex}][modules][${moduleIndex}][description]" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="sections[${sectionIndex}][modules][${moduleIndex}][level]">Module Level:</label>
+                        <input type="number" id="sections_${sectionIndex}_modules_${moduleIndex}_level" name="sections[${sectionIndex}][modules][${moduleIndex}][level]" class="form-control">
+                    </div>
+                    <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+                `;
                 moduleContainer.appendChild(newModule);
             }
         });
