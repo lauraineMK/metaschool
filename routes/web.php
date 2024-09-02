@@ -28,8 +28,8 @@ Route::prefix('teachers')->group(function () {
     // Routes for managing courses
     Route::get('courses', [TeacherCourseController::class, 'index'])->name('teacher.courses.index');
     Route::get('courses/create', [TeacherCourseController::class, 'create'])->name('teacher.courses.create');
-    Route::get('courses/{id}', [TeacherCourseController::class, 'show'])->name('teacher.courses.show');
     Route::post('courses', [TeacherCourseController::class, 'store'])->name('teacher.courses.store');
+    Route::get('courses/{id}', [TeacherCourseController::class, 'show'])->name('teacher.courses.show');
     Route::get('courses/{id}/edit', [TeacherCourseController::class, 'edit'])->name('teacher.courses.edit');
     Route::put('courses/{id}', [TeacherCourseController::class, 'update'])->name('teacher.courses.update');
     Route::delete('courses/{id}', [TeacherCourseController::class, 'destroy'])->name('teacher.courses.destroy');
@@ -37,8 +37,8 @@ Route::prefix('teachers')->group(function () {
     // Routes for managing lessons
     Route::get('lessons', [TeacherLessonController::class, 'index'])->name('teacher.lessons.index');
     Route::get('lessons/create', [TeacherLessonController::class, 'create'])->name('teacher.lessons.create');
-    Route::get('lessons/{id}', [TeacherLessonController::class, 'show'])->name('teacher.lessons.show');
     Route::post('lessons', [TeacherLessonController::class, 'store'])->name('teacher.lessons.store');
+    Route::get('lessons/{id}', [TeacherLessonController::class, 'show'])->name('teacher.lessons.show');
     Route::get('lessons/{id}/edit', [TeacherLessonController::class, 'edit'])->name('teacher.lessons.edit');
     Route::put('lessons/{id}', [TeacherLessonController::class, 'update'])->name('teacher.lessons.update');
     Route::delete('lessons/{id}', [TeacherLessonController::class, 'destroy'])->name('teacher.lessons.destroy');
