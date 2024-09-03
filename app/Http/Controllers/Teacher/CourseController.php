@@ -56,7 +56,6 @@ class CourseController extends Controller
         return view('teacher.courses.show', ['course' => $course]);
     }
 
-    //! Not working------------------------------
     /**
      * Display the form for creating a new course
      *
@@ -68,7 +67,6 @@ class CourseController extends Controller
         $modules = Module::all();
         return view('teacher.courses.create', compact('modules', 'sections'));
     }
-    //! -----------------------------------------
 
     /**
      * Store a newly created course
@@ -167,7 +165,12 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::with('sections.modules')->findOrFail($id);
+
+        if (Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.courses.index')
+                ->with('error', 'Unauthorized');
+        }
 
         return view('teacher.courses.edit', compact('course'));
     }
