@@ -67,7 +67,6 @@ class LessonController extends Controller
         ]);
     }
 
-    //! To be checked----------------------------
     /**
      * Display the form for creating a new lesson
      *
@@ -82,7 +81,6 @@ class LessonController extends Controller
 
         return view('teacher.lessons.create', compact('courses', 'modules', 'sections'));
     }
-    //! -----------------------------------------
 
     /**
      * Store a newly created lesson
@@ -155,7 +153,7 @@ class LessonController extends Controller
     public function edit($id)
     {
         // Find lesson by ID
-        $lesson = Lesson::findOrFail($id);
+        $lesson = Lesson::with('course', 'section', 'module')->findOrFail($id);
 
         // Retrieve the course associated with the lesson
         $course = Course::find($lesson->course_id);

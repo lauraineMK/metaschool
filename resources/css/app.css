@@ -1,36 +1,51 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}
-
-.container {
-    text-align: center;
-}
-
-h1 {
-    font-size: 3em;
+/* Common styles for course creation and edition forms */
+.form-section {
     margin-bottom: 20px;
-}
-
-.buttons {
-    margin-top: 20px;
-}
-
-.buttons a {
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 10px;
-    color: #fff;
-    background-color: #007bff;
+    padding: 20px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    background-color: #f9f9f9;
 }
 
-.buttons a:hover {
-    background-color: #0056b3;
+.section-group {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    position: relative;
+}
+
+.module-group {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    display: inline-block;
+    vertical-align: top;
+    width: calc(33.333% - 20px);
+    /* Adjust to fit three per row */
+    box-sizing: border-box;
+    /* Ensure padding and border are included in the width */
+}
+
+.remove-section-btn,
+.remove-module-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.module-container {
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-between {
+    justify-content: space-between;
 }

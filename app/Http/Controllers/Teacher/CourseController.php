@@ -56,7 +56,6 @@ class CourseController extends Controller
         return view('teacher.courses.show', ['course' => $course]);
     }
 
-    //! Not working------------------------------
     /**
      * Display the form for creating a new course
      *
@@ -68,7 +67,6 @@ class CourseController extends Controller
         $modules = Module::all();
         return view('teacher.courses.create', compact('modules', 'sections'));
     }
-    //! -----------------------------------------
 
     /**
      * Store a newly created course
@@ -142,7 +140,7 @@ class CourseController extends Controller
             }
         }
 
-        // Standalone Module creation if provided
+        // Standalone module creation if provided
         if (!empty($validated['modules'])) {
             foreach ($validated['modules'] as $moduleData) {
                 Module::create([
@@ -167,7 +165,17 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::with('sections.modules')->findOrFail($id);
+
+        if (!$course) {
+            return redirect()->route('teacher.courses.index')
+                ->with('error', 'Course not found');
+        }
+
+        if (Auth::user()->id !== $course->author_id) {
+            return redirect()->route('teacher.courses.index')
+                ->with('error', 'Unauthorized');
+        }
 
         return view('teacher.courses.edit', compact('course'));
     }
@@ -185,7 +193,6 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'level' => 'nullable|integer',
             'price' => 'nullable|numeric',
             'creation_date' => 'nullable|date',
             'author_id' => 'sometimes|required|exists:users,id',
@@ -194,15 +201,20 @@ class CourseController extends Controller
             'sections.*.name' => 'nullable|string|max:255',
             'sections.*.description' => 'nullable|string',
             'sections.*.level' => 'nullable|integer',
+            'sections.*.modules' => 'nullable|array',
+            'sections.*.modules.*.id' => 'nullable|exists:modules,id',
+            'sections.*.modules.*.name' => 'nullable|string|max:255',
+            'sections.*.modules.*.description' => 'nullable|string',
+            'sections.*.modules.*.level' => 'nullable|integer',
             'modules' => 'nullable|array',
             'modules.*.id' => 'nullable|exists:modules,id',
             'modules.*.name' => 'nullable|string|max:255',
             'modules.*.description' => 'nullable|string',
             'modules.*.level' => 'nullable|integer',
-            'modules.*.section_id' => 'nullable|exists:sections,id',
         ]);
 
-        $course = Course::find($id);
+        $course = Course::findOrFail($id);
+
         if (!$course) {
             return redirect()->route('teacher.courses.index')
                 ->with('error', 'Course not found');
@@ -220,6 +232,7 @@ class CourseController extends Controller
 
             // Section update
             if ($request->has('sections')) {
+                $currentSectionIds = [];
                 foreach ($request->sections as $sectionData) {
                     if (isset($sectionData['id'])) {
                         $section = Section::find($sectionData['id']);
@@ -229,21 +242,58 @@ class CourseController extends Controller
                                 'description' => $sectionData['description'] ?? $section->description,
                                 'level' => $sectionData['level'] ?? $section->level,
                             ]);
+                            $currentSectionIds[] = $section->id;
                         }
                     } else {
-                        // New section creation if id is not provided
-                        Section::create([
+                        $newSection = Section::create([
                             'name' => $sectionData['name'],
                             'description' => $sectionData['description'],
                             'course_id' => $course->id,
                             'level' => $sectionData['level'],
                         ]);
+                        $currentSectionIds[] = $newSection->id;
+                    }
+
+                    // Section's module update
+                    if (!empty($sectionData['modules'])) {
+                        $currentModuleIds = [];
+                        foreach ($sectionData['modules'] as $moduleData) {
+                            if (isset($moduleData['id'])) {
+                                $module = Module::find($moduleData['id']);
+                                if ($module) {
+                                    $module->update([
+                                        'name' => $moduleData['name'] ?? $module->name,
+                                        'description' => $moduleData['description'] ?? $module->description,
+                                        'level' => $moduleData['level'] ?? $module->level,
+                                    ]);
+                                    $currentModuleIds[] = $module->id;
+                                }
+                            } else {
+                                $newModule = Module::create([
+                                    'name' => $moduleData['name'],
+                                    'description' => $moduleData['description'],
+                                    'course_id' => $course->id,
+                                    'section_id' => $section->id,
+                                    'level' => $moduleData['level'],
+                                ]);
+                                $currentModuleIds[] = $newModule->id;
+                            }
+                        }
+                        // Deletion of modules not present in the request data
+                        Module::where('section_id', $section->id)
+                            ->whereNotIn('id', $currentModuleIds)
+                            ->delete();
                     }
                 }
+                // Deletion of sections not present in the request data
+                Section::where('course_id', $course->id)
+                    ->whereNotIn('id', $currentSectionIds)
+                    ->delete();
             }
 
-            // Module update
+            // Standalone modules update
             if ($request->has('modules')) {
+                $currentModuleIds = [];
                 foreach ($request->modules as $moduleData) {
                     if (isset($moduleData['id'])) {
                         $module = Module::find($moduleData['id']);
@@ -252,19 +302,26 @@ class CourseController extends Controller
                                 'name' => $moduleData['name'] ?? $module->name,
                                 'description' => $moduleData['description'] ?? $module->description,
                                 'level' => $moduleData['level'] ?? $module->level,
+                                'section_id' => $moduleData['section_id'] ?? $module->section_id,
                             ]);
+                            $currentModuleIds[] = $module->id;
                         }
                     } else {
-                        // New module creation if id is not provided
-                        Module::create([
+                        $newModule = Module::create([
                             'name' => $moduleData['name'],
                             'description' => $moduleData['description'],
                             'course_id' => $course->id,
                             'section_id' => $moduleData['section_id'] ?? null,
                             'level' => $moduleData['level'],
                         ]);
+                        $currentModuleIds[] = $newModule->id;
                     }
                 }
+                // Deletion of modules not present in the request data
+                Module::where('course_id', $course->id)
+                    ->whereNull('section_id')
+                    ->whereNotIn('id', $currentModuleIds)
+                    ->delete();
             }
         } catch (\Exception $e) {
             // Log the exception for debugging purposes
