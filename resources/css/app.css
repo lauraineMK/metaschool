@@ -1,3 +1,4 @@
+/* Common styles for course creation and edition forms */
 .form-section {
     margin-bottom: 20px;
     padding: 20px;
@@ -24,51 +25,21 @@
     display: inline-block;
     vertical-align: top;
     width: calc(33.333% - 20px);
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-}
-
-.btn-secondary {
-    margin-right: 10px;
+    /* Adjust to fit three per row */
+    box-sizing: border-box;
+    /* Ensure padding and border are included in the width */
 }
 
 .remove-section-btn,
 .remove-module-btn {
-    background-color: #dc3545;
-    color: #fff;
-    border-color: #dc3545;
-    margin-top: 10px;
-}
-
-.remove-section-btn:hover,
-.remove-module-btn:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
-
-.add-module-btn {
-    margin-top: 10px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
 .module-container {
     margin-top: 10px;
     overflow: hidden;
-}
-
-.module-container .module-group {
-    margin-bottom: 10px;
 }
 
 .d-flex {
