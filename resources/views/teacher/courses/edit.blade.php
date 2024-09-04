@@ -49,6 +49,8 @@
             @foreach ($course->sections as $index => $section)
                 <div class="form-section section-group">
                     <h2>Section Details</h2>
+                    <!-- Hidden field for section ID -->
+                    <input type="hidden" name="sections[{{ $index }}][id]" value="{{ old('sections.' . $index . '.id', $section->id) }}">
                     <div class="form-group">
                         <label for="sections[{{ $index }}][name]">Section Name:</label>
                         <input type="text" id="sections_{{ $index }}_name" name="sections[{{ $index }}][name]" class="form-control" value="{{ old('sections.' . $index . '.name', $section->name) }}">
@@ -69,6 +71,8 @@
                         @foreach ($section->modules as $moduleIndex => $module)
                             <div class="form-section module-group">
                                 <h2>Module Details</h2>
+                                <!-- Hidden field for module ID -->
+                                <input type="hidden" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][id]" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.id', $module->id) }}">
                                 <div class="form-group">
                                     <label for="sections[{{ $index }}][modules][{{ $moduleIndex }}][name]">Module Name:</label>
                                     <input type="text" id="sections_{{ $index }}_modules_{{ $moduleIndex }}_name" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][name]" class="form-control" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.name', $module->name) }}">
@@ -94,6 +98,8 @@
             @foreach ($course->modules->whereNull('section_id') as $moduleIndex => $module)
                 <div class="form-section module-group">
                     <h2>Module Details</h2>
+                    <!-- Hidden field for module ID -->
+                    <input type="hidden" name="modules[{{ $moduleIndex }}][id]" value="{{ old('modules.' . $moduleIndex . '.id', $module->id) }}">
                     <div class="form-group">
                         <label for="modules[{{ $moduleIndex }}][name]">Module Name:</label>
                         <input type="text" id="modules_{{ $moduleIndex }}_name" name="modules[{{ $moduleIndex }}][name]" class="form-control" value="{{ old('modules.' . $moduleIndex . '.name', $module->name) }}">
