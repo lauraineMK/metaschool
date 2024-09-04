@@ -13,12 +13,11 @@ class Video extends Model
         'title',
         'url',
         'description',
-        'video_type',
-        'entity_id',
+        'lesson_id',
     ];
 
-    public function entity()
+    public function lesson()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Lesson::class);
     }
 }
