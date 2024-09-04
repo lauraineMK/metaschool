@@ -22,15 +22,29 @@
             <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
         </div>
 
+        <!-- Video input -->
+        <div class="form-group mt-3">
+            <label for="video_title">Video Title</label>
+            <input type="text" name="video_title" id="video_title" class="form-control" placeholder="Enter video title">
+
+            <label for="video_url" class="mt-2">Video URL</label>
+            <input type="text" name="video_url" id="video_url" class="form-control" placeholder="Enter video URL">
+
+            <label for="video_description" class="mt-2">Video Description</label>
+            <textarea name="video_description" id="video_description" class="form-control" rows="3" placeholder="Enter video description"></textarea>
+        </div>
+
+        <!-- Document input -->
+
         <!-- Course selection -->
         <div class="form-group mt-3">
             <label for="course_id">Course</label>
             <select class="form-control" id="course_id" name="course_id" required>
                 <option value="" disabled selected>Select a course</option>
                 @foreach($courses as $course)
-                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                        {{ $course->name }}
-                    </option>
+                <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                    {{ $course->name }}
+                </option>
                 @endforeach
             </select>
         </div>

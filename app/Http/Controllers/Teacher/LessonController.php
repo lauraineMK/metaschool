@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Models\Video;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Section;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -58,10 +59,14 @@ class LessonController extends Controller
             $nextLesson = null;
         }
 
+        // Retrieve the videos associated with the lesson
+        $videos = $lesson->videos;
+
         // Pass the lesson details to the view
         return view('teacher.lessons.show', [
             'lesson' => $lesson,
             'course' => $lesson->course,
+            'videos' => $videos,
             'previousLesson' => $previousLesson,
             'nextLesson' => $nextLesson
         ]);
@@ -100,10 +105,12 @@ class LessonController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
+            'video_title' => 'nullable|string|max:255',
             'video_url' => 'nullable|string|url',
+            'video_description' => 'nullable|string',
+            'course_id' => 'required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
             'module_id' => 'nullable|exists:modules,id',
-            'course_id' => 'required|exists:courses,id', // Corrected here
             'level' => 'nullable|integer',
         ]);
 
@@ -132,6 +139,16 @@ class LessonController extends Controller
             if ($validated['module_id']) {
                 $lesson->module_id = $validated['module_id'];
                 $lesson->save();
+            }
+
+            // Handle video URL
+            if ($validated['video_url']) {
+                Video::create([
+                    'title' => $validated['video_title'] ?? 'Video for ' . $lesson->title,
+                    'url' => $validated['video_url'],
+                    'description' => $validated['video_description'] ?? 'A video for the lesson titled "' . $lesson->title . '".',
+                    'lesson_id' => $lesson->id,
+                ]);
             }
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message

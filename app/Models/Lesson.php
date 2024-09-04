@@ -36,12 +36,12 @@ class Lesson extends Model
 
     public function videos()
     {
-        return $this->morphMany(Video::class, 'entity');
+        return $this->hasMany(Video::class);
     }
 
     public function documents()
     {
-        return $this->morphMany(Document::class, 'entity');
+        return $this->hasMany(Document::class);
     }
 
     public function users()
