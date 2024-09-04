@@ -55,7 +55,7 @@
     @elseif (!$course->modules->isEmpty())
         @foreach ($course->modules as $module)
             <div class="module mb-4">
-                <h4>Module: {{ $module->title }}</h4>
+                <h4>Module: {{ $module->name }}</h4>
 
                 @if (!$module->lessons->isEmpty())
                     <ul class="list-group ml-4">
