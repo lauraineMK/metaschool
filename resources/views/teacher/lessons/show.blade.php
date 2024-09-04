@@ -27,6 +27,10 @@
     </div>
     @endif
 
+    <!-- Lesson Videos -->
+
+    <!-- Lesson Documents -->
+
     <div class="mt-4">
         <!-- Button to edit the lesson -->
         <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" class="btn btn-warning mb-3">Edit Lesson</a>

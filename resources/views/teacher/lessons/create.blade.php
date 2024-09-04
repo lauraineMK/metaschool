@@ -22,6 +22,10 @@
             <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
         </div>
 
+        <!-- Video input -->
+
+        <!-- Document input -->
+
         <!-- Course selection -->
         <div class="form-group mt-3">
             <label for="course_id">Course</label>
