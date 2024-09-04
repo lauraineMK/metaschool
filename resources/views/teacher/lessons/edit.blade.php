@@ -24,6 +24,38 @@
         </div>
 
         <!-- Video input -->
+        <div class="form-group mt-3">
+            <label for="content">Content</label>
+            <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content', $lesson->content) }}</textarea>
+        </div>
+
+        <!-- Video inputs -->
+        <div id="video-section">
+            <h3>Videos</h3>
+            @foreach($lesson->videos as $index => $video)
+            <div class="video-group" id="video-group-{{ $index }}">
+                <div class="form-group mt-3">
+                    <label for="video_title_{{ $index }}">Video Title</label>
+                    <input type="text" class="form-control" id="video_title_{{ $index }}" name="videos[{{ $index }}][title]"
+                        value="{{ old('videos.' . $index . '.title', $video->title) }}">
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="video_url_{{ $index }}">Video URL</label>
+                    <input type="url" class="form-control" id="video_url_{{ $index }}" name="videos[{{ $index }}][url]"
+                        value="{{ old('videos.' . $index . '.url', $video->url) }}">
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="video_description_{{ $index }}">Video Description</label>
+                    <textarea class="form-control" id="video_description_{{ $index }}" name="videos[{{ $index }}][description]" rows="3">{{ old('videos.' . $index . '.description', $video->description) }}</textarea>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Add Video Button -->
+        <button type="button" id="add-video-button" class="btn btn-secondary mt-3">Add Video</button>
 
         <!-- Document input -->
 

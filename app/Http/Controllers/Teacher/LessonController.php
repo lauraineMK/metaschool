@@ -170,7 +170,7 @@ class LessonController extends Controller
     public function edit($id)
     {
         // Find lesson by ID
-        $lesson = Lesson::with('course', 'section', 'module')->findOrFail($id);
+        $lesson = Lesson::with('course', 'section', 'module', 'videos')->findOrFail($id);
 
         // Retrieve the course associated with the lesson
         $course = Course::find($lesson->course_id);
@@ -201,10 +201,12 @@ class LessonController extends Controller
         $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'content' => 'nullable|string',
-            'video_url' => 'nullable|string|url',
+            'video_title.*' => 'nullable|string|max:255',
+            'video_url.*' => 'nullable|string|url',
+            'video_description.*' => 'nullable|string',
+            'course_id' => 'sometimes|required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
             'module_id' => 'nullable|exists:modules,id',
-            'course_id' => 'sometimes|required|exists:courses,id',
             'level' => 'nullable|integer',
         ]);
 
@@ -231,6 +233,18 @@ class LessonController extends Controller
         try {
             // Update lesson
             $lesson->update($validated);
+
+            // Handle video logic
+            $videos = $request->input('videos', []);
+            foreach ($videos as $index => $videoData) {
+                $video = Video::where('lesson_id', $lesson->id)->skip($index)->first();
+                if ($video) {
+                    $video->update($videoData);
+                } else {
+                    // Create new video if needed
+                    Video::create(array_merge($videoData, ['lesson_id' => $lesson->id]));
+                }
+            }
         } catch (\Exception $e) {
             // Redirect on update error with error message
             return redirect()->route('teacher.lessons.index')

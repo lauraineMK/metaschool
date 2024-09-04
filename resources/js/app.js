@@ -206,4 +206,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     initializeSelections();
+
+    // Dynamic video addition script
+    let videoIndex = document.querySelectorAll('.video-group').length; // Start indexing from the count of existing videos
+
+    document.getElementById('add-video-button').addEventListener('click', function () {
+        const videoSection = document.getElementById('video-section');
+        const newVideoGroup = document.createElement('div');
+        newVideoGroup.className = 'video-group mt-3';
+        newVideoGroup.id = 'video-group-' + videoIndex;
+
+        newVideoGroup.innerHTML = `
+            <div class="form-group mt-3">
+                <label for="video_title_${videoIndex}">Video Title (Optional)</label>
+                <input type="text" class="form-control" id="video_title_${videoIndex}" name="videos[${videoIndex}][title]">
+            </div>
+            <div class="form-group mt-3">
+                <label for="video_url_${videoIndex}">Video URL (Optional)</label>
+                <input type="url" class="form-control" id="video_url_${videoIndex}" name="videos[${videoIndex}][url]">
+            </div>
+            <div class="form-group mt-3">
+                <label for="video_description_${videoIndex}">Video Description (Optional)</label>
+                <textarea class="form-control" id="video_description_${videoIndex}" name="videos[${videoIndex}][description]" rows="3"></textarea>
+            </div>
+            <button type="button" class="btn btn-danger cancel-video-button" data-index="${videoIndex}">Cancel</button>
+        `;
+
+        videoSection.appendChild(newVideoGroup);
+
+        videoIndex++;
+    });
+
+    // Delegate cancel button functionality
+    document.getElementById('video-section').addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('cancel-video-button')) {
+            const index = event.target.getAttribute('data-index');
+            const videoGroup = document.getElementById('video-group-' + index);
+            if (videoGroup) {
+                videoGroup.remove();
+            }
+        }
+    });
 });
