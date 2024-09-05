@@ -23,16 +23,24 @@
         </div>
 
         <!-- Video input -->
-        <div class="form-group mt-3">
-            <label for="video_title">Video Title</label>
-            <input type="text" name="video_title" id="video_title" class="form-control" placeholder="Enter video title">
-
-            <label for="video_url" class="mt-2">Video URL</label>
-            <input type="text" name="video_url" id="video_url" class="form-control" placeholder="Enter video URL">
-
-            <label for="video_description" class="mt-2">Video Description</label>
-            <textarea name="video_description" id="video_description" class="form-control" rows="3" placeholder="Enter video description"></textarea>
+        <div id="video-section">
+            <h3>Videos</h3>
+            <div class="form-group mt-3">
+                <label for="video_title">Video Title</label>
+                <input type="text" name="video_title" id="video_title" class="form-control" placeholder="Enter video title">
+            </div>
+            <div class="form-group mt-3">
+                <label for="video_url" class="mt-2">Video URL</label>
+                <input type="text" name="video_url" id="video_url" class="form-control" placeholder="Enter video URL">
+            </div>
+            <div class="form-group mt-3">
+                <label for="video_description" class="mt-2">Video Description</label>
+                <textarea name="video_description" id="video_description" class="form-control" rows="3" placeholder="Enter video description"></textarea>
+            </div>
         </div>
+
+        <!-- Add Video Button -->
+        <button type="button" id="add-video-button" class="btn btn-secondary mt-3">Add Video</button>
 
         <!-- Document input -->
 
