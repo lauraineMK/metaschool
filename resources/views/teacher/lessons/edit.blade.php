@@ -103,6 +103,9 @@
             @endforeach
         </div>
 
+        <!-- Add Document Button -->
+        <button type="button" id="add-document-button" class="btn btn-secondary mt-3">Add Document</button>
+
         <!-- Course selection -->
         <div class="form-group mt-3">
             <label for="course_id">Course</label>

@@ -7,7 +7,7 @@
     <h1>Create a New Lesson</h1>
 
     <!-- Form to create a new lesson -->
-    <form action="{{ route('teacher.lessons.store') }}" method="POST">
+    <form action="{{ route('teacher.lessons.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Title input -->

@@ -111,7 +111,7 @@ class LessonController extends Controller
             'videos.*.url' => 'nullable|string|url',
             'videos.*.description' => 'nullable|string',
             'documents.*.title' => 'nullable|string|max:255',
-            'documents.*.file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx', // Add other mime types as needed
+            'documents.*.file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:2048',
             'documents.*.description' => 'nullable|string',
             'course_id' => 'required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
@@ -146,7 +146,7 @@ class LessonController extends Controller
                 $lesson->save();
             }
 
-            // Handle video URL
+            /* Handle videos */
             if (isset($validated['videos']) && is_array($validated['videos'])) {
                 foreach ($validated['videos'] as $video) {
                     if (!empty($video['url'])) {
@@ -160,21 +160,16 @@ class LessonController extends Controller
                 }
             }
 
-            // // Handle documents
-            // if ($request->hasFile('documents')) {
-            //     foreach ($request->file('documents') as $index => $file) {
-            //         if ($file->isValid()) {
-            //             // Generate a unique file name
-            //             $fileName = time() . '_' . $file->getClientOriginalName();
-
-            //             // Store the file
-            //             $filePath = $file->storeAs('documents', $fileName, 'public');
-
-            //             // Create document record
+            // /* Handle documents */
+            // if (isset($validated['documents']) && is_array($validated['documents'])) {
+            //     foreach ($validated['documents'] as $index => $document) {
+            //         if (isset($document['file']) && $request->hasFile("documents.$index.file")) {
+            //             $file = $request->file("documents.$index.file");
+            //             $path = $file->store('documents', 'public');
             //             Document::create([
-            //                 'title' => $request->input("documents[$index][title]") ?? 'Document for ' . $lesson->title,
-            //                 'file' => $filePath,
-            //                 'description' => $request->input("documents[$index][description]") ?? 'A document for the lesson titled "' . $lesson->title . '".',
+            //                 'title' => $document['title'] ?? 'document for ' . $lesson->title,
+            //                 'file' => $path,
+            //                 'description' => $document['description'] ?? 'A document for the lesson titled "' . $lesson->title . '".',
             //                 'lesson_id' => $lesson->id,
             //             ]);
             //         }
@@ -189,7 +184,6 @@ class LessonController extends Controller
         return redirect()->route('teacher.lessons.show', $lesson->id)
             ->with('success', 'Lesson created successfully.');
     }
-
 
     /**
      * Display the form for editing an existing lesson
@@ -267,7 +261,7 @@ class LessonController extends Controller
             // Update lesson
             $lesson->update($validated);
 
-            // Handle video logic
+            /* Handle video logic */
             $videos = $request->input('videos', []);
             $existingVideos = Video::where('lesson_id', $lesson->id)->get()->keyBy('id');
 
@@ -299,57 +293,56 @@ class LessonController extends Controller
                 $video->delete();
             }
 
-            // Handle document logic
-        $documents = $request->input('documents', []);
-        $existingDocuments = Document::where('lesson_id', $lesson->id)->get()->keyBy('id');
+            /* Handle document logic */
+            $documents = $request->input('documents', []);
+            $existingDocuments = Document::where('lesson_id', $lesson->id)->get()->keyBy('id');
 
-        foreach ($documents as $index => $documentData) {
-            $documentId = $documentData['_id'] ?? null;
-            $delete = $documentData['_delete'] ?? '0';
+            foreach ($documents as $index => $documentData) {
+                $documentId = $documentData['_id'] ?? null;
+                $delete = $documentData['_delete'] ?? '0';
 
-            if ($delete === '1') {
-                // Delete document from storage
-                if ($documentId && isset($existingDocuments[$documentId])) {
-                    $document = $existingDocuments[$documentId];
+                if ($delete === '1') {
+                    // Delete document from storage
+                    if ($documentId && isset($existingDocuments[$documentId])) {
+                        $document = $existingDocuments[$documentId];
+                        // Delete the file from storage
+                        if (Storage::exists($document->file_path)) {
+                            Storage::delete($document->file_path);
+                        }
+                        $document->delete();
+                        $existingDocuments->forget($documentId); // Remove from the existing list
+                    }
+                } else {
+                    if ($documentId && isset($existingDocuments[$documentId])) {
+                        // Update existing document
+                        $document = $existingDocuments[$documentId];
+                        $document->update($documentData);
+                    } else {
+                        // Handle file upload
+                        if ($request->hasFile('documents.' . $index . '.file')) {
+                            $file = $request->file('documents.' . $index . '.file');
+                            $filePath = $file->store('documents'); // Store the file and get the path
+
+                            Document::create(array_merge($documentData, [
+                                'file_path' => $filePath,
+                                'lesson_id' => $lesson->id
+                            ]));
+                        }
+                    }
+                }
+            }
+
+            // Delete any remaining documents that were not included in the update request
+            foreach ($existingDocuments as $document) {
+                // Check if the document was marked for deletion
+                if (!in_array($document->id, array_column($documents, '_id'))) {
                     // Delete the file from storage
                     if (Storage::exists($document->file_path)) {
                         Storage::delete($document->file_path);
                     }
                     $document->delete();
-                    $existingDocuments->forget($documentId); // Remove from the existing list
-                }
-            } else {
-                if ($documentId && isset($existingDocuments[$documentId])) {
-                    // Update existing document
-                    $document = $existingDocuments[$documentId];
-                    $document->update($documentData);
-                } else {
-                    // Handle file upload
-                    if ($request->hasFile('documents.' . $index . '.file')) {
-                        $file = $request->file('documents.' . $index . '.file');
-                        $filePath = $file->store('documents'); // Store the file and get the path
-
-                        Document::create(array_merge($documentData, [
-                            'file_path' => $filePath,
-                            'lesson_id' => $lesson->id
-                        ]));
-                    }
                 }
             }
-        }
-
-        // Delete any remaining documents that were not included in the update request
-        foreach ($existingDocuments as $document) {
-            // Check if the document was marked for deletion
-            if (!in_array($document->id, array_column($documents, '_id'))) {
-                // Delete the file from storage
-                if (Storage::exists($document->file_path)) {
-                    Storage::delete($document->file_path);
-                }
-                $document->delete();
-            }
-        }
-
         } catch (\Exception $e) {
             // Redirect on update error with error message
             return redirect()->route('teacher.lessons.index')
