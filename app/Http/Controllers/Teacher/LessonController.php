@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Models\Video;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Section;
+use App\Models\Document;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class LessonController extends Controller
 {
     /**
      * Display the lesson list
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -27,7 +30,7 @@ class LessonController extends Controller
      * Show details of a specific lesson
      *
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\View\View
      */
     public function show($id)
     {
@@ -58,10 +61,14 @@ class LessonController extends Controller
             $nextLesson = null;
         }
 
+        // Retrieve the videos associated with the lesson
+        $videos = $lesson->videos;
+
         // Pass the lesson details to the view
         return view('teacher.lessons.show', [
             'lesson' => $lesson,
             'course' => $lesson->course,
+            'videos' => $videos,
             'previousLesson' => $previousLesson,
             'nextLesson' => $nextLesson
         ]);
@@ -100,10 +107,15 @@ class LessonController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'video_url' => 'nullable|string|url',
+            'videos.*.title' => 'nullable|string|max:255',
+            'videos.*.url' => 'nullable|string|url',
+            'videos.*.description' => 'nullable|string',
+            'documents.*.title' => 'nullable|string|max:255',
+            'documents.*.file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:2048',
+            'documents.*.description' => 'nullable|string',
+            'course_id' => 'required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
             'module_id' => 'nullable|exists:modules,id',
-            'course_id' => 'required|exists:courses,id', // Corrected here
             'level' => 'nullable|integer',
         ]);
 
@@ -133,6 +145,36 @@ class LessonController extends Controller
                 $lesson->module_id = $validated['module_id'];
                 $lesson->save();
             }
+
+            /* Handle videos */
+            if (isset($validated['videos']) && is_array($validated['videos'])) {
+                foreach ($validated['videos'] as $video) {
+                    if (!empty($video['url'])) {
+                        Video::create([
+                            'title' => $video['title'] ?? 'Video for ' . $lesson->title,
+                            'url' => $video['url'],
+                            'description' => $video['description'] ?? 'A video for the lesson titled "' . $lesson->title . '".',
+                            'lesson_id' => $lesson->id,
+                        ]);
+                    }
+                }
+            }
+
+            // /* Handle documents */
+            // if (isset($validated['documents']) && is_array($validated['documents'])) {
+            //     foreach ($validated['documents'] as $index => $document) {
+            //         if (isset($document['file']) && $request->hasFile("documents.$index.file")) {
+            //             $file = $request->file("documents.$index.file");
+            //             $path = $file->store('documents', 'public');
+            //             Document::create([
+            //                 'title' => $document['title'] ?? 'document for ' . $lesson->title,
+            //                 'file' => $path,
+            //                 'description' => $document['description'] ?? 'A document for the lesson titled "' . $lesson->title . '".',
+            //                 'lesson_id' => $lesson->id,
+            //             ]);
+            //         }
+            //     }
+            // }
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message
             return redirect()->route('teacher.lessons.index')
@@ -143,7 +185,6 @@ class LessonController extends Controller
             ->with('success', 'Lesson created successfully.');
     }
 
-
     /**
      * Display the form for editing an existing lesson
      *
@@ -153,7 +194,7 @@ class LessonController extends Controller
     public function edit($id)
     {
         // Find lesson by ID
-        $lesson = Lesson::with('course', 'section', 'module')->findOrFail($id);
+        $lesson = Lesson::with('course', 'section', 'module', 'videos', 'documents')->findOrFail($id);
 
         // Retrieve the course associated with the lesson
         $course = Course::find($lesson->course_id);
@@ -184,10 +225,15 @@ class LessonController extends Controller
         $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'content' => 'nullable|string',
-            'video_url' => 'nullable|string|url',
+            'video_title.*' => 'nullable|string|max:255',
+            'video_url.*' => 'nullable|string|url',
+            'video_description.*' => 'nullable|string',
+            'document_title.*' => 'nullable|string|max:255',
+            'document_file.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:2048', // Example for allowed file types and size
+            'document_description.*' => 'nullable|string',
+            'course_id' => 'sometimes|required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
             'module_id' => 'nullable|exists:modules,id',
-            'course_id' => 'sometimes|required|exists:courses,id',
             'level' => 'nullable|integer',
         ]);
 
@@ -214,6 +260,89 @@ class LessonController extends Controller
         try {
             // Update lesson
             $lesson->update($validated);
+
+            /* Handle video logic */
+            $videos = $request->input('videos', []);
+            $existingVideos = Video::where('lesson_id', $lesson->id)->get()->keyBy('id');
+
+            foreach ($videos as $index => $videoData) {
+                $videoId = $videoData['_id'] ?? null;
+                $delete = $videoData['_delete'] ?? '0';
+
+                if ($delete === '1') {
+                    // Delete video from storage
+                    if ($videoId && isset($existingVideos[$videoId])) {
+                        $video = $existingVideos[$videoId];
+                        $video->delete();
+                        $existingVideos->forget($videoId); // Remove from the existing list
+                    }
+                } else {
+                    if ($videoId && isset($existingVideos[$videoId])) {
+                        // Update existing video
+                        $video = $existingVideos[$videoId];
+                        $video->update($videoData);
+                    } else {
+                        // Create new video if needed
+                        Video::create(array_merge($videoData, ['lesson_id' => $lesson->id]));
+                    }
+                }
+            }
+
+            // Delete any remaining videos that were not included in the update request
+            foreach ($existingVideos as $video) {
+                $video->delete();
+            }
+
+            /* Handle document logic */
+            $documents = $request->input('documents', []);
+            $existingDocuments = Document::where('lesson_id', $lesson->id)->get()->keyBy('id');
+
+            foreach ($documents as $index => $documentData) {
+                $documentId = $documentData['_id'] ?? null;
+                $delete = $documentData['_delete'] ?? '0';
+
+                if ($delete === '1') {
+                    // Delete document from storage
+                    if ($documentId && isset($existingDocuments[$documentId])) {
+                        $document = $existingDocuments[$documentId];
+                        // Delete the file from storage
+                        if (Storage::exists($document->file_path)) {
+                            Storage::delete($document->file_path);
+                        }
+                        $document->delete();
+                        $existingDocuments->forget($documentId); // Remove from the existing list
+                    }
+                } else {
+                    if ($documentId && isset($existingDocuments[$documentId])) {
+                        // Update existing document
+                        $document = $existingDocuments[$documentId];
+                        $document->update($documentData);
+                    } else {
+                        // Handle file upload
+                        if ($request->hasFile('documents.' . $index . '.file')) {
+                            $file = $request->file('documents.' . $index . '.file');
+                            $filePath = $file->store('documents'); // Store the file and get the path
+
+                            Document::create(array_merge($documentData, [
+                                'file_path' => $filePath,
+                                'lesson_id' => $lesson->id
+                            ]));
+                        }
+                    }
+                }
+            }
+
+            // Delete any remaining documents that were not included in the update request
+            foreach ($existingDocuments as $document) {
+                // Check if the document was marked for deletion
+                if (!in_array($document->id, array_column($documents, '_id'))) {
+                    // Delete the file from storage
+                    if (Storage::exists($document->file_path)) {
+                        Storage::delete($document->file_path);
+                    }
+                    $document->delete();
+                }
+            }
         } catch (\Exception $e) {
             // Redirect on update error with error message
             return redirect()->route('teacher.lessons.index')
@@ -228,7 +357,7 @@ class LessonController extends Controller
      * Delete a lesson by its id
      *
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

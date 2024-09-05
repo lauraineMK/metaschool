@@ -341,7 +341,7 @@ class CourseController extends Controller
      * Delete a course
      *
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

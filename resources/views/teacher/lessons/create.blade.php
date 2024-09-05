@@ -7,7 +7,7 @@
     <h1>Create a New Lesson</h1>
 
     <!-- Form to create a new lesson -->
-    <form action="{{ route('teacher.lessons.store') }}" method="POST">
+    <form action="{{ route('teacher.lessons.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Title input -->
@@ -22,15 +22,65 @@
             <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
         </div>
 
+        <!-- Video input -->
+        <div id="video-section" class="mt-5">
+            <h3>Videos</h3>
+            <div id="video-groups">
+                <!-- Initial video group -->
+                <div class="video-group mt-3">
+                    <div class="form-group mt-3">
+                        <label for="video_title_0">Video Title</label>
+                        <input type="text" name="videos[0][title]" id="video_title_0" class="form-control" placeholder="Enter video title">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="video_url_0" class="mt-2">Video URL</label>
+                        <input type="text" name="videos[0][url]" id="video_url_0" class="form-control" placeholder="Enter video URL">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="video_description_0" class="mt-2">Video Description</label>
+                        <textarea name="videos[0][description]" id="video_description_0" class="form-control" rows="3" placeholder="Enter video description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Video Button -->
+        <button type="button" id="add-video-button" class="btn btn-secondary mt-3">Add Video</button>
+
+        <!-- Document input -->
+        <div id="document-section" class="mt-5">
+            <h3>Documents</h3>
+            <div id="document-groups">
+                <!-- Initial document group -->
+                <div class="document-group mt-3">
+                    <div class="form-group mt-3">
+                        <label for="document_title_0">Document Title</label>
+                        <input type="text" name="documents[0][title]" id="document_title_0" class="form-control" placeholder="Enter document title">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="document_file_0" class="mt-2">Document File</label>
+                        <input type="file" name="documents[0][file]" id="document_file_0" class="form-control">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="document_description_0" class="mt-2">Document Description</label>
+                        <textarea name="documents[0][description]" id="document_description_0" class="form-control" rows="3" placeholder="Enter document description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Document Button -->
+        <button type="button" id="add-document-button" class="btn btn-secondary mt-3">Add Document</button>
+
         <!-- Course selection -->
         <div class="form-group mt-3">
             <label for="course_id">Course</label>
             <select class="form-control" id="course_id" name="course_id" required>
                 <option value="" disabled selected>Select a course</option>
                 @foreach($courses as $course)
-                    <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                        {{ $course->name }}
-                    </option>
+                <option value="{{ $course->id }}" {{ old('course_id') == $course->id ? 'selected' : '' }}>
+                    {{ $course->name }}
+                </option>
                 @endforeach
             </select>
         </div>

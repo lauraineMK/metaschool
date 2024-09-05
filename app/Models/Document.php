@@ -11,14 +11,13 @@ class Document extends Model
 
     protected $fillable = [
         'title',
-        'url',
+        'file',
         'description',
-        'document_type',
-        'entity_id',
+        'lesson_id',
     ];
 
-    public function entity()
+    public function lesson()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Lesson::class);
     }
 }
