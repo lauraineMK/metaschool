@@ -236,14 +236,34 @@ class LessonController extends Controller
 
             // Handle video logic
             $videos = $request->input('videos', []);
+            $existingVideos = Video::where('lesson_id', $lesson->id)->get()->keyBy('id');
+
             foreach ($videos as $index => $videoData) {
-                $video = Video::where('lesson_id', $lesson->id)->skip($index)->first();
-                if ($video) {
-                    $video->update($videoData);
+                $videoId = $videoData['_id'] ?? null;
+                $delete = $videoData['_delete'] ?? '0';
+
+                if ($delete === '1') {
+                    // Delete video from storage
+                    if ($videoId && isset($existingVideos[$videoId])) {
+                        $video = $existingVideos[$videoId];
+                        $video->delete();
+                        $existingVideos->forget($videoId); // Remove from the existing list
+                    }
                 } else {
-                    // Create new video if needed
-                    Video::create(array_merge($videoData, ['lesson_id' => $lesson->id]));
+                    if ($videoId && isset($existingVideos[$videoId])) {
+                        // Update existing video
+                        $video = $existingVideos[$videoId];
+                        $video->update($videoData);
+                    } else {
+                        // Create new video if needed
+                        Video::create(array_merge($videoData, ['lesson_id' => $lesson->id]));
+                    }
                 }
+            }
+
+            // Delete any remaining videos that were not included in the update request
+            foreach ($existingVideos as $video) {
+                $video->delete();
             }
         } catch (\Exception $e) {
             // Redirect on update error with error message

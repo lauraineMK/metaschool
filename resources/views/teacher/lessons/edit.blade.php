@@ -30,7 +30,7 @@
         </div>
 
         <!-- Video inputs -->
-        <div id="video-section">
+        <div id="video-section" data-edit-mode="{{ isset($lesson->id) ? 'true' : 'false' }}">
             <h3>Videos</h3>
             @foreach($lesson->videos as $index => $video)
             <div class="video-group" id="video-group-{{ $index }}">
@@ -50,6 +50,15 @@
                     <label for="video_description_{{ $index }}">Video Description</label>
                     <textarea class="form-control" id="video_description_{{ $index }}" name="videos[{{ $index }}][description]" rows="3">{{ old('videos.' . $index . '.description', $video->description) }}</textarea>
                 </div>
+
+                <!-- Button to clear fields for this video group -->
+                <button type="button" class="btn btn-warning clear-video-button mt-3" data-index="{{ $index }}">Clear</button>
+
+                <!-- Button to remove video -->
+                <button type="button" class="btn btn-danger remove-video-button mt-3" data-index="{{ $index }}">Remove Video</button>
+
+                <!-- Hidden input to mark videos for deletion -->
+                <input type="hidden" name="videos[{{ $index }}][_delete]" value="0">
             </div>
             @endforeach
         </div>

@@ -92,11 +92,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initializeSelections();
 
-    // Dynamic video addition script
-    let videoIndex = document.querySelectorAll('.video-group').length; // Start indexing from the count of existing videos
+    // Start indexing from the count of existing videos
+    let videoIndex = document.querySelectorAll('.video-group').length;
 
+    // Add "Remove Video" buttons for existing videos in edit mode
+    function addRemoveButtonsForEditing() {
+        document.querySelectorAll('.video-group').forEach(function(videoGroup, index) {
+            if (index > 0 && !videoGroup.querySelector('.remove-video-button')) { // Exclude the first video
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'btn btn-danger remove-video-button mt-3';
+                removeButton.textContent = 'Remove Video';
+                removeButton.setAttribute('data-index', index); // Add index to button
+
+                videoGroup.appendChild(removeButton);
+            }
+        });
+    }
+
+    const videoSection = document.getElementById('video-section');
+    const isEditMode = videoSection.dataset.editMode === 'true';
+
+    if (isEditMode) {
+        addRemoveButtonsForEditing();
+    }
+
+    // Dynamic video addition script
     document.getElementById('add-video-button').addEventListener('click', function () {
-        const videoSection = document.getElementById('video-section');
         const newVideoGroup = document.createElement('div');
         newVideoGroup.className = 'video-group mt-3';
         newVideoGroup.id = 'video-group-' + videoIndex;
@@ -114,20 +136,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 <label for="video_description_${videoIndex}">Video Description</label>
                 <textarea class="form-control" id="video_description_${videoIndex}" name="videos[${videoIndex}][description]" rows="3"></textarea>
             </div>
-            <button type="button" class="btn btn-danger cancel-video-button" data-index="${videoIndex}">Cancel</button>
+            <button type="button" class="btn btn-danger cancel-video-button mt-3" data-index="${videoIndex}">Cancel</button>
         `;
 
         videoSection.appendChild(newVideoGroup);
-
         videoIndex++;
     });
 
-    // Delegate cancel button functionality
-    document.getElementById('video-section').addEventListener('click', function (event) {
+    // Function to clear fields for a specific video group
+    function clearVideoGroupFields(index) {
+        const videoGroup = document.getElementById('video-group-' + index);
+        if (videoGroup) {
+            const titleInput = videoGroup.querySelector('input[name="videos[' + index + '][title]"]');
+            const urlInput = videoGroup.querySelector('input[name="videos[' + index + '][url]"]');
+            const descriptionTextarea = videoGroup.querySelector('textarea[name="videos[' + index + '][description]"]');
+
+            if (titleInput) titleInput.value = '';
+            if (urlInput) urlInput.value = '';
+            if (descriptionTextarea) descriptionTextarea.value = '';
+        }
+    }
+
+    // Delegate clear button functionality
+    document.getElementById('video-section').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('clear-video-button')) {
+            const index = event.target.getAttribute('data-index');
+            clearVideoGroupFields(index);
+        }
+    });
+
+    // Delegate cancel button functionality for dynamically added videos
+    videoSection.addEventListener('click', function(event) {
         if (event.target && event.target.classList.contains('cancel-video-button')) {
             const index = event.target.getAttribute('data-index');
             const videoGroup = document.getElementById('video-group-' + index);
             if (videoGroup) {
+                videoGroup.remove();
+            }
+        }
+    });
+
+    // Delegate remove video button functionality
+    videoSection.addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('remove-video-button')) {
+            const index = event.target.getAttribute('data-index');
+            const videoGroup = document.getElementById('video-group-' + index);
+
+            if (videoGroup) {
+                // Mark the video for deletion
+                const deleteInput = videoGroup.querySelector('input[name="videos[' + index + '][_delete]"]');
+                if (deleteInput) {
+                    deleteInput.value = '1'; // Mark as deleted
+                }
+
+                // Remove the video group from the DOM
                 videoGroup.remove();
             }
         }
