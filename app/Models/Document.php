@@ -11,7 +11,7 @@ class Document extends Model
 
     protected $fillable = [
         'title',
-        'url',
+        'file',
         'description',
         'lesson_id',
     ];

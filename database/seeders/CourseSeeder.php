@@ -86,8 +86,8 @@ class CourseSeeder extends Seeder
             'section_id' => $section1_2->id
         ]);
 
-         // Create lessons for the first module in the first section
-         Lesson::create([
+        // Create lessons for the first module in the first section
+        Lesson::create([
             'title' => 'Introduction to Variables',
             'content' => 'Learn what variables are and how to use them.',
             'course_id' => $course1->id,

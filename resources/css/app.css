@@ -30,8 +30,12 @@
     /* Ensure padding and border are included in the width */
 }
 
-.remove-section-btn,
 .remove-module-btn {
+    display: block;
+    margin-top: 10px;
+}
+
+.remove-section-btn {
     position: absolute;
     right: 10px;
     top: 10px;
