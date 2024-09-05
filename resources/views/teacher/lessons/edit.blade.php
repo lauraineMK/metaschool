@@ -67,6 +67,41 @@
         <button type="button" id="add-video-button" class="btn btn-secondary mt-3">Add Video</button>
 
         <!-- Document input -->
+        <div id="document-section" data-edit-mode="{{ isset($lesson->id) ? 'true' : 'false' }}" class="mt-5">
+            <h3>Documents</h3>
+            @foreach($lesson->documents as $index => $document)
+            <div class="document-group" id="document-group-{{ $index }}">
+                <div class="form-group mt-3">
+                    <label for="document_title_{{ $index }}">Document Title</label>
+                    <input type="text" class="form-control" id="document_title_{{ $index }}" name="documents[{{ $index }}][title]"
+                        value="{{ old('documents.' . $index . '.title', $document->title) }}">
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="document_file_{{ $index }}">Document File</label>
+                    <input type="file" class="form-control" id="document_file_{{ $index }}" name="documents[{{ $index }}][file]">
+                    <!-- Display the existing file name if any -->
+                    @if($document->file)
+                    <small class="form-text text-muted">Current file: {{ basename($document->file) }}</small>
+                    @endif
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="document_description_{{ $index }}">Document Description</label>
+                    <textarea class="form-control" id="document_description_{{ $index }}" name="documents[{{ $index }}][description]" rows="3">{{ old('documents.' . $index . '.description', $document->description) }}</textarea>
+                </div>
+
+                <!-- Button to clear fields for this document group -->
+                <button type="button" class="btn btn-warning clear-document-button mt-3" data-index="{{ $index }}">Clear</button>
+
+                <!-- Button to remove document -->
+                <button type="button" class="btn btn-danger remove-document-button mt-3" data-index="{{ $index }}">Remove Document</button>
+
+                <!-- Hidden input to mark documents for deletion -->
+                <input type="hidden" name="documents[{{ $index }}][_delete]" value="0">
+            </div>
+            @endforeach
+        </div>
 
         <!-- Course selection -->
         <div class="form-group mt-3">

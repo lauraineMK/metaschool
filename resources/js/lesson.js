@@ -1,5 +1,5 @@
 /* Common script for lesson creation and edition forms */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Fetch sections and modules from the data attributes
     var sections = JSON.parse(document.getElementById('data-sections').getAttribute('data-sections'));
     var modules = JSON.parse(document.getElementById('data-modules').getAttribute('data-modules'));
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var hasModules = false;
 
         // Populate sections based on the selected course
-        sections.forEach(function(section) {
+        sections.forEach(function (section) {
             if (section.course_id === selectedCourseId) {
                 var selected = section.id === selectedSectionId ? 'selected' : '';
                 sectionSelect.innerHTML += `<option value="${section.id}" ${selected}>${section.name}</option>`;
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Populate modules based on the selected course
-        modules.forEach(function(module) {
+        modules.forEach(function (module) {
             if (module.course_id === selectedCourseId) {
                 var selected = module.id === selectedModuleId ? 'selected' : '';
                 moduleSelect.innerHTML += `<option value="${module.id}" ${selected}>${module.name}</option>`;
@@ -52,12 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event listener for course selection
-    courseSelect.addEventListener('change', function() {
+    courseSelect.addEventListener('change', function () {
         populateSectionsAndModules();
     });
 
     // Event listener for section selection
-    sectionSelect.addEventListener('change', function() {
+    sectionSelect.addEventListener('change', function () {
         var selectedSectionId = parseInt(sectionSelect.value);
 
         // Clear previous module options
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var hasModules = false;
 
         // Populate modules based on selected section
-        modules.forEach(function(module) {
+        modules.forEach(function (module) {
             if (module.section_id === selectedSectionId) {
                 var selected = module.id === parseInt(moduleSelect.dataset.selected) ? 'selected' : '';
                 moduleSelect.innerHTML += `<option value="${module.id}" ${selected}>${module.name}</option>`;
@@ -92,12 +92,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initializeSelections();
 
-    // Start indexing from the count of existing videos
+    // Determine if we're in edit mode
+    const isEditMode = document.getElementById('video-section').dataset.editMode === 'true' ||
+        document.getElementById('document-section').dataset.editMode === 'true';
+
+    // Start indexing from the count of existing videos and documents
     let videoIndex = document.querySelectorAll('.video-group').length;
+    let documentIndex = document.querySelectorAll('.document-group').length;
 
     // Add "Remove Video" buttons for existing videos in edit mode
-    function addRemoveButtonsForEditing() {
-        document.querySelectorAll('.video-group').forEach(function(videoGroup, index) {
+    function addRemoveButtonsForEditingVideos() {
+        document.querySelectorAll('.video-group').forEach(function (videoGroup, index) {
             if (index > 0 && !videoGroup.querySelector('.remove-video-button')) { // Exclude the first video
                 const removeButton = document.createElement('button');
                 removeButton.type = 'button';
@@ -110,11 +115,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Add "Remove Document" buttons for existing documents in edit mode
+    function addRemoveButtonsForEditingDocuments() {
+        document.querySelectorAll('.document-group').forEach(function (documentGroup, index) {
+            if (index > 0 && !documentGroup.querySelector('.remove-document-button')) { // Exclude the first document
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'btn btn-danger remove-document-button mt-3';
+                removeButton.textContent = 'Remove Document';
+                removeButton.setAttribute('data-index', index); // Add index to button
+
+                documentGroup.appendChild(removeButton);
+            }
+        });
+    }
+
     const videoSection = document.getElementById('video-section');
-    const isEditMode = videoSection.dataset.editMode === 'true';
+    const documentSection = document.getElementById('document-section');
 
     if (isEditMode) {
-        addRemoveButtonsForEditing();
+        addRemoveButtonsForEditingVideos();
+        addRemoveButtonsForEditingDocuments();
     }
 
     // Dynamic video addition script
@@ -125,19 +146,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         newVideoGroup.innerHTML = `
             <div class="form-group mt-3">
-                <label for="video_title_${videoIndex}">Video Title</label>
-                <input type="text" class="form-control" id="video_title_${videoIndex}" name="videos[${videoIndex}][title]">
+            <label for="video_title_${videoIndex}">Video Title</label>
+            <input type="text" class="form-control" id="video_title_${videoIndex}" name="videos[${videoIndex}][title]">
             </div>
             <div class="form-group mt-3">
-                <label for="video_url_${videoIndex}">Video URL</label>
-                <input type="url" class="form-control" id="video_url_${videoIndex}" name="videos[${videoIndex}][url]">
+            <label for="video_url_${videoIndex}">Video URL</label>
+            <input type="url" class="form-control" id="video_url_${videoIndex}" name="videos[${videoIndex}][url]">
             </div>
             <div class="form-group mt-3">
-                <label for="video_description_${videoIndex}">Video Description</label>
-                <textarea class="form-control" id="video_description_${videoIndex}" name="videos[${videoIndex}][description]" rows="3"></textarea>
+            <label for="video_description_${videoIndex}">Video Description</label>
+            <textarea class="form-control" id="video_description_${videoIndex}" name="videos[${videoIndex}][description]" rows="3"></textarea>
             </div>
             <button type="button" class="btn btn-danger cancel-video-button mt-3" data-index="${videoIndex}">Cancel</button>
-        `;
+            `;
 
         videoSection.appendChild(newVideoGroup);
         videoIndex++;
@@ -157,8 +178,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Delegate clear button functionality
-    document.getElementById('video-section').addEventListener('click', function(event) {
+    // Delegate clear button functionality for videos
+    videoSection.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('clear-video-button')) {
             const index = event.target.getAttribute('data-index');
             clearVideoGroupFields(index);
@@ -166,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Delegate cancel button functionality for dynamically added videos
-    videoSection.addEventListener('click', function(event) {
+    videoSection.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('cancel-video-button')) {
             const index = event.target.getAttribute('data-index');
             const videoGroup = document.getElementById('video-group-' + index);
@@ -177,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Delegate remove video button functionality
-    videoSection.addEventListener('click', function(event) {
+    videoSection.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('remove-video-button')) {
             const index = event.target.getAttribute('data-index');
             const videoGroup = document.getElementById('video-group-' + index);
@@ -194,4 +215,83 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // Dynamic document addition script
+    document.getElementById('add-document-button').addEventListener('click', function () {
+        const newDocumentGroup = document.createElement('div');
+        newDocumentGroup.className = 'document-group mt-3';
+        newDocumentGroup.id = 'document-group-' + documentIndex;
+
+        newDocumentGroup.innerHTML = `
+            <div class="form-group mt-3">
+            <label for="document_title_${documentIndex}">Document Title</label>
+            <input type="text" class="form-control" id="document_title_${documentIndex}" name="documents[${documentIndex}][title]">
+            </div>
+            <div class="form-group mt-3">
+            <label for="document_file_${documentIndex}">Document File</label>
+            <input type="file" class="form-control" id="document_file_${documentIndex}" name="documents[${documentIndex}][file]">
+            </div>
+            <div class="form-group mt-3">
+            <label for="document_description_${documentIndex}">Document Description</label>
+            <textarea class="form-control" id="document_description_${documentIndex}" name="documents[${documentIndex}][description]" rows="3"></textarea>
+            </div>
+            <button type="button" class="btn btn-danger cancel-document-button mt-3" data-index="${documentIndex}">Cancel</button>
+            `;
+
+        documentSection.appendChild(newDocumentGroup);
+        documentIndex++;
+    });
+
+    // Function to clear fields for a specific document group
+    function clearDocumentGroupFields(index) {
+        const documentGroup = document.getElementById('document-group-' + index);
+        if (documentGroup) {
+            const titleInput = documentGroup.querySelector('input[name="documents[' + index + '][title]"]');
+            const fileInput = documentGroup.querySelector('input[name="documents[' + index + '][file]"]');
+            const descriptionTextarea = documentGroup.querySelector('textarea[name="documents[' + index + '][description]"]');
+
+            if (titleInput) titleInput.value = '';
+            if (fileInput) fileInput.value = ''; // Clear file input
+            if (descriptionTextarea) descriptionTextarea.value = '';
+        }
+    }
+
+    // Delegate clear button functionality for documents
+    documentSection.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('clear-document-button')) {
+            const index = event.target.getAttribute('data-index');
+            clearDocumentGroupFields(index);
+        }
+    });
+
+    // Delegate cancel button functionality for dynamically added documents
+    documentSection.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('cancel-document-button')) {
+            const index = event.target.getAttribute('data-index');
+            const documentGroup = document.getElementById('document-group-' + index);
+            if (documentGroup) {
+                documentGroup.remove();
+            }
+        }
+    });
+
+    // Delegate remove document button functionality
+    documentSection.addEventListener('click', function (event) {
+        if (event.target && event.target.classList.contains('remove-document-button')) {
+            const index = event.target.getAttribute('data-index');
+            const documentGroup = document.getElementById('document-group-' + index);
+
+            if (documentGroup) {
+                // Mark the document for deletion
+                const deleteInput = documentGroup.querySelector('input[name="documents[' + index + '][_delete]"]');
+                if (deleteInput) {
+                    deleteInput.value = '1'; // Mark as deleted
+                }
+
+                // Remove the document group from the DOM
+                documentGroup.remove();
+            }
+        }
+    });
+
 });

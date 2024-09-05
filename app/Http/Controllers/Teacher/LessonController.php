@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Section;
+use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -105,9 +106,12 @@ class LessonController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'video_title' => 'nullable|string|max:255',
-            'video_url' => 'nullable|string|url',
-            'video_description' => 'nullable|string',
+            'videos.*.title' => 'nullable|string|max:255',
+            'videos.*.url' => 'nullable|string|url',
+            'videos.*.description' => 'nullable|string',
+            'documents.*.title' => 'nullable|string|max:255',
+            'documents.*.file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx', // Add other mime types as needed
+            'documents.*.description' => 'nullable|string',
             'course_id' => 'required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
             'module_id' => 'nullable|exists:modules,id',
@@ -142,13 +146,38 @@ class LessonController extends Controller
             }
 
             // Handle video URL
-            if ($validated['video_url']) {
-                Video::create([
-                    'title' => $validated['video_title'] ?? 'Video for ' . $lesson->title,
-                    'url' => $validated['video_url'],
-                    'description' => $validated['video_description'] ?? 'A video for the lesson titled "' . $lesson->title . '".',
-                    'lesson_id' => $lesson->id,
-                ]);
+            if (isset($validated['videos']) && is_array($validated['videos'])) {
+                foreach ($validated['videos'] as $video) {
+                    if (!empty($video['url'])) {
+                        Video::create([
+                            'title' => $video['title'] ?? 'Video for ' . $lesson->title,
+                            'url' => $video['url'],
+                            'description' => $video['description'] ?? 'A video for the lesson titled "' . $lesson->title . '".',
+                            'lesson_id' => $lesson->id,
+                        ]);
+                    }
+                }
+            }
+
+            // Handle documents
+            if ($request->hasFile('documents')) {
+                foreach ($request->file('documents') as $index => $file) {
+                    if ($file->isValid()) {
+                        // Generate a unique file name
+                        $fileName = time() . '_' . $file->getClientOriginalName();
+
+                        // Store the file
+                        $filePath = $file->storeAs('documents', $fileName, 'public');
+
+                        // Create document record
+                        Document::create([
+                            'title' => $request->input("documents[$index][title]") ?? 'Document for ' . $lesson->title,
+                            'file' => $filePath,
+                            'description' => $request->input("documents[$index][description]") ?? 'A document for the lesson titled "' . $lesson->title . '".',
+                            'lesson_id' => $lesson->id,
+                        ]);
+                    }
+                }
             }
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message
