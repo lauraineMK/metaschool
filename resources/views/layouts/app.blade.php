@@ -6,9 +6,9 @@
 </head>
 
 <body>
-    <header>
-        @include('partials.navbar')
-    </header>
+
+    @include('partials.header')
+
 
     <div class="container">
         @if (session('success'))
@@ -22,14 +22,14 @@
             {{ session('error') }}
         </div>
         @endif
+
         @yield('content')
     </div>
 
-    <footer>
-        @include('partials.footer')
-    </footer>
+    @include('partials.footer')
 
-    <script src="{{ asset('js/app.js') }}"></script>
+    @vite(['resources/js/app.js'])
+
     @stack('scripts')
 </body>
 
