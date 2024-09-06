@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let sectionContainer = document.getElementById('section-container');
             let newSection = document.createElement('div');
             newSection.classList.add('form-section', 'section-group');
+            newSection.id = `section-group-${sectionIndex}`;
             newSection.innerHTML = `
                 <h2>Section Details</h2>
                 <div class="form-group">
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary add-module-btn">Add Module</button>
-                    <button type="button" class="btn btn-danger remove-section-btn">Remove Section</button>
+                    <button type="button" class="btn btn-danger cancel-section-btn" data-index="${sectionIndex}">Cancel</button>
                 </div>
                 <div class="module-container">
                     <!-- Modules will be added here -->
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let moduleContainer = document.getElementById('module-container');
             let newModule = document.createElement('div');
             newModule.classList.add('form-section', 'module-group');
+            newModule.id = `module-group-${moduleIndex}`;
             newModule.innerHTML = `
                 <h2>Module Details</h2>
                 <div class="form-group">
@@ -77,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label for="modules[${moduleIndex}][level]">Module Level:</label>
                     <input type="number" id="modules_${moduleIndex}_level" name="modules[${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+                <button type="button" class="btn btn-danger cancel-module-btn" data-index="${moduleIndex}" data-context="independent">Cancel</button>
             `;
             moduleContainer.appendChild(newModule);
         });
@@ -85,13 +87,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event delegation for dynamically added elements
     document.addEventListener('click', function(event) {
-        // Remove module when "Remove Module" button is clicked
-        if (event.target && event.target.classList.contains('remove-module-btn')) {
-            if (confirm('Are you sure you want to remove this module?')) {
-                let moduleGroup = event.target.closest('.module-group');
-                if (moduleGroup) {
-                    moduleGroup.remove();
-                }
+        // Handle cancel button for sections
+        if (event.target && event.target.classList.contains('cancel-section-btn')) {
+            let sectionIndex = event.target.getAttribute('data-index');
+            let sectionGroup = document.querySelector(`#section-group-${sectionIndex}`);
+            if (sectionGroup) {
+                sectionGroup.remove();
+            }
+        }
+
+        // Handle cancel button for modules
+        if (event.target && event.target.classList.contains('cancel-module-btn')) {
+            let moduleIndex = event.target.getAttribute('data-index');
+            let moduleGroup = document.querySelector(`#module-group-${moduleIndex}`);
+            if (moduleGroup) {
+                moduleGroup.remove();
             }
         }
 
@@ -100,7 +110,27 @@ document.addEventListener('DOMContentLoaded', function() {
             if (confirm('Are you sure you want to remove this section?')) {
                 let sectionGroup = event.target.closest('.section-group');
                 if (sectionGroup) {
+                    // Mark the section for deletion
+                    let deleteInput = sectionGroup.querySelector('input[name$="[delete]"]');
+                    if (deleteInput) {
+                        deleteInput.value = '1'; // Mark as deleted
+                    }
                     sectionGroup.remove();
+                }
+            }
+        }
+
+        // Remove module when "Remove Module" button is clicked
+        if (event.target && event.target.classList.contains('remove-module-btn')) {
+            if (confirm('Are you sure you want to remove this module?')) {
+                let moduleGroup = event.target.closest('.module-group');
+                if (moduleGroup) {
+                    // Mark the module for deletion
+                    let deleteInput = moduleGroup.querySelector('input[name$="[delete]"]');
+                    if (deleteInput) {
+                        deleteInput.value = '1'; // Mark as deleted
+                    }
+                    moduleGroup.remove();
                 }
             }
         }
@@ -113,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let moduleIndex = moduleContainer.querySelectorAll('.module-group').length;
             let newModule = document.createElement('div');
             newModule.classList.add('form-section', 'module-group');
+            newModule.id = `module-group-${moduleIndex}`;
             newModule.innerHTML = `
                 <h2>Module Details</h2>
                 <div class="form-group">
@@ -127,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <label for="sections[${sectionIndex}][modules][${moduleIndex}][level]">Module Level:</label>
                     <input type="number" id="sections_${sectionIndex}_modules_${moduleIndex}_level" name="sections[${sectionIndex}][modules][${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+                <button type="button" class="btn btn-danger cancel-module-btn" data-index="${moduleIndex}" data-context="section">Cancel</button>
             `;
             moduleContainer.appendChild(newModule);
         }
