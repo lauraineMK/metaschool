@@ -1,22 +1,27 @@
 /* Common script for course creation and edition forms */
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize counters for sections and modules
     let sectionCount = window.sectionCount || 0;
     let moduleCount = window.moduleCount || 0;
 
+    // Function to toggle the visibility of section-related elements
     function toggleSections() {
         let includeSections = document.getElementById('include_sections');
         if (includeSections) {
             let includeSectionsChecked = includeSections.checked;
+            // Show or hide section container and add section button based on checkbox state
             document.getElementById('section-container').style.display = includeSectionsChecked ? 'block' : 'none';
             document.getElementById('add-section-btn').style.display = includeSectionsChecked ? 'inline-block' : 'none';
         }
     }
 
+    // Set up event listener for the checkbox to toggle sections
     let includeSectionsElement = document.getElementById('include_sections');
     if (includeSectionsElement) {
         includeSectionsElement.addEventListener('change', toggleSections);
     }
 
+    // Set up event listener for the "Add Section" button
     let addSectionBtn = document.getElementById('add-section-btn');
     if (addSectionBtn) {
         addSectionBtn.addEventListener('click', function() {
@@ -50,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Set up event listener for the "Add Module" button in the general container
     let addModuleBtn = document.getElementById('add-module-btn');
     if (addModuleBtn) {
         addModuleBtn.addEventListener('click', function() {
@@ -77,19 +83,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Event delegation for dynamically added elements
     document.addEventListener('click', function(event) {
+        // Remove module when "Remove Module" button is clicked
         if (event.target && event.target.classList.contains('remove-module-btn')) {
             if (confirm('Are you sure you want to remove this module?')) {
-                event.target.closest('.module-group').remove();
+                let moduleGroup = event.target.closest('.module-group');
+                if (moduleGroup) {
+                    moduleGroup.remove();
+                }
             }
         }
 
+        // Remove section when "Remove Section" button is clicked
         if (event.target && event.target.classList.contains('remove-section-btn')) {
             if (confirm('Are you sure you want to remove this section?')) {
-                event.target.closest('.section-group').remove();
+                let sectionGroup = event.target.closest('.section-group');
+                if (sectionGroup) {
+                    sectionGroup.remove();
+                }
             }
         }
 
+        // Add a new module to a specific section when "Add Module" button is clicked
         if (event.target && event.target.classList.contains('add-module-btn')) {
             let sectionGroup = event.target.closest('.section-group');
             let moduleContainer = sectionGroup.querySelector('.module-container');

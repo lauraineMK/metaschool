@@ -47,73 +47,77 @@
         <!-- Section Details -->
         <div id="section-container">
             @foreach ($course->sections as $index => $section)
-                <div class="form-section section-group">
-                    <h2>Section Details</h2>
-                    <!-- Hidden field for section ID -->
-                    <input type="hidden" name="sections[{{ $index }}][id]" value="{{ old('sections.' . $index . '.id', $section->id) }}">
-                    <div class="form-group">
-                        <label for="sections[{{ $index }}][name]">Section Name:</label>
-                        <input type="text" id="sections_{{ $index }}_name" name="sections[{{ $index }}][name]" class="form-control" value="{{ old('sections.' . $index . '.name', $section->name) }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="sections[{{ $index }}][description]">Section Description:</label>
-                        <textarea id="sections_{{ $index }}_description" name="sections[{{ $index }}][description]" class="form-control">{{ old('sections.' . $index . '.description', $section->description) }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="sections[{{ $index }}][level]">Section Level:</label>
-                        <input type="number" id="sections_{{ $index }}_level" name="sections[{{ $index }}][level]" class="form-control" value="{{ old('sections.' . $index . '.level', $section->level) }}">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary add-module-btn">Add Module</button>
-                        <button type="button" class="btn btn-danger remove-section-btn">Remove Section</button>
-                    </div>
-                    <div class="module-container">
-                        @foreach ($section->modules as $moduleIndex => $module)
-                            <div class="form-section module-group">
-                                <h2>Module Details</h2>
-                                <!-- Hidden field for module ID -->
-                                <input type="hidden" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][id]" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.id', $module->id) }}">
-                                <div class="form-group">
-                                    <label for="sections[{{ $index }}][modules][{{ $moduleIndex }}][name]">Module Name:</label>
-                                    <input type="text" id="sections_{{ $index }}_modules_{{ $moduleIndex }}_name" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][name]" class="form-control" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.name', $module->name) }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sections[{{ $index }}][modules][{{ $moduleIndex }}][description]">Module Description:</label>
-                                    <textarea id="sections_{{ $index }}_modules_{{ $moduleIndex }}_description" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][description]" class="form-control">{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.description', $module->description) }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sections[{{ $index }}][modules][{{ $moduleIndex }}][level]">Module Level:</label>
-                                    <input type="number" id="sections_{{ $index }}_modules_{{ $moduleIndex }}_level" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][level]" class="form-control" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.level', $module->level) }}">
-                                </div>
-                                <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
-                            </div>
-                        @endforeach
-                    </div>
+            <div class="form-section section-group">
+                <h2>Section Details</h2>
+                <!-- Hidden field for section ID -->
+                <input type="hidden" name="sections[{{ $index }}][id]" value="{{ old('sections.' . $index . '.id', $section->id) }}">
+                <!-- Hidden field for section deletion status -->
+                <input type="hidden" name="sections[{{ $index }}][_delete]" value="0">
+                <div class="form-group">
+                    <label for="sections[{{ $index }}][name]">Section Name:</label>
+                    <input type="text" id="sections_{{ $index }}_name" name="sections[{{ $index }}][name]" class="form-control" value="{{ old('sections.' . $index . '.name', $section->name) }}">
                 </div>
+                <div class="form-group">
+                    <label for="sections[{{ $index }}][description]">Section Description:</label>
+                    <textarea id="sections_{{ $index }}_description" name="sections[{{ $index }}][description]" class="form-control">{{ old('sections.' . $index . '.description', $section->description) }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sections[{{ $index }}][level]">Section Level:</label>
+                    <input type="number" id="sections_{{ $index }}_level" name="sections[{{ $index }}][level]" class="form-control" value="{{ old('sections.' . $index . '.level', $section->level) }}">
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary add-module-btn">Add Module</button>
+                    <button type="button" class="btn btn-danger remove-section-btn">Remove Section</button>
+                </div>
+                <div class="module-container">
+                    @foreach ($section->modules as $moduleIndex => $module)
+                    <div class="form-section module-group">
+                        <h2>Module Details</h2>
+                        <!-- Hidden field for module ID -->
+                        <input type="hidden" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][id]" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.id', $module->id) }}">
+                        <!-- Hidden field for module deletion status -->
+                        <input type="hidden" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][_delete]" value="0">
+                        <div class="form-group">
+                            <label for="sections[{{ $index }}][modules][{{ $moduleIndex }}][name]">Module Name:</label>
+                            <input type="text" id="sections_{{ $index }}_modules_{{ $moduleIndex }}_name" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][name]" class="form-control" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.name', $module->name) }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="sections[{{ $index }}][modules][{{ $moduleIndex }}][description]">Module Description:</label>
+                            <textarea id="sections_{{ $index }}_modules_{{ $moduleIndex }}_description" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][description]" class="form-control">{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.description', $module->description) }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="sections[{{ $index }}][modules][{{ $moduleIndex }}][level]">Module Level:</label>
+                            <input type="number" id="sections_{{ $index }}_modules_{{ $moduleIndex }}_level" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][level]" class="form-control" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.level', $module->level) }}">
+                        </div>
+                        <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
             @endforeach
         </div>
 
         <!-- Module Details -->
         <div id="module-container">
             @foreach ($course->modules->whereNull('section_id') as $moduleIndex => $module)
-                <div class="form-section module-group">
-                    <h2>Module Details</h2>
-                    <!-- Hidden field for module ID -->
-                    <input type="hidden" name="modules[{{ $moduleIndex }}][id]" value="{{ old('modules.' . $moduleIndex . '.id', $module->id) }}">
-                    <div class="form-group">
-                        <label for="modules[{{ $moduleIndex }}][name]">Module Name:</label>
-                        <input type="text" id="modules_{{ $moduleIndex }}_name" name="modules[{{ $moduleIndex }}][name]" class="form-control" value="{{ old('modules.' . $moduleIndex . '.name', $module->name) }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="modules[{{ $moduleIndex }}][description]">Module Description:</label>
-                        <textarea id="modules_{{ $moduleIndex }}_description" name="modules[{{ $moduleIndex }}][description]" class="form-control">{{ old('modules.' . $moduleIndex . '.description', $module->description) }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="modules[{{ $moduleIndex }}][level]">Module Level:</label>
-                        <input type="number" id="modules_{{ $moduleIndex }}_level" name="modules[{{ $moduleIndex }}][level]" class="form-control" value="{{ old('modules.' . $moduleIndex . '.level', $module->level) }}">
-                    </div>
-                    <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+            <div class="form-section module-group">
+                <h2>Module Details</h2>
+                <!-- Hidden field for module ID -->
+                <input type="hidden" name="modules[{{ $moduleIndex }}][id]" value="{{ old('modules.' . $moduleIndex . '.id', $module->id) }}">
+                <div class="form-group">
+                    <label for="modules[{{ $moduleIndex }}][name]">Module Name:</label>
+                    <input type="text" id="modules_{{ $moduleIndex }}_name" name="modules[{{ $moduleIndex }}][name]" class="form-control" value="{{ old('modules.' . $moduleIndex . '.name', $module->name) }}">
                 </div>
+                <div class="form-group">
+                    <label for="modules[{{ $moduleIndex }}][description]">Module Description:</label>
+                    <textarea id="modules_{{ $moduleIndex }}_description" name="modules[{{ $moduleIndex }}][description]" class="form-control">{{ old('modules.' . $moduleIndex . '.description', $module->description) }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modules[{{ $moduleIndex }}][level]">Module Level:</label>
+                    <input type="number" id="modules_{{ $moduleIndex }}_level" name="modules[{{ $moduleIndex }}][level]" class="form-control" value="{{ old('modules.' . $moduleIndex . '.level', $module->level) }}">
+                </div>
+                <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+            </div>
             @endforeach
         </div>
 
