@@ -180,6 +180,22 @@ class CourseController extends Controller
         return view('teacher.courses.edit', compact('course'));
     }
 
+    //! Method to be reworked:
+    //? Updating works most of the time but — creation and modification largely
+    //? functional but deletion does not work as it should — there's a problem
+    //? with modules belonging to any section becoming independant when
+    //? that section is deleted, instead of being deleted with it.
+    //TODO: 1. Work on deletion so that each section, each section module
+    //TODO:    and each standalone module can be deleted down to the last.
+    //TODO: 2. Check that the creation still works after two or three sections
+    //TODO:    containing several modules have been created.
+    //TODO: 3. Finally, check that the update works, having created a new section
+    //TODO:    and a module in that section, modified fields in a module and
+    //TODO:    its section, deleted all modules in a section and then the section,
+    //TODO:    deleted another section with modules, without having deleted them,
+    //TODO:    and make sure that all modifications have been carried out correctly.
+    //TODO:    Same check with a course containing standalone modules:
+    //TODO:    Create a new one, edit a one's fields and delete another one.
     /**
      * Update an existing course
      *
@@ -206,6 +222,7 @@ class CourseController extends Controller
             'sections.*.modules.*.name' => 'nullable|string|max:255',
             'sections.*.modules.*.description' => 'nullable|string',
             'sections.*.modules.*.level' => 'nullable|integer',
+            'sections.*.modules.*.section_id' => 'nullable|exists:sections,id',
             'modules' => 'nullable|array',
             'modules.*.id' => 'nullable|exists:modules,id',
             'modules.*.name' => 'nullable|string|max:255',
@@ -287,8 +304,12 @@ class CourseController extends Controller
                 }
                 // Deletion of sections not present in the request data
                 Section::where('course_id', $course->id)
-                    ->whereNotIn('id', $currentSectionIds)
-                    ->delete();
+                ->whereNotIn('id', $currentSectionIds)
+                ->each(function($section) {
+                    // Delete associated modules when deleting section
+                    Module::where('section_id', $section->id)->delete();
+                    $section->delete();
+                });
             }
 
             // Standalone modules update
