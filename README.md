@@ -21,7 +21,7 @@ MetaSchool provides an interface for teachers to create and organize courses, as
 
 - PHP >= 7.4
 - Composer
-- Node.js (for frontend assets, if applicable)
+- ~~Node.js (for frontend assets, if applicable)~~
 
 ### Clone the Repository
 
@@ -104,7 +104,7 @@ The main routes of the application are defined in routes/web.php.
 
 ### Middleware
 
-The application's middleware is configured in app/Http/Kernel.php. Ensure that protected routes are correctly set up for roles and permissions.
+The application's middleware is configured in app/Http/Middleware/RoleMiddleware.php. Ensure that protected routes are correctly set up for roles and permissions.
 
 ### Authentication
 
