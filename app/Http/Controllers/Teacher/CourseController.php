@@ -194,7 +194,8 @@ class CourseController extends Controller
     //TODO:    its section, deleted all modules in a section and then the section,
     //TODO:    deleted another section with modules, without having deleted them,
     //TODO:    and make sure that all modifications have been carried out correctly.
-    //TODO:    Same check with a course containing standalone modules.
+    //TODO:    Same check with a course containing standalone modules:
+    //TODO:    Create a new one, edit a one's fields and delete another one.
     /**
      * Update an existing course
      *
