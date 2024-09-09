@@ -11,26 +11,57 @@
     padding: 20px;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header .btn-secondary {
+    margin-left: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
 .justify-content-between {
     justify-content: space-between;
 }
 
+/* Common Module Container Styles */
 .module-container {
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 10px;
     overflow: hidden;
 }
 
+/* Common styles for modules */
 .module-group {
     background-color: #f4f4f4;
+    display: inline-block; /* Display modules inline, wrapping as needed */
     border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
-    display: inline-block;
-    margin: 10px;
-    padding: 10px;
+    margin: 10px; /* Space around each module */
+    padding: 10px; /* Space inside each module */
     vertical-align: top;
-    width: calc(33.333% - 20px);
-    /* Adjust to fit three per row */
+}
+
+/* Styles for Creation Context */
+.create-module-group {
+    width: calc(33.333% - 20px); /* Adjust width to fit three modules per row */
+}
+
+/* Styles for Editing Context */
+.edit-module-group {
+    min-width: 300px; /* Minimum width to prevent overly narrow columns */
 }
 
 .remove-module-btn {
@@ -51,6 +82,10 @@
     margin-top: 20px;
     padding: 20px;
     position: relative;
+}
+
+.visible {
+    display: inline-block;
 }
 
 #add-section-btn {

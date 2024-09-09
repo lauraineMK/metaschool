@@ -5,7 +5,7 @@
     @include('layouts.head')
 </head>
 
-<body>
+<body class="{{ Route::currentRouteName() == 'teacher.courses.create' ? 'create-mode' : (Route::currentRouteName() == 'teacher.courses.edit' ? 'edit-mode' : '') }}">
 
     @include('partials.header')
 
