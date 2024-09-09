@@ -1,8 +1,8 @@
 /* Common script for course creation and edition forms */
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize counters for sections and modules
-    let sectionCount = window.sectionCount || 0;
-    let moduleCount = window.moduleCount || 0;
+    let sectionCount = parseInt(document.getElementById('section-container').getAttribute('data-count') || 0);
+    let moduleCount = parseInt(document.getElementById('module-container').getAttribute('data-count') || 0);
 
     // Function to toggle the visibility of section-related elements
     function toggleSections() {

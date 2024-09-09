@@ -61,11 +61,4 @@
         </div>
     </form>
 </div>
-
-<script>
-    window.sectionCount = 0;
-    window.moduleCount = 0;
-</script>
-
-
 @endsection

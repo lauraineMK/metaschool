@@ -128,9 +128,4 @@
         </div>
     </form>
 </div>
-
-<script>
-    window.sectionCount = @json($course->sections->count());
-    window.moduleCount = @json($course->modules->whereNull('section_id')->count());
-</script>
 @endsection
