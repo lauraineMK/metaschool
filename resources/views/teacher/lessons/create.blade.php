@@ -4,7 +4,10 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1>Create a New Lesson</h1>
+    <div class="header">
+        <h1>Create a New Lesson</h1>
+        <a href="{{ route('teacher.lessons.index') }}" class="btn btn-secondary">Cancel</a>
+    </div>
 
     <!-- Form to create a new lesson -->
     <form action="{{ route('teacher.lessons.store') }}" method="POST" enctype="multipart/form-data">
