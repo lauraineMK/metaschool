@@ -186,7 +186,7 @@ class CourseController extends Controller
     //? with modules belonging to any section becoming independant when
     //? that section is deleted, instead of being deleted with it.
     //TODO: 1. Work on deletion so that each section, each section module
-    //TODO:    and each standalone module an be deleted down to the last.
+    //TODO:    and each standalone module can be deleted down to the last.
     //TODO: 2. Check that the creation still works after two or three sections
     //TODO:    containing several modules have been created.
     //TODO: 3. Finally, check that the update works, having created a new section
