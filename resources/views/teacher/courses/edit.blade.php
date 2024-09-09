@@ -72,7 +72,7 @@
                 </div>
                 <div class="module-container">
                     @foreach ($section->modules as $moduleIndex => $module)
-                    <div class="form-section edit-module-group">
+                    <div class="form-section module-group">
                         <h2>Module Details</h2>
                         <input type="hidden" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][id]" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.id', $module->id) }}">
                         <input type="hidden" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][_delete]" value="0">
@@ -99,7 +99,7 @@
         <!-- Module Details -->
         <div id="module-container" class="{{ $course->modules->whereNull('section_id')->count() > 0 ? 'visible' : 'hidden' }}">
             @foreach ($course->modules->whereNull('section_id') as $moduleIndex => $module)
-            <div class="form-section edit-module-group">
+            <div class="form-section module-group">
                 <h2>Module Details</h2>
                 <input type="hidden" name="modules[{{ $moduleIndex }}][id]" value="{{ old('modules.' . $moduleIndex . '.id', $module->id) }}">
                 <div class="form-group">
