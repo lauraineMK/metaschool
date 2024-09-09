@@ -4,7 +4,10 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1>Edit Lesson</h1>
+<div class="header">
+        <h1>Edit Lesson</h1>
+        <a href="{{ route('teacher.lessons.index') }}" class="btn btn-secondary">Cancel</a>
+    </div>
 
     <!-- Form to edit an existing lesson -->
     <form action="{{ route('teacher.lessons.update', $lesson->id) }}" method="POST">

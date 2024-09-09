@@ -4,7 +4,10 @@
 
 @section('content')
 <div class="container">
-    <h1>Create a New Course</h1>
+    <div class="header">
+        <h1>Create a New Course</h1>
+        <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary">Cancel</a>
+    </div>
 
     <!-- Form to create a new course -->
     <form action="{{ route('teacher.courses.store') }}" method="POST">
@@ -61,11 +64,4 @@
         </div>
     </form>
 </div>
-
-<script>
-    window.sectionCount = 0;
-    window.moduleCount = 0;
-</script>
-
-
 @endsection
