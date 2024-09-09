@@ -1,33 +1,36 @@
 /* Common styles for course creation and edition forms */
-.form-section {
-    margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+.d-flex {
+    display: flex;
 }
 
-.section-group {
-    margin-top: 20px;
-    padding: 20px;
+.form-section {
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #fff;
-    position: relative;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.module-container {
+    margin-top: 10px;
+    overflow: hidden;
 }
 
 .module-group {
-    margin: 10px;
-    padding: 10px;
+    background-color: #f4f4f4;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #f4f4f4;
+    box-sizing: border-box;
     display: inline-block;
+    margin: 10px;
+    padding: 10px;
     vertical-align: top;
     width: calc(33.333% - 20px);
     /* Adjust to fit three per row */
-    box-sizing: border-box;
-    /* Ensure padding and border are included in the width */
 }
 
 .remove-module-btn {
@@ -41,15 +44,19 @@
     top: 10px;
 }
 
-.module-container {
-    margin-top: 10px;
-    overflow: hidden;
+.section-group {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 20px;
+    position: relative;
 }
 
-.d-flex {
-    display: flex;
+#add-section-btn {
+    display: none;
 }
 
-.justify-content-between {
-    justify-content: space-between;
+#section-container {
+    display: none;
 }

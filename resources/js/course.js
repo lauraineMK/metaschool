@@ -7,21 +7,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to toggle the visibility of section-related elements
     function toggleSections() {
         let includeSections = document.getElementById('include_sections');
-        if (includeSections) {
-            let includeSectionsChecked = includeSections.checked;
-            // Show or hide section container and add section button based on checkbox state
-            document.getElementById('section-container').style.display = includeSectionsChecked ? 'block' : 'none';
-            document.getElementById('add-section-btn').style.display = includeSectionsChecked ? 'inline-block' : 'none';
+        let addSectionButton = document.getElementById('add-section-btn');
+        let addModuleButton = document.getElementById('add-module-btn');
+        let sectionContainer = document.getElementById('section-container');
+
+        if (includeSections && addSectionButton && addModuleButton) {
+            if (includeSections.checked) {
+                addSectionButton.style.display = 'block';  // Show the Add Section button
+                addModuleButton.style.display = 'none';    // Hide the Add Module button
+                sectionContainer.style.display = 'block';  // Show the section container
+            } else {
+                addSectionButton.style.display = 'none';   // Hide the Add Section button
+                addModuleButton.style.display = 'block';   // Show the Add Module button
+                sectionContainer.style.display = 'none';   // Hide the section container
+            }
         }
     }
 
-    // Set up event listener for the checkbox to toggle sections
+    // Toggle sections visibility
     let includeSectionsElement = document.getElementById('include_sections');
     if (includeSectionsElement) {
         includeSectionsElement.addEventListener('change', toggleSections);
     }
 
-    // Set up event listener for the "Add Section" button
+    toggleSections();
+
+    // Add Section button
     let addSectionBtn = document.getElementById('add-section-btn');
     if (addSectionBtn) {
         addSectionBtn.addEventListener('click', function() {
@@ -56,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Set up event listener for the "Add Module" button in the general container
+    // Add Module button in the general container
     let addModuleBtn = document.getElementById('add-module-btn');
     if (addModuleBtn) {
         addModuleBtn.addEventListener('click', function() {
