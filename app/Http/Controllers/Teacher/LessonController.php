@@ -111,7 +111,7 @@ class LessonController extends Controller
             'videos.*.url' => 'nullable|string|url',
             'videos.*.description' => 'nullable|string',
             'documents.*.title' => 'nullable|string|max:255',
-            'documents.*.file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:2048',
+            'documents.*.file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,txt|max:2048|required_with:documents.*.title',
             'documents.*.description' => 'nullable|string',
             'course_id' => 'required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
@@ -160,21 +160,21 @@ class LessonController extends Controller
                 }
             }
 
-            // /* Handle documents */
-            // if (isset($validated['documents']) && is_array($validated['documents'])) {
-            //     foreach ($validated['documents'] as $index => $document) {
-            //         if (isset($document['file']) && $request->hasFile("documents.$index.file")) {
-            //             $file = $request->file("documents.$index.file");
-            //             $path = $file->store('documents', 'public');
-            //             Document::create([
-            //                 'title' => $document['title'] ?? 'document for ' . $lesson->title,
-            //                 'file' => $path,
-            //                 'description' => $document['description'] ?? 'A document for the lesson titled "' . $lesson->title . '".',
-            //                 'lesson_id' => $lesson->id,
-            //             ]);
-            //         }
-            //     }
-            // }
+            /* Handle documents */
+            if (isset($validated['documents']) && is_array($validated['documents'])) {
+                foreach ($validated['documents'] as $index => $document) {
+                    if (isset($document['file']) && $request->hasFile("documents.$index.file")) {
+                        $file = $request->file("documents.$index.file");
+                        $path = $file->store('documents', 'public');
+                        Document::create([
+                            'title' => $document['title'] ?? 'Document for ' . $lesson->title,
+                            'file' => $path,
+                            'description' => $document['description'] ?? 'A document for the lesson titled "' . $lesson->title . '".',
+                            'lesson_id' => $lesson->id,
+                        ]);
+                    }
+                }
+            }
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message
             return redirect()->route('teacher.lessons.index')
