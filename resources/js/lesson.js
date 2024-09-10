@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                         <div class="form-group mt-3">
                         <label for="document_file_${documentIndex}">Document File</label>
-                        <input type="file" class="form-control" id="document_file_${documentIndex}" name="documents[${documentIndex}][file]">
+                        <input type="file" class="form-control" id="document_file_${documentIndex}" name="documents[${documentIndex}][file]" accept=".pdf,.doc,.docx,.xls,.xlsx, .txt">
                         </div>
                         <div class="form-group mt-3">
                         <label for="document_description_${documentIndex}">Document Description</label>

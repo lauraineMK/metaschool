@@ -64,7 +64,47 @@
     @endif
 
     <!-- Lesson Documents -->
+    @if($documents->count() > 0)
+    <div class="mt-4">
+        <h3>Documents</h3>
+        @foreach($documents as $document)
+            <div class="mb-3">
+                <h5>{{ $document->title }}</h5>
+                <p>{{ $document->description }}</p>
 
+                @if($document->file)
+                    @php
+                        $fileExtension = strtolower(pathinfo($document->file, PATHINFO_EXTENSION));
+                    @endphp
+
+                    @if($fileExtension === 'pdf')
+                        <iframe src="{{ url('storage/' . $document->file) }}" width="100%" height="600px" frameborder="0"></iframe>
+                    @elseif(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
+                        <img src="{{ url('storage/' . $document->file) }}" alt="{{ $document->title }}" style="max-width: 100%; height: auto;">
+                    @elseif(in_array($fileExtension, ['doc', 'docx']))
+                        <a href="https://view.officeapps.live.com/op/view.aspx?src={{ urlencode(Storage::url($document->file)) }}" class="btn btn-info" target="_blank">View {{ $document->title }}</a>
+                    @elseif(in_array($fileExtension, ['xls', 'xlsx']))
+                        <a href="https://view.officeapps.live.com/op/view.aspx?src={{ urlencode(Storage::url($document->file)) }}" class="btn btn-info" target="_blank">View {{ $document->title }}</a>
+                    @elseif($fileExtension === 'txt')
+                        <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" target="_blank">View {{ $document->title }}</a>
+                        <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" download>Download {{ $document->title }}</a>
+                    @else
+                    <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" target="_blank">View {{ $document->title }}</a>
+                        <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" download>Download {{ $document->title }}</a>
+                    @endif
+                @else
+                    <p>No file available for this document.</p>
+                @endif
+            </div>
+        @endforeach
+    </div>
+@else
+    <div class="mt-4">
+        <p>No documents available for this lesson.</p>
+    </div>
+@endif
+
+    <!-- Edit and Delete Lesson -->
     <div class="mt-4">
         <!-- Button to edit the lesson -->
         <a href="{{ route('teacher.lessons.edit', $lesson->id) }}" class="btn btn-warning mb-3">Edit Lesson</a>
