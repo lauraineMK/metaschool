@@ -62,7 +62,7 @@
                     </div>
                     <div class="form-group mt-3">
                         <label for="document_file_0" class="mt-2">Document File</label>
-                        <input type="file" name="documents[0][file]" id="document_file_0" class="form-control">
+                        <input type="file" name="documents[0][file]" accept=".pdf,.doc,.docx,.xls,.xlsx, .txt" id="document_file_0" class="form-control">
                     </div>
                     <div class="form-group mt-3">
                         <label for="document_description_0" class="mt-2">Document Description</label>
