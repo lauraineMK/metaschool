@@ -232,7 +232,7 @@ class LessonController extends Controller
             'video_url.*' => 'nullable|string|url',
             'video_description.*' => 'nullable|string',
             'document_title.*' => 'nullable|string|max:255',
-            'document_file.*' => 'nullable|file|mimes:pdf,doc,docx,txt|max:2048', // Example for allowed file types and size
+            'document_file.*' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,txt|max:2048', // Example for allowed file types and size
             'document_description.*' => 'nullable|string',
             'course_id' => 'sometimes|required|exists:courses,id',
             'section_id' => 'nullable|exists:sections,id',
@@ -309,7 +309,7 @@ class LessonController extends Controller
                     if ($documentId && isset($existingDocuments[$documentId])) {
                         $document = $existingDocuments[$documentId];
                         // Delete the file from storage
-                        if (Storage::exists($document->file_path)) {
+                        if (!empty($document->file_path) && Storage::exists($document->file_path)) {
                             Storage::delete($document->file_path);
                         }
                         $document->delete();
@@ -340,7 +340,7 @@ class LessonController extends Controller
                 // Check if the document was marked for deletion
                 if (!in_array($document->id, array_column($documents, '_id'))) {
                     // Delete the file from storage
-                    if (Storage::exists($document->file_path)) {
+                    if (!empty($document->file_path) && Storage::exists($document->file_path)) {
                         Storage::delete($document->file_path);
                     }
                     $document->delete();
