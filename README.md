@@ -117,6 +117,38 @@ Authentication routes are defined in routes/web.php. You can customize authentic
 - Edit a Course: Go to http://localhost:8000/teachers/courses/{id}/edit to edit an existing course.
 - Delete a Course: Use the delete button on the course list page.
 
+## Ordering Lessons, Modules, and Sections
+
+To ensure that lessons, modules, and sections are ordered correctly in the database, you can use the provided Artisan commands. These commands update the order of lessons, modules, and sections based on their creation time or any other criteria you specify.
+
+### Update Lesson Order
+
+To update the order of lessons based on their course_id, use the following command:
+
+```bash
+php artisan lessons:update-order
+```
+
+This command will iterate through all lessons, order them by their creation time, and update their order in the database.
+
+### Update Module and Section Order
+
+If you have similar commands for modules and sections, you can run them in a similar way. If such commands are not provided yet, you might need to create them following the pattern used for lessons. For example:
+
+#### Update Module Order
+
+```bash
+php artisan modules:update-order
+```
+
+#### Update Section Order
+
+```bash
+php artisan sections:update-order
+```
+
+Ensure you replace the placeholders with the actual command names and functionality if they exist.
+
 ## Contributions
 
 Contributions are welcome! Please follow these steps to contribute:

@@ -4,12 +4,15 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use App\Models\Course;
 use App\Models\Section;
 use App\Models\Module;
 use App\Models\Lesson;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\Document;
 
 class FinalFantasySeeder extends Seeder
 {
@@ -18,6 +21,31 @@ class FinalFantasySeeder extends Seeder
      */
     public function run(): void
     {
+        // // Path to the directory containing the files to copy
+        // $sourcePath = database_path('seeders/files');
+
+        // // Path to the destination directory
+        // $destinationPath = storage_path('app/public/documents');
+
+        // // Create the destination directory if it does not exist
+        // if (!File::exists($destinationPath)) {
+        //     File::makeDirectory($destinationPath, 0755, true);
+        // }
+
+        // // Get the list of files in the source directory
+        // $files = File::files($sourcePath);
+
+        // foreach ($files as $file) {
+        //     // File name
+        //     $fileName = basename($file);
+
+        //     // Full path of the destination file
+        //     $destinationFile = $destinationPath . '/' . $fileName;
+
+        //     // Copy the file to the destination directory
+        //     File::copy($file, $destinationFile);
+        // }
+
         // Create a user to be the author
         $author = User::firstOrCreate([
             'email' => 'author@example.com',
@@ -66,6 +94,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson1_1->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Tifa Lockhart Profile',
+        //     'file' => 'Tifa-Lockhart.pdf',
+        //     'description' => 'Detailed profile of Tifa Lockhart.',
+        //     'lesson_id' => $lesson1_1->id,
+        // ]);
+
         $lesson1_2 = Lesson::create([
             'title' => 'Aeris',
             'content' => 'Character profile of Aeris Gainsborough, a beloved character with a mysterious background.',
@@ -81,6 +116,14 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson1_2->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Aeris Gainsborough Profile',
+        //     'file' => 'Aerith-Gainsborough.pdf',
+        //     'description' => 'Detailed profile of Aeris Gainsborough.',
+        //     'lesson_id' => $lesson1_2->id,
+        // ]);
+
+
         $lesson1_3 = Lesson::create([
             'title' => 'Jessie',
             'content' => 'Character profile of Jessie, a member of the AVALANCHE group.',
@@ -95,6 +138,13 @@ class FinalFantasySeeder extends Seeder
             'description' => 'Introduction to Jessie’s character and role in the game.',
             'lesson_id' => $lesson1_3->id,
         ]);
+
+        // Document::create([
+        //     'title' => 'Jessie Raspberry Profile',
+        //     'file' => 'Jessie-Raspberry.pdf',
+        //     'description' => 'Detailed profile of Jessie Raspberry.',
+        //     'lesson_id' => $lesson1_3->id,
+        // ]);
 
         // Module 2: City Themes
         $module1_2 = Module::create([
@@ -120,6 +170,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson2_1->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Midgar City Guide',
+        //     'file' => 'Midgar.pdf',
+        //     'description' => 'Detailed guide to the city of Midgar.',
+        //     'lesson_id' => $lesson2_1->id,
+        // ]);
+
         $lesson2_2 = Lesson::create([
             'title' => 'Kalm',
             'content' => 'Exploration of the town of Kalm and its significance.',
@@ -135,6 +192,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson2_2->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Kalm Town Overview',
+        //     'file' => 'Kalm.pdf',
+        //     'description' => 'Detailed overview of the town of Kalm.',
+        //     'lesson_id' => $lesson2_2->id,
+        // ]);
+
         $lesson2_3 = Lesson::create([
             'title' => 'Junon',
             'content' => 'Details about Junon, a port town in FFVII.',
@@ -149,6 +213,13 @@ class FinalFantasySeeder extends Seeder
             'description' => 'Introduction to the city of Junon.',
             'lesson_id' => $lesson2_3->id,
         ]);
+
+        // Document::create([
+        //     'title' => 'Junon Port Guide',
+        //     'file' => 'Junon.pdf',
+        //     'description' => 'Detailed guide to the port town of Junon.',
+        //     'lesson_id' => $lesson2_3->id,
+        // ]);
 
         // Section 2: Final Fantasy VIII
         $section2 = Section::create([
@@ -181,6 +252,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson3_1->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Squall Leonhart Profile',
+        //     'file' => 'Squall-Leonhart.pdf',
+        //     'description' => 'Detailed profile of Squall Leonhart.',
+        //     'lesson_id' => $lesson3_1->id,
+        // ]);
+
         $lesson3_2 = Lesson::create([
             'title' => 'Rinoa',
             'content' => 'Details about Rinoa Heartilly from Final Fantasy VIII.',
@@ -196,6 +274,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson3_2->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Rinoa Heartilly Profile',
+        //     'file' => 'Rinoa-Heartilly.pdf',
+        //     'description' => 'Detailed profile of Rinoa Heartilly.',
+        //     'lesson_id' => $lesson3_2->id,
+        // ]);
+
         $lesson3_3 = Lesson::create([
             'title' => 'Edea',
             'content' => 'Details about Edea from Final Fantasy VIII.',
@@ -210,6 +295,13 @@ class FinalFantasySeeder extends Seeder
             'description' => 'Introduction to Edea.',
             'lesson_id' => $lesson3_3->id,
         ]);
+
+        // Document::create([
+        //     'title' => 'Edea Kramer Profile',
+        //     'file' => 'Edea-Kramer.pdf',
+        //     'description' => 'Detailed profile of Edea Kramer.',
+        //     'lesson_id' => $lesson3_3->id,
+        // ]);
 
         // Section 3: Final Fantasy IX
         $section3 = Section::create([
@@ -242,6 +334,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson4_1->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Vivi Ornitier Profile',
+        //     'file' => 'Vivi-Ornitier.pdf',
+        //     'description' => 'Detailed profile of Vivi Ornitier.',
+        //     'lesson_id' => $lesson4_1->id,
+        // ]);
+
         $lesson4_2 = Lesson::create([
             'title' => 'Steiner',
             'content' => 'Details about Adelbert Steiner from Final Fantasy IX.',
@@ -257,6 +356,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson4_2->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Adelbert Steiner Profile',
+        //     'file' => 'Adelbert-Steiner.pdf',
+        //     'description' => 'Detailed profile of Adelbert Steiner.',
+        //     'lesson_id' => $lesson4_2->id,
+        // ]);
+
         $lesson4_3 = Lesson::create([
             'title' => 'Beatrix',
             'content' => 'Details about General Beatrix from Final Fantasy IX.',
@@ -271,6 +377,13 @@ class FinalFantasySeeder extends Seeder
             'description' => 'Introduction to General Beatrix.',
             'lesson_id' => $lesson4_3->id,
         ]);
+
+        // Document::create([
+        //     'title' => 'Beatrix Profile',
+        //     'file' => 'Beatrix.pdf',
+        //     'description' => 'Detailed profile of Beatrix.',
+        //     'lesson_id' => $lesson4_3->id,
+        // ]);
 
         // Module 2: City Themes
         $module5 = Module::create([
@@ -296,6 +409,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson5_1->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Lindblum City',
+        //     'file' => 'Lindblum.pdf',
+        //     'description' => 'Details about the city of Lindblum.',
+        //     'lesson_id' => $lesson5_1->id,
+        // ]);
+
         $lesson5_2 = Lesson::create([
             'title' => 'Burmecia',
             'content' => 'Details about the city of Burmecia from Final Fantasy IX.',
@@ -311,6 +431,13 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson5_2->id,
         ]);
 
+        // Document::create([
+        //     'title' => 'Burmecia City',
+        //     'file' => 'Burmecia.pdf',
+        //     'description' => 'Details about the kingdom of Burmecia.',
+        //     'lesson_id' => $lesson5_2->id,
+        // ]);
+
         $lesson5_3 = Lesson::create([
             'title' => 'Treno',
             'content' => 'Details about the city of Treno from Final Fantasy IX.',
@@ -325,5 +452,12 @@ class FinalFantasySeeder extends Seeder
             'description' => 'Introduction to the city of Treno.',
             'lesson_id' => $lesson5_3->id,
         ]);
+
+        // Document::create([
+        //     'title' => 'Treno City',
+        //     'file' => 'Treno.pdf',
+        //     'description' => 'Details about the city of Treno.',
+        //     'lesson_id' => $lesson5_3->id,
+        // ]);
     }
 }
