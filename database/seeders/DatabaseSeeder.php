@@ -15,26 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        if (DB::table('users')->where('email', 'admin@teacher.com')->doesntExist()) {
-            DB::table('users')->insert([
-                'firstname' => 'Teacher',
-                'surname' => 'Teacher',
-                'email' => 'admin@teacher.com',
-                'password' => Hash::make('teacher'),
-                'role' => 'teacher',
-            ]);
-        }
-
-        if (DB::table('users')->where('email', 'admin@student.com')->doesntExist()) {
-            DB::table('users')->insert([
-                'firstname' => 'Student',
-                'surname' => 'Student',
-                'email' => 'admin@student.com',
-                'password' => Hash::make('student'),
-                'role' => 'student',
-            ]);
-        }
-
-        $this->call(CourseSeeder::class);
+        $this->call([
+            UsersTableSeeder::class,
+            CourseSeeder::class,
+            FinalFantasySeeder::class,
+            // Other seeders here
+        ]);
     }
 }
