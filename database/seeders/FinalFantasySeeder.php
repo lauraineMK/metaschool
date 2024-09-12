@@ -80,7 +80,7 @@ class FinalFantasySeeder extends Seeder
 
         // Lessons for Module 1
         $lesson1_1 = Lesson::firstOrCreate([
-            'title' => 'Tifa',
+            'title' => 'Tifa Lockhart',
             'content' => 'Character profile of Tifa Lockhart, a strong fighter and a key member of the party.',
             'course_id' => $course->id,
             'section_id' => $section1->id,
@@ -102,7 +102,7 @@ class FinalFantasySeeder extends Seeder
         // ]);
 
         $lesson1_2 = Lesson::firstOrCreate([
-            'title' => 'Aeris',
+            'title' => 'Aeris Gainsborough',
             'content' => 'Character profile of Aeris Gainsborough, a beloved character with a mysterious background.',
             'course_id' => $course->id,
             'section_id' => $section1->id,
@@ -125,7 +125,7 @@ class FinalFantasySeeder extends Seeder
 
 
         $lesson1_3 = Lesson::firstOrCreate([
-            'title' => 'Jessie',
+            'title' => 'Jessie Raspberry',
             'content' => 'Character profile of Jessie, a member of the AVALANCHE group.',
             'course_id' => $course->id,
             'section_id' => $section1->id,
@@ -238,7 +238,7 @@ class FinalFantasySeeder extends Seeder
 
         // Lessons for Module 1
         $lesson3_1 = Lesson::firstOrCreate([
-            'title' => 'Squall',
+            'title' => 'Squall Leonhart',
             'content' => 'Details about Squall Leonhart from Final Fantasy VIII.',
             'course_id' => $course->id,
             'section_id' => $section2->id,
@@ -260,7 +260,7 @@ class FinalFantasySeeder extends Seeder
         // ]);
 
         $lesson3_2 = Lesson::firstOrCreate([
-            'title' => 'Rinoa',
+            'title' => 'Rinoa Heartilly',
             'content' => 'Details about Rinoa Heartilly from Final Fantasy VIII.',
             'course_id' => $course->id,
             'section_id' => $section2->id,
@@ -282,7 +282,7 @@ class FinalFantasySeeder extends Seeder
         // ]);
 
         $lesson3_3 = Lesson::firstOrCreate([
-            'title' => 'Edea',
+            'title' => 'Edea Kramer',
             'content' => 'Details about Edea from Final Fantasy VIII.',
             'course_id' => $course->id,
             'section_id' => $section2->id,
@@ -395,7 +395,7 @@ class FinalFantasySeeder extends Seeder
 
         // Lessons for Module 1
         $lesson5_1 = Lesson::firstOrCreate([
-            'title' => 'Vivi',
+            'title' => 'Vivi Ornitier',
             'content' => 'Details about Vivi Ornitier from Final Fantasy IX.',
             'course_id' => $course->id,
             'section_id' => $section3->id,
@@ -417,7 +417,7 @@ class FinalFantasySeeder extends Seeder
         // ]);
 
         $lesson5_2 = Lesson::firstOrCreate([
-            'title' => 'Steiner',
+            'title' => 'Adelbert Steiner',
             'content' => 'Details about Adelbert Steiner from Final Fantasy IX.',
             'course_id' => $course->id,
             'section_id' => $section3->id,
@@ -493,21 +493,21 @@ class FinalFantasySeeder extends Seeder
 
         $lesson6_2 = Lesson::firstOrCreate([
             'title' => 'Burmecia',
-            'content' => 'Details about the city of Burmecia from Final Fantasy IX.',
+            'content' => 'Details about the kingdom of Burmecia from Final Fantasy IX.',
             'course_id' => $course->id,
             'section_id' => $section3->id,
             'module_id' => $module6->id,
         ]);
 
         Video::firstOrCreate([
-            'title' => 'Burmecia City Overview',
+            'title' => 'Kingdom of Burmecia Overview',
             'url' => 'https://youtu.be/Bsb4VTueU7U?si=NSYceiJ8pYnFRvti',
-            'description' => 'Introduction to the city of Burmecia.',
+            'description' => 'Introduction to the kingdom of Burmecia.',
             'lesson_id' => $lesson6_2->id,
         ]);
 
         // Document::firstOrCreate([
-        //     'title' => 'Burmecia City',
+        //     'title' => 'Kingdom of Burmecia',
         //     'file' => 'documents/Burmecia.pdf',
         //     'description' => 'Details about the kingdom of Burmecia.',
         //     'lesson_id' => $lesson6_2->id,
