@@ -351,7 +351,7 @@ class FinalFantasySeeder extends Seeder
 
         // Document::firstOrCreate([
         //     'title' => 'Timber Guide',
-        //     'file' => 'documents/Timberpdf',
+        //     'file' => 'documents/Timber.pdf',
         //     'description' => 'Detailed guide to Timber.',
         //     'lesson_id' => $lesson4_2->id,
         // ]);
