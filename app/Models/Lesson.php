@@ -44,6 +44,16 @@ class Lesson extends Model
         return $this->hasMany(Document::class);
     }
 
+    // public function getDocumentsWithUrlsAttribute()
+    // {
+    //     return $this->documents->map(function ($document) {
+    //         return [
+    //             'title' => $document->title,
+    //             'url' => $document->file_url,
+    //         ];
+    //     });
+    // }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'progress')

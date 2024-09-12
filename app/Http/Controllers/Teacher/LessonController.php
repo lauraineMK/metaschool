@@ -300,6 +300,10 @@ class LessonController extends Controller
             $documents = $request->input('documents', []);
             $existingDocuments = Document::where('lesson_id', $lesson->id)->get()->keyBy('id');
 
+            // Array to track document IDs that are updated or marked for deletion
+            $processedDocumentIds = [];
+
+            // Process each document
             foreach ($documents as $index => $documentData) {
                 $documentId = $documentData['_id'] ?? null;
                 $delete = $documentData['_delete'] ?? '0';
@@ -316,29 +320,45 @@ class LessonController extends Controller
                         $existingDocuments->forget($documentId); // Remove from the existing list
                     }
                 } else {
+                    // Track processed document ID
+                    $processedDocumentIds[] = $documentId;
+
                     if ($documentId && isset($existingDocuments[$documentId])) {
                         // Update existing document
                         $document = $existingDocuments[$documentId];
+                        // Handle file upload if a new file is provided
+                        if ($request->hasFile('documents.' . $index . '.file')) {
+                            // Delete old file if exists
+                            if (!empty($document->file_path) && Storage::exists($document->file_path)) {
+                                Storage::delete($document->file_path);
+                            }
+
+                            // Store the new file and update the file path
+                            $file = $request->file('documents.' . $index . '.file');
+                            $filePath = $file->store('documents');
+                            $documentData['file_path'] = $filePath;
+                        }
+                        // Update the document with new data
                         $document->update($documentData);
                     } else {
-                        // Handle file upload
+                        // Create new document
+                        $filePath = null;
                         if ($request->hasFile('documents.' . $index . '.file')) {
                             $file = $request->file('documents.' . $index . '.file');
                             $filePath = $file->store('documents'); // Store the file and get the path
-
-                            Document::create(array_merge($documentData, [
-                                'file_path' => $filePath,
-                                'lesson_id' => $lesson->id
-                            ]));
                         }
+                        Document::create(array_merge($documentData, [
+                            'file_path' => $filePath,
+                            'lesson_id' => $lesson->id
+                        ]));
                     }
                 }
             }
 
             // Delete any remaining documents that were not included in the update request
             foreach ($existingDocuments as $document) {
-                // Check if the document was marked for deletion
-                if (!in_array($document->id, array_column($documents, '_id'))) {
+                // Check if the document is not in the list of processed IDs
+                if (!in_array($document->id, $processedDocumentIds)) {
                     // Delete the file from storage
                     if (!empty($document->file_path) && Storage::exists($document->file_path)) {
                         Storage::delete($document->file_path);
