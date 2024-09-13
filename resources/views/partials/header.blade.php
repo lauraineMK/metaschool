@@ -2,10 +2,18 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{{ url('/') }}">MetaSchool</a>
-        <div class="collapse navbar-collapse">
+
+        <!-- Hamburger menu button for screens between 600px and 767px -->
+        <button class="navbar-toggler" type="button">
+            <span class="navbar-toggler-icon">☰</span> <!-- Icône du menu hamburger -->
+            <span class="navbar-toggler-close" style="display: none;">✖</span> <!-- Icône de fermeture -->
+        </button>
+
+        <!-- Main navigation for larger screens -->
+        <div class="collapse navbar-collapse d-lg-flex" id="mainNavbar">
             @auth
             <!-- Links for Authenticated Users -->
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav me-auto">
                 <!-- Check if the user is a teacher -->
                 @if (auth()->user()->role == 'teacher')
                 <li class="nav-item">
@@ -31,7 +39,7 @@
             </ul>
             @endauth
 
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ms-auto">
                 @guest
                 <!-- Links for Guests -->
                 @if(Request::is('login'))
@@ -78,5 +86,49 @@
             </ul>
 
         </div>
+
+        <!-- Dropdown menu for screens between 600px and 767px -->
+        <div class="collapse d-lg-none" id="dropdownMenu">
+            <ul class="navbar-nav">
+                <!-- Main Navigation Links -->
+                @auth
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('teachers/courses') }}">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('teachers/lessons') }}">Lessons</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/about') }}">About</a>
+                </li>
+                @else
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/register') }}">Register</a>
+                </li>
+                @endif
+            </ul>
+            <ul class="navbar-nav mt-2">
+                <!-- Authenticated User Links -->
+                @auth
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/profile') }}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/logout') }}"
+                        onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+                @endauth
+            </ul>
+        </div>
+
     </nav>
 </header>

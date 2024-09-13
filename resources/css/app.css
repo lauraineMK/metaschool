@@ -1,4 +1,4 @@
-/* Common styles for course creation and edition forms */
+/* MetaSchool style */
 .d-flex {
     display: flex;
 }
@@ -94,4 +94,151 @@
 
 #section-container {
     display: none;
+}
+
+/* Media queries */
+
+/* For large desktops */
+@media (min-width: 1200px) {
+    /* Styles for large desktop screens */
+
+}
+
+/* For medium-sized desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+    /* Styles for medium-sized desktop screens */
+
+}
+
+/* For horizontal tablet devices */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Styles for tablet screens in landscape mode */
+
+}
+
+/* For devices the screen of which is smaller than 1024 pixels */
+@media (max-width: 1024px) {
+    .navbar-toggler {
+        display: none; /* Hide hamburger menu button on large screens */
+    }
+    #dropdownMenu {
+        display: none; /* Ensure the dropdown menu is hidden on large screens */
+    }
+    #mainNavbar {
+        display: flex; /* Show main navigation menu on large screens */
+    }
+}
+
+/* Styles for screens between 767 and 992 pixels */
+@media (min-width: 768px) and (max-width: 992px) {
+    .navbar {
+        display: flex;
+        align-items: center; /* Vertically center items */
+        justify-content: space-between; /* Space out elements */
+    }
+
+    .navbar-brand {
+        margin-right: auto; /* Push navigation items to the right */
+    }
+
+    .navbar-collapse {
+        display: flex;
+        flex-direction: row; /* Horizontal alignment of items */
+        flex: 1; /* Take up all available space */
+    }
+
+    .navbar-nav {
+        display: flex;
+        flex-direction: row; /* Align navigation items horizontally */
+        margin: 0; /* Reset margins */
+        padding: 0; /* Reset padding */
+        list-style: none; /* Remove list bullets */
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0 10px; /* Spacing between items */
+    }
+
+    .navbar-toggler {
+        display: none; /* Hide the hamburger menu button on these screens */
+    }
+}
+
+
+/* For vertical tablet devices */
+@media (min-width: 600px) and (max-width: 767px) {
+    /* Styles for tablet screens in portrait mode */
+    .navbar-toggler {
+        display: block; /* Show hamburger menu button for screens between 600px and 767px */
+    }
+    #dropdownMenu {
+        display: none; /* Ensure the dropdown menu is hidden by default */
+    }
+    #dropdownMenu.show {
+        display: block; /* Show dropdown menu when toggled */
+    }
+    #mainNavbar {
+        display: none; /* Hide main navigation menu on screens between 600px and 767px */
+    }
+    .navbar {
+        position: relative; /* Ensure the navbar is the positioning container for the dropdown menu */
+    }
+
+    .navbar-toggler {
+        position: absolute; /* Fix the button in an absolute position */
+        top: 50%; /* Vertically center */
+        right: 0; /* Align the button to the right */
+        transform: translateY(-50%); /* Vertically center */
+    }
+
+    .navbar-toggler-icon {
+        display: inline;
+    }
+
+    .navbar-toggler-close {
+        display: none; /* Hide the close button by default */
+        font-size: 24px; /* Size of the close icon */
+        color: #000;
+    }
+
+    /* Show the close button and hide the hamburger menu when the dropdown is open */
+    #dropdownMenu.show ~ .navbar-toggler .navbar-toggler-icon {
+        display: none; /* Hide the hamburger icon */
+    }
+
+    #dropdownMenu.show ~ .navbar-toggler .navbar-toggler-close {
+        display: inline; /* Show the close button */
+    }
+
+    #dropdownMenu {
+        position: absolute; /* Position the dropdown menu under the navbar */
+        top: 100%; /* Place the menu directly under the navbar */
+        right: 0; /* Align the menu with the right edge of the navbar */
+        width: 100px; /* Set a specific width for the dropdown menu */
+        display: none; /* Hide the menu by default */
+        background-color: #f8f9fa; /* Background color for the dropdown menu */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow to give a depth effect */
+        z-index: 1000; /* Ensure the menu is above other content */
+        text-align: center; /* Center text in the dropdown menu */
+    }
+
+    #dropdownMenu.show {
+        display: block; /* Show the menu when opened */
+    }
+
+    .navbar-nav {
+        flex-direction: column; /* Ensure navigation items display in a column in the dropdown menu */
+        margin: 0; /* Reset margins */
+        padding: 0; /* Reset padding */
+        list-style: none; /* Remove list bullets */
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0; /* Reset margin between navigation items */
+    }
+}
+
+/* For cell phones */
+@media (max-width: 599px) {
+    /* Styles for cell phone screens */
 }
