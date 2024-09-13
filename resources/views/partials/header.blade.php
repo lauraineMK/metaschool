@@ -9,7 +9,7 @@
             <span class="navbar-toggler-close" style="display: none;">✖</span> <!-- Icône de fermeture -->
         </button>
 
-        <!-- Main navigation for larger screens -->
+        <!-- Main navigation for larger screens (from 758px) -->
         <div class="collapse navbar-collapse d-lg-flex" id="mainNavbar">
             @auth
             <!-- Links for Authenticated Users -->
@@ -48,12 +48,12 @@
                     <a class="nav-link" href="{{ url('/') }}">Back</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/register') }}">Register</a>
+                    <a class="nav-link register-link" href="{{ url('/register') }}">Register</a>
                 </li>
                 @elseif(Request::is('register'))
                 <!-- On the register page -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/login') }}">Login</a>
+                    <a class="nav-link login-link" href="{{ url('/login') }}">Login</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Back</a>
@@ -61,19 +61,19 @@
                 @else
                 <!-- Default Links for Guests -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/login') }}">Login</a>
+                    <a class="nav-link login-link" href="{{ url('/login') }}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/register') }}">Register</a>
+                    <a class="nav-link register-link" href="{{ url('/register') }}">Register</a>
                 </li>
                 @endif
                 @else
                 <!-- Links for Authenticated Users -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/profile') }}">Profile</a>
+                    <a class="nav-link profile-link" href="{{ url('/profile') }}">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/logout') }}"
+                    <a class="nav-link logout-link" href="{{ url('/logout') }}"
                         onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
                         Logout
@@ -103,10 +103,10 @@
                 </li>
                 @else
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/login') }}">Login</a>
+                    <a class="nav-link login-link" href="{{ url('/login') }}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/register') }}">Register</a>
+                    <a class="nav-link register-link" href="{{ url('/register') }}">Register</a>
                 </li>
                 @endif
             </ul>
@@ -114,10 +114,10 @@
                 <!-- Authenticated User Links -->
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/profile') }}">Profile</a>
+                    <a class="nav-link profile-link" href="{{ url('/profile') }}">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/logout') }}"
+                    <a class="nav-link logout-link" href="{{ url('/logout') }}"
                         onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
                         Logout
@@ -127,6 +127,15 @@
                     </form>
                 </li>
                 @endauth
+            </ul>
+        </div>
+
+        <!-- Account button for screens less than 599px -->
+        <div class="account-btn-container">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link account-btn" href="{{ url('/account') }}">Account</a>
+                </li>
             </ul>
         </div>
 
