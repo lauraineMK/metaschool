@@ -261,10 +261,10 @@
     /* Styles for cell phone screens */
 
     /* Hide login, register, profile, and logout buttons on small screens */
-    .navbar-nav .nav-item > .login-link,
-    .navbar-nav .nav-item > .register-link,
-    .navbar-nav .nav-item > .profile-link,
-    .navbar-nav .nav-item > .logout-link {
+    .navbar-nav .nav-item .login-link,
+    .navbar-nav .nav-item .register-link,
+    .navbar-nav .nav-item .profile-link,
+    .navbar-nav .nav-item .logout-link {
         display: none;
     }
 
