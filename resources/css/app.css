@@ -268,15 +268,42 @@
         display: none;
     }
 
+    .navbar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0;
+    }
+
+    .navbar-nav .nav-item {
+        flex: 1 0 25%;
+        box-sizing: border-box;
+        margin-bottom:3px;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        font-size: 14px;
+        padding: 4px 8px;
+        text-align: center;
+    }
+
+    .account-btn-container .account-btn {
+        font-size: 14px;
+        padding: 4px 8px;
+        margin-bottom: 3px;
+    }
+
     /* Ensure the account button is displayed */
     .account-btn-container {
         display: block; /* Show account button */
         position: fixed;
-        bottom: 0;
-        width: 100%;
-        background-color: #f8f9fa;
-        padding: 10px;
-        text-align: center;
+        bottom: -20px;
+        right: 5px;
+        margin: 10px
+        /* width: 100%; */
+        /* background-color: #f8f9fa; */
+        /* padding: 10px; */
+        /* text-align: center; */
     }
 
     .navbar {
