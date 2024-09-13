@@ -18,7 +18,10 @@ class AuthenticationController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        // Simple User-Agent verification for mobile detection
+        $isMobile = strpos(request()->header('User-Agent'), 'Mobile') !== false;
+
+        return view('auth.login', ['isMobile' => $isMobile]);
     }
 
     /**
@@ -34,12 +37,12 @@ class AuthenticationController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-        // Role-based redirection
-        if ($user->role === 'teacher') {
-            return redirect()->route('teacher.dashboard');
-        }
+            // Role-based redirection
+            if ($user->role === 'teacher') {
+                return redirect()->route('teacher.dashboard');
+            }
 
-        return redirect()->route('student.dashboard');
+            return redirect()->route('student.dashboard');
         }
 
         return redirect('login')->withErrors(['email' => 'Invalid credentials.']);
@@ -62,7 +65,10 @@ class AuthenticationController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        // Simple User-Agent verification for mobile detection
+        $isMobile = strpos(request()->header('User-Agent'), 'Mobile') !== false;
+
+        return view('auth.register', ['isMobile' => $isMobile]);
     }
 
     /**
@@ -101,5 +107,15 @@ class AuthenticationController extends Controller
         }
 
         return redirect()->route('student.dashboard');
+    }
+
+    /**
+     * Display the account page for screens smaller than 599px
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function index()
+    {
+        return view('auth.account');
     }
 }
