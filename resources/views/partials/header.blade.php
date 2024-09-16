@@ -4,9 +4,9 @@
         <a class="navbar-brand" href="{{ url('/') }}">MetaSchool</a>
 
         <!-- Hamburger menu button for screens between 600px and 767px -->
-        <button class="navbar-toggler" type="button">
-            <span class="navbar-toggler-icon">☰</span> <!-- Icône du menu hamburger -->
-            <span class="navbar-toggler-close" style="display: none;">✖</span> <!-- Icône de fermeture -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon">☰</span>
+            <span class="navbar-toggler-close" style="display: none;">✖</span>
         </button>
 
         <!-- Main navigation for larger screens (from 758px) -->
