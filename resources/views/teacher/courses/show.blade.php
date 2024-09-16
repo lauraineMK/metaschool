@@ -84,6 +84,6 @@
     @endif
 
     <!-- Button to go back to the courses list -->
-    <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary mt-4">Back to Courses</a>
+    <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary mt-4 ">Back to Courses</a>
 </div>
 @endsection
