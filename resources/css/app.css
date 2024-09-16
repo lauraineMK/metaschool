@@ -3,6 +3,32 @@
     display: none;
 }
 
+/* Make sure buttons are aligned horizontally */
+.btn-container {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+}
+
+/* Basic button styles */
+.btn-delete,
+.btn-edit,
+.btn-view {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Hide the default icon */
+.btn-delete i,
+.btn-edit i,
+.btn-view i {
+    display: none;
+}
+
 .d-flex {
     display: flex;
 }
@@ -69,10 +95,10 @@
 }
 
 .page-title {
-    margin-top: 3rem; /* Ajustez l'espacement supérieur selon vos besoins */
-    margin-bottom: 1.5rem; /* Ajustez l'espacement inférieur selon vos besoins */
-    font-size: 2rem; /* Ajustez la taille de la police selon vos besoins */
-    text-align: center; /* Centre le titre horizontalement */
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    text-align: center;
 }
 
 .remove-module-btn {
@@ -121,9 +147,28 @@
 
 }
 
+@media (min-width: 1025px) {
+    .btn-delete .text-delete {
+      display: inline;
+    }
+
+    .btn-delete i {
+      display: none; /* Cache l'icône de corbeille */
+    }
+  }
+
 /* For horizontal tablet devices */
 @media (min-width: 768px) and (max-width: 1024px) {
     /* Styles for tablet screens in landscape mode */
+    .btn-container {
+        flex-direction: row
+    }
+
+    .btn-delete,
+    .btn-edit,
+    .btn-view {
+        font-size: 14px; /* Adjust font size for tablets */
+    }
 
 }
 
@@ -132,9 +177,17 @@
     .navbar-toggler {
         display: none; /* Hide hamburger menu button on large screens */
     }
+
+    table.table th,
+    table.table td {
+        padding: 0.5rem; /* Reduce cell spacing */
+        font-size: 0.875rem; /* Reduce font size in cells */
+    }
+
     #dropdownMenu {
         display: none; /* Ensure the dropdown menu is hidden on large screens */
     }
+
     #mainNavbar {
         display: flex; /* Show main navigation menu on large screens */
     }
@@ -175,27 +228,39 @@
     }
 }
 
+@media (max-width: 768px) {
+    .btn-delete .text-delete,
+    .btn-edit .text-edit,
+    .btn-view .text-view {
+        display: none; /* Hide “Delete”,“Edit”, “View” text */
+    }
+
+    .btn-delete i,
+    .btn-edit i,
+    .btn-view i {
+        display: inline; /* Show icon */
+    }
+}
 
 /* For vertical tablet devices */
 @media (min-width: 600px) and (max-width: 767px) {
     /* Styles for tablet screens in portrait mode */
-    .navbar-toggler {
-        display: block; /* Show hamburger menu button for screens between 600px and 767px */
-    }
-    #dropdownMenu {
-        display: none; /* Ensure the dropdown menu is hidden by default */
-    }
-    #dropdownMenu.show {
-        display: block; /* Show dropdown menu when toggled */
-    }
-    #mainNavbar {
-        display: none; /* Hide main navigation menu on screens between 600px and 767px */
-    }
     .navbar {
         position: relative; /* Ensure the navbar is the positioning container for the dropdown menu */
     }
+    .navbar-nav {
+        flex-direction: column; /* Ensure navigation items display in a column in the dropdown menu */
+        margin: 0; /* Reset margins */
+        padding: 0; /* Reset padding */
+        list-style: none; /* Remove list bullets */
+    }
+
+    .navbar-nav .nav-item {
+        margin: 0; /* Reset margin between navigation items */
+    }
 
     .navbar-toggler {
+        display: block; /* Show hamburger menu button for screens between 600px and 767px */
         position: absolute; /* Fix the button in an absolute position */
         top: 60%; /* Vertically center */
         right: 10px; /* Align the button to the right */
@@ -217,6 +282,18 @@
         font-size: 24px; /* Size of the close icon */
         font-weight: bold;
         color: #000;
+    }
+
+    #dropdownMenu {
+        display: none; /* Ensure the dropdown menu is hidden by default */
+    }
+
+    #dropdownMenu.show {
+        display: block; /* Show dropdown menu when toggled */
+    }
+
+    #mainNavbar {
+        display: none; /* Hide main navigation menu on screens between 600px and 767px */
     }
 
     /* Show the close button and hide the hamburger menu when the dropdown is open */
@@ -243,50 +320,11 @@
     #dropdownMenu.show {
         display: block; /* Show the menu when opened */
     }
-
-    .navbar-nav {
-        flex-direction: column; /* Ensure navigation items display in a column in the dropdown menu */
-        margin: 0; /* Reset margins */
-        padding: 0; /* Reset padding */
-        list-style: none; /* Remove list bullets */
-    }
-
-    .navbar-nav .nav-item {
-        margin: 0; /* Reset margin between navigation items */
-    }
 }
 
 /* For cell phones */
 @media (max-width: 599px) {
     /* Styles for cell phone screens */
-
-    /* Hide login, register, profile, and logout buttons on small screens */
-    .navbar-nav .nav-item .login-link,
-    .navbar-nav .nav-item .register-link,
-    .navbar-nav .nav-item .profile-link,
-    .navbar-nav .nav-item .logout-link {
-        display: none;
-    }
-
-    .navbar-nav {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0;
-        margin: 0;
-    }
-
-    .navbar-nav .nav-item {
-        flex: 1 0 25%;
-        box-sizing: border-box;
-        margin-bottom:3px;
-    }
-
-    .navbar-nav .nav-item .nav-link {
-        font-size: 14px;
-        padding: 4px 8px;
-        text-align: center;
-    }
-
     .account-btn-container .account-btn {
         font-size: 14px;
         padding: 4px 8px;
@@ -298,12 +336,17 @@
         display: block; /* Show account button */
         position: fixed;
         bottom: -20px;
-        right: 5px;
-        margin: 10px
-        /* width: 100%; */
-        /* background-color: #f8f9fa; */
-        /* padding: 10px; */
-        /* text-align: center; */
+        right: 15px;
+        margin: 10px;
+        background-color: #f8f9fa;
+    }
+
+    /* Hide login, register, profile, and logout buttons on small screens */
+    .navbar-nav .nav-item .login-link,
+    .navbar-nav .nav-item .register-link,
+    .navbar-nav .nav-item .profile-link,
+    .navbar-nav .nav-item .logout-link {
+        display: none;
     }
 
     .navbar {
@@ -316,24 +359,6 @@
         z-index: 1000; /* Ensure the bar is above the content */
     }
 
-    /* Adjust the menu to display at the bottom */
-    .navbar-nav {
-        flex-direction: row; /* Display the navigation items in a row */
-        justify-content: space-around; /* Space out navigation items evenly */
-        padding: 10px 0; /* Add padding on top and bottom */
-        margin: 0; /* Remove default margin */
-        list-style: none; /* Remove list bullets */
-    }
-
-    .navbar-nav .nav-item {
-        flex-grow: 1; /* Each navigation item takes an equal share of the width */
-        text-align: center; /* Center the text in each item */
-    }
-
-    .navbar-toggler {
-        display: none; /* Hide the hamburger button on mobile */
-    }
-
     /* Keep the logo or title at the top and centered */
     .navbar-brand {
         position: fixed; /* Fix the position of the logo or title */
@@ -344,6 +369,37 @@
         z-index: 1001; /* Make sure it's above other elements */
         padding: 10px; /* Add some padding around the logo */
         background-color: #fff; /* Optional: Add background color if needed */
+    }
+
+    /* Adjust the menu to display at the bottom */
+    .navbar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0;
+        flex-direction: row; /* Display the navigation items in a row */
+        justify-content: space-around; /* Space out navigation items evenly */
+        padding: 10px 0; /* Add padding on top and bottom */
+        margin: 0; /* Remove default margin */
+        list-style: none; /* Remove list bullets */
+    }
+
+    .navbar-nav .nav-item {
+        flex: 1 0 25%;
+        box-sizing: border-box;
+        margin-bottom:3px;
+        flex-grow: 1; /* Each navigation item takes an equal share of the width */
+        text-align: center; /* Center the text in each item */
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        font-size: 14px;
+        padding: 4px 8px;
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        display: none; /* Hide the hamburger button on mobile */
     }
 
     #dropdownMenu {
