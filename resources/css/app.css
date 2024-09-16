@@ -3,6 +3,11 @@
     display: none;
 }
 
+/* Styles for Creation Context */
+.create-module-group {
+    width: calc(33.333% - 20px); /* Adjust width to fit three modules per row */
+}
+
 /* Make sure buttons are aligned horizontally */
 .btn-container {
     display: inline-flex;
@@ -31,6 +36,11 @@
 
 .d-flex {
     display: flex;
+}
+
+/* Styles for Editing Context */
+.edit-module-group {
+    min-width: 300px; /* Minimum width to prevent overly narrow columns */
 }
 
 .form-section {
@@ -82,16 +92,6 @@
     margin: 10px; /* Space around each module */
     padding: 10px; /* Space inside each module */
     vertical-align: top;
-}
-
-/* Styles for Creation Context */
-.create-module-group {
-    width: calc(33.333% - 20px); /* Adjust width to fit three modules per row */
-}
-
-/* Styles for Editing Context */
-.edit-module-group {
-    min-width: 300px; /* Minimum width to prevent overly narrow columns */
 }
 
 .page-title {
@@ -178,8 +178,8 @@
         display: none; /* Hide hamburger menu button on large screens */
     }
 
-    table.table th,
-    table.table td {
+    .lessons-view table.table th,
+    .lessons-view table.table td {
         padding: 0.5rem; /* Reduce cell spacing */
         font-size: 0.875rem; /* Reduce font size in cells */
     }
@@ -228,7 +228,20 @@
     }
 }
 
-@media (max-width: 768px) {
+/* Page adjustments to fit screen width */
+@media (max-width: 900px) {
+    .lessons-view table.table th,
+    .lessons-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.775rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .lessons-view.container.mt-5 {
+        margin-left: -70px;
+    }
+
     .btn-delete .text-delete,
     .btn-edit .text-edit,
     .btn-view .text-view {
@@ -239,6 +252,62 @@
     .btn-edit i,
     .btn-view i {
         display: inline; /* Show icon */
+    }
+}
+
+@media (max-width: 680px) {
+    .lessons-view h1 {
+        font-size: 1.7rem;
+    }
+
+    .lessons-view .btn.btn-primary.mb-3  {
+        font-size: 0.8rem;
+    }
+
+    .lessons-view table.table th,
+    .lessons-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.755rem;
+    }
+}
+
+@media (max-width: 650px) {
+    .lessons-view h1 {
+        font-size: 1.65rem;
+    }
+
+    .lessons-view .btn.btn-primary.mb-3  {
+        font-size: 0.75rem;
+    }
+
+    .lessons-view.container.mt-5 {
+        margin-left: -60px;
+    }
+
+    .lessons-view table.table th,
+    .lessons-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.725rem;
+    }
+}
+
+@media (max-width: 630px) {
+    .lessons-view h1 {
+        font-size: 1.6rem;
+    }
+
+    .lessons-view .btn.btn-primary.mb-3 {
+        font-size: 0.7rem;
+    }
+
+    .lessons-view.container.mt-5 {
+        margin-left: -40px;
+    }
+
+    .lessons-view table.table th,
+    .lessons-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.675rem;
     }
 }
 
@@ -341,12 +410,26 @@
         background-color: #f8f9fa;
     }
 
-    /* Hide login, register, profile, and logout buttons on small screens */
-    .navbar-nav .nav-item .login-link,
-    .navbar-nav .nav-item .register-link,
-    .navbar-nav .nav-item .profile-link,
-    .navbar-nav .nav-item .logout-link {
-        display: none;
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    .lessons-view h1 {
+        font-size: 1.7rem;
+    }
+
+    .lessons-view .btn.btn-primary.mb-3 {
+        font-size: 0.8rem;
+    }
+
+    .lessons-view.container.mt-5 {
+        margin-left: 0;
+    }
+
+    .lessons-view table.table th,
+    .lessons-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.775rem;
     }
 
     .navbar {
@@ -366,9 +449,9 @@
         left: 50%; /* Center it horizontally */
         transform: translateX(-50%); /* Offset it to center correctly */
         display: block; /* Ensure it's visible */
-        z-index: 1001; /* Make sure it's above other elements */
         padding: 10px; /* Add some padding around the logo */
         background-color: #fff; /* Optional: Add background color if needed */
+        z-index: 1001; /* Make sure it's above other elements */
     }
 
     /* Adjust the menu to display at the bottom */
@@ -380,7 +463,6 @@
         flex-direction: row; /* Display the navigation items in a row */
         justify-content: space-around; /* Space out navigation items evenly */
         padding: 10px 0; /* Add padding on top and bottom */
-        margin: 0; /* Remove default margin */
         list-style: none; /* Remove list bullets */
     }
 
@@ -390,6 +472,14 @@
         margin-bottom:3px;
         flex-grow: 1; /* Each navigation item takes an equal share of the width */
         text-align: center; /* Center the text in each item */
+    }
+
+    /* Hide login, register, profile, and logout buttons on small screens */
+    .navbar-nav .nav-item .login-link,
+    .navbar-nav .nav-item .register-link,
+    .navbar-nav .nav-item .profile-link,
+    .navbar-nav .nav-item .logout-link {
+        display: none;
     }
 
     .navbar-nav .nav-item .nav-link {
@@ -408,5 +498,92 @@
 
     #mainNavbar {
         display: block; /* Show the main menu instead of the hamburger on mobile */
+    }
+}
+
+/* Page adjustments for a “Mobile L” */
+@media (max-width: 494px) {
+    .hide-on-small-mobile {
+        display: none !important;
+    }
+}
+
+@media (max-width: 459px) {
+    .courses-view h1 {
+        font-size: 1.7rem;
+    }
+
+    .courses-view .btn.btn-primary.mb-3 {
+        font-size: 0.8rem;
+    }
+
+    .courses-view.container.mt-5 {
+        margin-left: 0;
+    }
+
+    .courses-view table.table th,
+    .courses-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.775rem;
+    }
+}
+
+/* Page adjustments for a “Mobile M” */
+@media (max-width: 387px) {
+    .courses-view h1 {
+        font-size: 1.5rem;
+    }
+
+    .courses-view .btn.btn-primary.mb-3 {
+        font-size: 0.6rem;
+    }
+
+    .courses-view table.table th,
+    .courses-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.625rem;
+    }
+
+    .lessons-view h1 {
+        font-size: 1.5rem;
+    }
+
+    .lessons-view .btn.btn-primary.mb-3 {
+        font-size: 0.6rem;
+    }
+
+    .lessons-view table.table th,
+    .lessons-view table.table td {
+        padding: 0.4rem;
+        font-size: 0.625rem;
+    }
+}
+
+/* Page adjustments for a “Mobile S” */
+@media (max-width: 350px) {
+    .courses-view h1 {
+        font-size: 1.4rem;
+    }
+
+    .courses-view table.table th,
+    .courses-view table.table td {
+        padding: 0.25rem;
+        font-size: 0.625rem;
+    }
+
+    .lessons-view h1 {
+        font-size: 1.4rem;
+    }
+
+    .lessons-view table.table th,
+    .lessons-view table.table td {
+        padding: 0.25rem;
+        font-size: 0.625rem;
+    }
+
+    .btn-delete i,
+    .btn-edit i,
+    .btn-view i {
+        font-size: 10px;
     }
 }

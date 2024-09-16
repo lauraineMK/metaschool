@@ -3,7 +3,7 @@
 @section('title', 'Courses - MetaSchool')
 
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 courses-view">
     <h1>Courses</h1>
 
     <!-- Button to create a new course -->
