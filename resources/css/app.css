@@ -143,6 +143,30 @@
     display: inline-block;
 }
 
+.wrapper {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.wrapper .btn-block {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.wrapper .content {
+    width: 80%;
+    padding: 0;
+    margin-left: 50px;
+}
+
+.wrapper .sidebar {
+    width: 20%;
+    padding: 0;
+    margin-right: 50px;
+}
+
 #add-section-btn {
     display: none;
 }
@@ -188,6 +212,17 @@
         font-size: 14px; /* Adjust font size for tablets */
     }
 
+}
+
+/* Hide the mobile buttons on desktop */
+@media (min-width: 768px) {
+    .btn-mobile-only {
+        display: none;
+    }
+
+    .btn-desktop-only {
+        display: inline-flex; /* Ensure buttons are visible on desktop */
+    }
 }
 
 /* For devices the screen of which is smaller than 1024 pixels */
@@ -256,6 +291,52 @@
 }
 
 @media (max-width: 767px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .wrapper .sidebar {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+        padding: 0;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .wrapper .content {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .wrapper .btn-block {
+        display: inline-flex;
+        max-width: 150px;
+        margin: 5px;
+        width: auto;
+        text-align: center;
+    }
+
+    .wrapper .sidebar .btn-secondary {
+        margin-top: 0;
+        margin-bottom: 35px;
+    }
+
+    /* Hide the desktop buttons on mobile */
+    .btn-desktop-only {
+        display: none;
+    }
+
+    .btn-mobile-only {
+        display: inline-flex; /* Ensure buttons are visible on mobile */
+        width: auto; /* Adjust width */
+        max-width: 200px; /* Adjust max width as needed */
+        margin: 0 auto; /* Center the button horizontally */
+    }
+
     .btn-delete .text-delete,
     .btn-edit .text-edit,
     .btn-view .text-view {
