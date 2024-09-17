@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mt-5">
-<div class="header">
+    <div class="header">
         <h1>Edit Lesson</h1>
         <a href="{{ route('teacher.lessons.index') }}" class="btn btn-secondary">Cancel</a>
     </div>
@@ -55,10 +55,16 @@
                 </div>
 
                 <!-- Button to clear fields for this video group -->
-                <button type="button" class="btn btn-warning clear-video-button mt-3" data-index="{{ $index }}">Clear</button>
+                <button type="button" class="btn btn-warning clear-video-button mt-3 desktop-only" data-index="{{ $index }}">Clear</button>
+                <button type="button" class="btn btn-warning clear-video-button mt-3 mobile-only" data-index="{{ $index }}">
+                    <i class="fas fa-eraser"></i>
+                </button>
 
                 <!-- Button to remove video -->
-                <button type="button" class="btn btn-danger remove-video-button mt-3" data-index="{{ $index }}">Remove Video</button>
+                <button type="button" class="btn btn-danger remove-video-button mt-3 desktop-only" data-index="{{ $index }}">Remove Video</button>
+                <button type="button" class="btn btn-danger remove-video-button mt-3 mobile-only" data-index="{{ $index }}">
+                    <i class="fas fa-trash"></i>
+                </button>
 
                 <!-- Hidden input to mark videos for deletion -->
                 <input type="hidden" name="videos[{{ $index }}][_delete]" value="0">

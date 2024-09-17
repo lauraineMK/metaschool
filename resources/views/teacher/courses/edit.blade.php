@@ -3,7 +3,7 @@
 @section('title', 'Edit Course')
 
 @section('content')
-<div class="container">
+<div class="container  mt-5">
     <div class="header">
         <h1>Edit Course</h1>
         <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary">Cancel</a>
@@ -67,8 +67,14 @@
                     <input type="number" id="sections_{{ $index }}_level" name="sections[{{ $index }}][level]" class="form-control" value="{{ old('sections.' . $index . '.level', $section->level) }}">
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary add-module-btn">Add Module</button>
-                    <button type="button" class="btn btn-danger remove-section-btn">Remove Section</button>
+                    <button type="button" class="btn btn-secondary add-module-btn desktop-only">Add Module</button>
+                    <button type="button" class="btn btn-secondary add-module-btn mobile-only">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger remove-section-btn desktop-only">Remove Section</button>
+                    <button type="button" class="btn btn-danger remove-section-btn mobile-only">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
                 <div class="module-container">
                     @foreach ($section->modules as $moduleIndex => $module)
@@ -88,7 +94,10 @@
                             <label for="sesections_{{ $index }}_modules_{{ $moduleIndex }}_level">Module Level:</label>
                             <input type="number" id="sections_{{ $index }}_modules_{{ $moduleIndex }}_level" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][level]" class="form-control" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.level', $module->level) }}">
                         </div>
-                        <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+                        <button type="button" class="btn btn-danger remove-module-btn desktop-only">Remove Module</button>
+                        <button type="button" class="btn btn-danger remove-module-btn mobile-only">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                     @endforeach
                 </div>
@@ -114,15 +123,18 @@
                     <label for="modules_{{ $moduleIndex }}_level">Module Level:</label>
                     <input type="number" id="modules_{{ $moduleIndex }}_level" name="modules[{{ $moduleIndex }}][level]" class="form-control" value="{{ old('modules.' . $moduleIndex . '.level', $module->level) }}">
                 </div>
-                <button type="button" class="btn btn-danger remove-module-btn">Remove Module</button>
+                <button type="button" class="btn btn-danger remove-module-btn desktop-only">Remove Module</button>
+                <button type="button" class="btn btn-danger remove-module-btn mobile-only">
+                    <i class="fas fa-trash"></i>
+                </button>
             </div>
             @endforeach
         </div>
 
         <!-- Action Buttons -->
         <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn-secondary {{ $course->sections->count() > 0 ? 'hidden' : 'visible' }}" id="add-section-btn">Add Section</button>
-            <button type="button" class="btn btn-secondary" id="add-module-btn">Add Module</button>
+            <button type="button" class="btn btn-secondary desktop-only {{ $course->sections->count() > 0 ? 'hidden' : 'visible' }}" id="add-section-btn">Add Section</button>
+            <button type="button" class="btn btn-secondary desktop-only" id="add-module-btn">Add Module</button>
             <button type="submit" class="btn btn-primary">Update Course</button>
         </div>
     </form>

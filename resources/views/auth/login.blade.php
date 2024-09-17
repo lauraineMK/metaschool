@@ -30,7 +30,8 @@
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Login</button>
-            <a class="btn btn-secondary" href="{{ $isMobile ? url('/account') : url('/') }}" id="backButton">Back</a>
+            <a class="btn btn-secondary" href="{{ url('/') }}" id="backButton">Back</a>
+            <!-- <a class="btn btn-secondary" href="{{ $isMobile ? url('/account') : url('/') }}" id="backButton">Back</a> -->
         </div>
     </form>
 </div>
