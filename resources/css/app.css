@@ -1,5 +1,5 @@
 /* MetaSchool style */
-.account-btn-container {
+.home-and-account-btn-container {
     display: none;
 }
 
@@ -211,7 +211,6 @@
     .btn-view {
         font-size: 14px; /* Adjust font size for tablets */
     }
-
 }
 
 /* Hide the mobile buttons on desktop */
@@ -291,6 +290,17 @@
 }
 
 @media (max-width: 767px) {
+    .module-container {
+        /* Stack modules vertically */
+        display: block;
+    }
+
+    .module-group {
+        /* Remove margin to stack modules */
+        margin: 5px 0; /* Space between modules */
+        width: calc(100% - 20px); /* Full width minus margin */
+    }
+
     .wrapper {
         flex-direction: column;
     }
@@ -502,23 +512,6 @@
 
 /* For cell phones */
 @media (max-width: 599px) {
-    /* Styles for cell phone screens */
-    .account-btn-container .account-btn {
-        font-size: 14px;
-        padding: 4px 8px;
-        margin-bottom: 3px;
-    }
-
-    /* Ensure the account button is displayed */
-    .account-btn-container {
-        display: block; /* Show account button */
-        position: fixed;
-        bottom: -20px;
-        right: 15px;
-        margin: 10px;
-        background-color: #f8f9fa;
-    }
-
     .btn-warning.mb-3,
     .btn-danger.mb-3,
     .btn-secondary.mt-4 {
@@ -536,6 +529,40 @@
 
     .hide-on-mobile {
         display: none !important;
+    }
+
+    /* Ensure the home and account buttons are displayed */
+    .home-and-account-btn-container {
+        display: flex; /* Show account button */
+        justify-content: space-between;
+        position: fixed;
+        bottom: -10px;
+        left: 0;
+        right: 0;
+        margin: 10px;
+        background-color: #f8f9fa;
+        padding: 2px;
+        z-index: 999;
+    }
+
+    .home-and-account-btn-container .nav-link {
+        font-size: 20px;
+        padding: 6px;
+        align-items: center;
+    }
+
+    /* Styles for cell phone screens */
+    .home-and-account-btn-container .account-btn {
+        text-align: right;
+    }
+
+    .home-and-account-btn-container .home-btn {
+        text-align: left;
+    }
+
+    /* Ensure buttons are visible and spaced correctly on smaller screens */
+    .home-and-account-btn-container i {
+        margin-right: 5px; /* Space between icon and text */
     }
 
     .lessons-view h1 {
