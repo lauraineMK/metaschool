@@ -70,10 +70,17 @@ class LessonController extends Controller
             $nextLesson = null;
         }
 
+        // Retrieve the videos associated with the lesson
+        $videos = $lesson->videos;
+        // Retrieve the documents associated with the lesson
+        $documents = $lesson->documents;
+
         // Pass the lesson details to the view
         return view('student.lessons.show', [
             'lesson' => $lesson,
             'course' => $course,
+            'videos' => $videos,
+            'documents' => $documents,
             'previousLesson' => $previousLesson,
             'nextLesson' => $nextLesson
         ]);
