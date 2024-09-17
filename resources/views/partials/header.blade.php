@@ -130,13 +130,14 @@
             </ul>
         </div>
 
-        <!-- Account button for screens less than 599px -->
-        <div class="account-btn-container">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link account-btn" href="{{ url('/account') }}">Account</a>
-                </li>
-            </ul>
+        <!-- Account and Home buttons for screens less than 599px -->
+        <div class="home-and-account-btn-container">
+            <a class="nav-link home-btn" href="{{ url('/') }}">
+                <i class="fas fa-home"></i>
+            </a>
+            <a class="nav-link account-btn" href="{{ url('/account') }}">
+                <i class="fas fa-user"></i>
+            </a>
         </div>
 
     </nav>
