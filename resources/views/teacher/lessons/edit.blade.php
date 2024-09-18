@@ -26,12 +26,6 @@
             <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content', $lesson->content) }}</textarea>
         </div>
 
-        <!-- Video input -->
-        <div class="form-group mt-3">
-            <label for="content">Content</label>
-            <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content', $lesson->content) }}</textarea>
-        </div>
-
         <!-- Video inputs -->
         <div id="video-section" data-edit-mode="{{ isset($lesson->id) ? 'true' : 'false' }}">
             <h3>Videos</h3>
