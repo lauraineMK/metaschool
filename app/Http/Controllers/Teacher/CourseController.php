@@ -239,17 +239,20 @@ class CourseController extends Controller
             'sections.*.name' => 'nullable|string|max:255',
             'sections.*.description' => 'nullable|string',
             'sections.*.level' => 'nullable|integer',
+            'sections.*.order' => 'nullable|integer',
             'sections.*.modules' => 'nullable|array',
             'sections.*.modules.*.id' => 'nullable|exists:modules,id',
             'sections.*.modules.*.name' => 'nullable|string|max:255',
             'sections.*.modules.*.description' => 'nullable|string',
             'sections.*.modules.*.level' => 'nullable|integer',
+            'sections.*.modules.*.order' => 'nullable|integer',
             'sections.*.modules.*.section_id' => 'nullable|exists:sections,id',
             'modules' => 'nullable|array',
             'modules.*.id' => 'nullable|exists:modules,id',
             'modules.*.name' => 'nullable|string|max:255',
             'modules.*.description' => 'nullable|string',
             'modules.*.level' => 'nullable|integer',
+            'modules.*.order' => 'nullable|integer',
         ]);
 
         $course = Course::findOrFail($id);
@@ -269,51 +272,65 @@ class CourseController extends Controller
             // Course update
             $course->update($validated);
 
-            // Section update
+            // Section update or creation
             if ($request->has('sections')) {
                 $currentSectionIds = [];
+                $currentSectionOrder = Section::where('course_id', $course->id)->max('order') ?? 0;
+
                 foreach ($request->sections as $sectionData) {
                     if (isset($sectionData['id'])) {
+                        // Update existing section
                         $section = Section::find($sectionData['id']);
                         if ($section) {
                             $section->update([
                                 'name' => $sectionData['name'] ?? $section->name,
                                 'description' => $sectionData['description'] ?? $section->description,
                                 'level' => $sectionData['level'] ?? $section->level,
+                                'order' => $sectionData['order'] ?? $section->order,
                             ]);
                             $currentSectionIds[] = $section->id;
                         }
                     } else {
+                        // Create new section
+                        $currentSectionOrder++;
                         $newSection = Section::create([
                             'name' => $sectionData['name'],
                             'description' => $sectionData['description'],
                             'course_id' => $course->id,
                             'level' => $sectionData['level'],
+                            'order' => $sectionData['order'] ?? $currentSectionOrder,
                         ]);
                         $currentSectionIds[] = $newSection->id;
                     }
 
-                    // Section's module update
+                    // Section's module update or creation
                     if (!empty($sectionData['modules'])) {
                         $currentModuleIds = [];
+                        $currentModuleOrder = Module::where('section_id', $section->id)->max('order') ?? 0;
+
                         foreach ($sectionData['modules'] as $moduleData) {
                             if (isset($moduleData['id'])) {
+                                // Update existing module
                                 $module = Module::find($moduleData['id']);
                                 if ($module) {
                                     $module->update([
                                         'name' => $moduleData['name'] ?? $module->name,
                                         'description' => $moduleData['description'] ?? $module->description,
                                         'level' => $moduleData['level'] ?? $module->level,
+                                        'order' => $moduleData['order'] ?? $module->order,
                                     ]);
                                     $currentModuleIds[] = $module->id;
                                 }
                             } else {
+                                // Create new module
+                                $currentModuleOrder++;
                                 $newModule = Module::create([
                                     'name' => $moduleData['name'],
                                     'description' => $moduleData['description'],
                                     'course_id' => $course->id,
                                     'section_id' => $section->id,
                                     'level' => $moduleData['level'],
+                                    'order' => $moduleData['order'] ?? $currentModuleOrder,
                                 ]);
                                 $currentModuleIds[] = $newModule->id;
                             }
@@ -334,11 +351,16 @@ class CourseController extends Controller
                     });
             }
 
-            // Standalone modules update
+            // Standalone modules update or creation
             if ($request->has('modules')) {
                 $currentModuleIds = [];
+                $currentStandaloneModuleOrder = Module::where('course_id', $course->id)
+                ->whereNull('section_id')
+                ->max('order') ?? 0;
+
                 foreach ($request->modules as $moduleData) {
                     if (isset($moduleData['id'])) {
+                        // Update existing module
                         $module = Module::find($moduleData['id']);
                         if ($module) {
                             $module->update([
@@ -346,16 +368,20 @@ class CourseController extends Controller
                                 'description' => $moduleData['description'] ?? $module->description,
                                 'level' => $moduleData['level'] ?? $module->level,
                                 'section_id' => $moduleData['section_id'] ?? $module->section_id,
+                                'order' => $moduleData['order'] ?? $module->order,
                             ]);
                             $currentModuleIds[] = $module->id;
                         }
                     } else {
+                        // Create new standalone module
+                        $currentStandaloneModuleOrder++;
                         $newModule = Module::create([
                             'name' => $moduleData['name'],
                             'description' => $moduleData['description'],
                             'course_id' => $course->id,
                             'section_id' => $moduleData['section_id'] ?? null,
                             'level' => $moduleData['level'],
+                            'order' => $moduleData['order'] ?? $currentStandaloneModuleOrder,
                         ]);
                         $currentModuleIds[] = $newModule->id;
                     }
