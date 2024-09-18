@@ -93,14 +93,17 @@ class CourseController extends Controller
             'sections.*.name' => 'nullable|string|max:255',
             'sections.*.description' => 'nullable|string',
             'sections.*.level' => 'nullable|integer',
+            'sections.*.order' => 'nullable|integer',
             'sections.*.modules' => 'nullable|array',
             'sections.*.modules.*.name' => 'nullable|string|max:255',
             'sections.*.modules.*.description' => 'nullable|string',
             'sections.*.modules.*.level' => 'nullable|integer',
+            'sections.*.modules.*.order' => 'nullable|integer',
             'modules' => 'nullable|array',
             'modules.*.name' => 'nullable|string|max:255',
             'modules.*.description' => 'nullable|string',
             'modules.*.level' => 'nullable|integer',
+            'modules.*.order' => 'nullable|integer',
         ]);
 
         // Set the author_id to the authenticated user
@@ -115,25 +118,42 @@ class CourseController extends Controller
             'author_id' => $validated['author_id'],
         ]);
 
+        // Get the current maximum order for sections in the course
+        $currentSectionOrder = Section::where('course_id', $course->id)->max('order') ?? 0;
+
+        // Get the current maximum order for modules within sections in the course
+        $currentModuleOrder = Module::where('course_id', $course->id)
+            ->whereNotNull('section_id')
+            ->max('order') ?? 0;
+
+        // Get the current maximum order for standalone modules in the course
+        $currentStandaloneModuleOrder = Module::where('course_id', $course->id)
+            ->whereNull('section_id')
+            ->max('order') ?? 0;
+
         // Section creation if provided
         if (!empty($validated['sections'])) {
             foreach ($validated['sections'] as $sectionData) {
+                $currentSectionOrder++;
                 $section = Section::create([
                     'name' => $sectionData['name'],
                     'description' => $sectionData['description'],
                     'course_id' => $course->id,
                     'level' => $sectionData['level'] ?? null,
+                    'order' => $sectionData['order'] ?? $currentSectionOrder,
                 ]);
 
                 // Section module creation
                 if (!empty($sectionData['modules'])) {
                     foreach ($sectionData['modules'] as $moduleData) {
+                        $currentModuleOrder++;
                         Module::create([
                             'name' => $moduleData['name'],
                             'description' => $moduleData['description'],
                             'course_id' => $course->id,
                             'section_id' => $section->id,
                             'level' => $moduleData['level'] ?? null,
+                            'order' => $moduleData['order'] ?? $currentModuleOrder,
                         ]);
                     }
                 }
@@ -143,12 +163,14 @@ class CourseController extends Controller
         // Standalone module creation if provided
         if (!empty($validated['modules'])) {
             foreach ($validated['modules'] as $moduleData) {
+                $currentStandaloneModuleOrder++;
                 Module::create([
                     'name' => $moduleData['name'],
                     'description' => $moduleData['description'],
                     'course_id' => $course->id,
                     'section_id' => null,
                     'level' => $moduleData['level'] ?? null,
+                    'order' => $moduleData['order'] ?? $currentStandaloneModuleOrder,
                 ]);
             }
         }
@@ -304,12 +326,12 @@ class CourseController extends Controller
                 }
                 // Deletion of sections not present in the request data
                 Section::where('course_id', $course->id)
-                ->whereNotIn('id', $currentSectionIds)
-                ->each(function($section) {
-                    // Delete associated modules when deleting section
-                    Module::where('section_id', $section->id)->delete();
-                    $section->delete();
-                });
+                    ->whereNotIn('id', $currentSectionIds)
+                    ->each(function ($section) {
+                        // Delete associated modules when deleting section
+                        Module::where('section_id', $section->id)->delete();
+                        $section->delete();
+                    });
             }
 
             // Standalone modules update

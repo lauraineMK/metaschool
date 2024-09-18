@@ -30,7 +30,7 @@
             <!-- Lesson Information -->
             <div class="mb-3">
                 <strong>Course:</strong>
-                <a href="{{ route('student.courses.show', $lesson->course->id) }}">{{ $lesson->course->title }}</a>
+                <a href="{{ route('student.courses.show', $lesson->course->id) }}">{{ $lesson->course->name }}</a>
             </div>
 
             @if($lesson->section)
