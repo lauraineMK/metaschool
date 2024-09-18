@@ -4,7 +4,7 @@ Thank you for contributing to our project! To help streamline the process, pleas
 
 ## Problem Description
 
-### Method to be Reworked
+### Course Editing
 
 #### Summary
 
