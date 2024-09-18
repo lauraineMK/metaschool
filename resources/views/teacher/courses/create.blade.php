@@ -3,7 +3,7 @@
 @section('title', 'Create Course')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
     <div class="header">
         <h1>Create a New Course</h1>
         <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary">Cancel</a>

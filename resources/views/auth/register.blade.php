@@ -6,16 +6,16 @@
 
 @section('content')
 <div class="container">
-    <h1>Register</h1>
+    <h1 class="page-title">Register</h1>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
     <form method="POST" action="{{ url('register') }}">
@@ -36,11 +36,15 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="password_confirmation">Confirm Password</label>
             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Register</button>
+            <a class="btn btn-secondary" href="{{ url('/') }}" id="backButton">Back</a>
+            <!-- <a class="btn btn-secondary" href="{{ $isMobile ? url('/account') : url('/') }}" id="backButton">Back</a> -->
+        </div>
     </form>
 </div>
 @endsection

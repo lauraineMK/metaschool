@@ -81,8 +81,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     <input type="number" id="sections_${sectionIndex}_level" name="sections[${sectionIndex}][level]" class="form-control">
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary add-module-btn">Add Module</button>
-                    <button type="button" class="btn btn-danger cancel-section-btn" data-index="${sectionIndex}">Cancel</button>
+                    <button type="button" class="btn btn-secondary add-module-btn desktop-only">Add Module</button>
+                    <button type="button" class="btn btn-secondary add-module-btn mobile-only">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger cancel-section-btn desktop-only" data-index="${sectionIndex}">Cancel</button>
+                    <button type="button" class="btn btn-danger cancel-section-btn mobile-only" data-index="${sectionIndex}">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
                 </div>
                 <div class="module-container">
                     <!-- Modules will be added here -->
@@ -123,7 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     <label for="modules_${moduleIndex}_level">Module Level:</label>
                     <input type="number" id="modules_${moduleIndex}_level" name="modules[${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger cancel-module-btn" data-index="${moduleIndex}" data-context="independent">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn desktop-only" data-index="${moduleIndex}" data-context="independent">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn mobile-only" data-index="${moduleIndex}" data-context="independent">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
             `;
             moduleContainer.appendChild(newModule);
 
@@ -205,7 +214,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     <label for="sections_${sectionIndex}_modules_${moduleIndex}_level">Module Level:</label>
                     <input type="number" id="sections_${sectionIndex}_modules_${moduleIndex}_level" name="sections[${sectionIndex}][modules][${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger cancel-module-btn" data-index="${moduleIndex}" data-context="section">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn  desktop-only" data-index="${moduleIndex}" data-context="section">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn mobile-only" data-index="${moduleIndex}" data-context="section">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
             `;
             moduleContainer.appendChild(newModule);
 

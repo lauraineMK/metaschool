@@ -20,6 +20,7 @@ Route::post('login', [AuthenticationController::class, 'login']);
 Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
 Route::get('register', [AuthenticationController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [AuthenticationController::class, 'register']);
+Route::get('account', [AuthenticationController::class, 'index'])->name('account');
 
 // Teacher routes
 Route::prefix('teachers')->group(function () {
