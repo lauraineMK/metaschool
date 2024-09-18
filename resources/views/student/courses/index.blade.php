@@ -6,8 +6,6 @@
 <div class="container mt-5 courses-view">
     <h1>Courses</h1>
 
-
-
     @if ($courses->isEmpty())
     <p>No courses available.</p>
     @else

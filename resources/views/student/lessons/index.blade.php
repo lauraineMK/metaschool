@@ -36,7 +36,6 @@
                         <span class="text-view">View</span>
                         <i class="fas fa-eye"></i> <!-- Eye icon -->
                     </a>
-
                 </td>
             </tr>
             @endforeach
