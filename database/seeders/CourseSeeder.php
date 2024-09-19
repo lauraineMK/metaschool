@@ -23,7 +23,7 @@ class CourseSeeder extends Seeder
             'email' => 'author1@example.com',
         ], [
             'firstname' => 'John',
-            'surname' => 'Doe',
+            'lastname' => 'Doe',
             'password' => bcrypt('password'),
             'role' => 'teacher',
         ]);
@@ -32,7 +32,7 @@ class CourseSeeder extends Seeder
             'email' => 'author2@example.com',
         ], [
             'firstname' => 'Jane',
-            'surname' => 'Smith',
+            'lastname' => 'Smith',
             'password' => bcrypt('password'),
             'role' => 'teacher',
         ]);

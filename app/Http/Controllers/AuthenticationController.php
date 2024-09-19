@@ -81,7 +81,8 @@ class AuthenticationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
+            'middlename' => 'nullable|string|max:255',
+            'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
         ]);
@@ -94,7 +95,8 @@ class AuthenticationController extends Controller
 
         $user = User::create([
             'firstname' => $request->firstname,
-            'surname' => $request->surname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -133,7 +135,8 @@ class AuthenticationController extends Controller
         // Validate the incoming request data
         $request->validate([
             'firstname' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
+            'middlename' => 'nullable|string|max:255',
+            'lastname' => 'required|string|max:255',
             'email' => [
                 'required',
                 'email',
@@ -145,7 +148,8 @@ class AuthenticationController extends Controller
 
         // Update the user's information
         $user->firstname = $request->firstname;
-        $user->surname = $request->surname;
+        $user->middlename = $request->middlename;
+        $user->lastname = $request->lastname;
         $user->email = $request->email;
 
         // Update the password if a new password is provided
