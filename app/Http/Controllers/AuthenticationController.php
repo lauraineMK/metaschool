@@ -81,7 +81,8 @@ class AuthenticationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
+            'middlename' => 'nullable|string|max:255',
+            'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
         ]);
@@ -94,7 +95,8 @@ class AuthenticationController extends Controller
 
         $user = User::create([
             'firstname' => $request->firstname,
-            'surname' => $request->surname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -117,5 +119,46 @@ class AuthenticationController extends Controller
     public function index()
     {
         return view('auth.account');
+    }
+
+    /**
+     * Update the authenticated user's account information.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request)
+    {
+        // Retrieve the currently authenticated user
+        $user = auth()->user();
+
+        // Validate the incoming request data
+        $request->validate([
+            'firstname' => 'required|string|max:255',
+            'middlename' => 'nullable|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email,' . $user->id
+            ],
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        // Update the user's information
+        $user->firstname = $request->firstname;
+        $user->middlename = $request->middlename;
+        $user->lastname = $request->lastname;
+        $user->email = $request->email;
+
+        // Update the password if a new password is provided
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Account updated successfully.');
     }
 }
