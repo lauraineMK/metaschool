@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             CourseSeeder::class,
             FinalFantasySeeder::class,
+            StudentsSeeder::class,
+            TeachersSeeder::class,
             // Other seeders here
         ]);
     }
