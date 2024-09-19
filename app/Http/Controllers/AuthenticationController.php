@@ -118,4 +118,43 @@ class AuthenticationController extends Controller
     {
         return view('auth.account');
     }
+
+    /**
+     * Update the authenticated user's account information.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request)
+    {
+        // Retrieve the currently authenticated user
+        $user = auth()->user();
+
+        // Validate the incoming request data
+        $request->validate([
+            'firstname' => 'required|string|max:255',
+            'surname' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email,' . $user->id
+            ],
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        // Update the user's information
+        $user->firstname = $request->firstname;
+        $user->surname = $request->surname;
+        $user->email = $request->email;
+
+        // Update the password if a new password is provided
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Account updated successfully.');
+    }
 }
