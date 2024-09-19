@@ -51,7 +51,7 @@ class FinalFantasySeeder extends Seeder
             'email' => 'author@example.com',
         ], [
             'firstname' => 'Aurélien',
-            'surname' => 'ROUCHETTE',
+            'lastname' => 'ROUCHETTE',
             'password' => bcrypt('password'),
             'role' => 'teacher',
         ]);

@@ -24,9 +24,13 @@
             <label for="firstname">Firstname</label>
             <input type="text" class="form-control" id="firstname" name="firstname" required>
         </div>
-        <div class="form-group">
-            <label for="surname">Surname</label>
-            <input type="text" class="form-control" id="surname" name="surname" required>
+        <div class="form-group mt-3">
+            <label for="middlename">Middle Name</label>
+            <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Optional">
+        </div>
+        <div class="form-group mt-3">
+            <label for="lastname">Last Name</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" required>
         </div>
         <div class="form-group">
             <label for="email">Email address</label>
