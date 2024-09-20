@@ -2,7 +2,7 @@
 
 ## Summary
 
-There are issues with handling documents in the lesson editing functionality. The editing of a lesson, including its associated documents, is not working as expected.
+There are issues with handling documents in the lesson editing functionality. The creation of a lesson with one or more documents works perfectly. However, updating a lesson that includes one or more documents poses a problem: the lesson updates successfully, but modifications (addition, editing, or deletion) of the documents are not taken into account, despite seemingly correct code in the necessary areas.
 
 ## Detailed Description
 
