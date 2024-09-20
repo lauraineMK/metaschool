@@ -18,7 +18,8 @@ class UsersTableSeeder extends Seeder
             ['email' => 'admin@teacher.com'],
             [
                 'firstname' => 'Teacher',
-                'surname' => 'Teacher',
+                'middlename' => 'Teacher',
+                'lastname' => 'Teacher',
                 'password' => Hash::make('teacher'),
                 'role' => 'teacher',
             ]
@@ -29,7 +30,8 @@ class UsersTableSeeder extends Seeder
             ['email' => 'admin@student.com'],
             [
                 'firstname' => 'Student',
-                'surname' => 'Student',
+                'middlename' => 'Student',
+                'lastname' => 'Student',
                 'password' => Hash::make('student'),
                 'role' => 'student',
             ]

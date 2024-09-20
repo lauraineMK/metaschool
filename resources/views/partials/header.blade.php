@@ -17,24 +17,24 @@
                 <!-- Check if the user is a teacher -->
                 @if (auth()->user()->role == 'teacher')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('teachers/courses') }}">Courses</a>
+                    <a class="nav-link {{ request()->is('teachers/courses') ? 'active' : '' }}" href="{{ url('teachers/courses') }}">Courses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('teachers/lessons') }}">Lessons</a>
+                    <a class="nav-link {{ request()->is('teachers/lessons') ? 'active' : '' }}" href="{{ url('teachers/lessons') }}">Lessons</a>
                 </li>
                 <!-- Check if the user is a student -->
                 @elseif (auth()->user()->role == 'student')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('students/courses') }}">Courses</a>
+                    <a class="nav-link {{ request()->is('students/courses') ? 'active' : '' }}" href="{{ url('students/courses') }}">Courses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('students/lessons') }}">Lessons</a>
+                    <a class="nav-link {{ request()->is('students/lessons') ? 'active' : '' }}" href="{{ url('students/lessons') }}">Lessons</a>
                 </li>
                 @endif
 
                 <!-- Common links for all users -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/about') }}">About</a>
+                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a>
                 </li>
             </ul>
             @endauth
@@ -70,7 +70,7 @@
                 @else
                 <!-- Links for Authenticated Users -->
                 <li class="nav-item">
-                    <a class="nav-link profile-link" href="{{ url('/profile') }}">Profile</a>
+                    <a class="nav-link {{ request()->is('account') ? 'active' : '' }}" href="{{ url('/account') }}">Account</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link logout-link" href="{{ url('/logout') }}"
@@ -92,12 +92,23 @@
             <ul class="navbar-nav">
                 <!-- Main Navigation Links -->
                 @auth
+                <!-- Check if the user is a teacher -->
+                @if (auth()->user()->role == 'teacher')
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('teachers/courses') }}">Courses</a>
+                    <a class="nav-link {{ request()->is('teachers/courses') ? 'active' : '' }}" href="{{ url('teachers/courses') }}">Courses</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('teachers/lessons') }}">Lessons</a>
+                    <a class="nav-link {{ request()->is('teachers/lessons') ? 'active' : '' }}" href="{{ url('teachers/lessons') }}">Lessons</a>
                 </li>
+                <!-- Check if the user is a student -->
+                @elseif (auth()->user()->role == 'student')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('students/courses') ? 'active' : '' }}" href="{{ url('students/courses') }}">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('students/lessons') ? 'active' : '' }}" href="{{ url('students/lessons') }}">Lessons</a>
+                </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/about') }}">About</a>
                 </li>
@@ -114,7 +125,7 @@
                 <!-- Authenticated User Links -->
                 @auth
                 <li class="nav-item">
-                    <a class="nav-link profile-link" href="{{ url('/profile') }}">Profile</a>
+                    <a class="nav-link {{ request()->is('account') ? 'active' : '' }}" href="{{ url('/account') }}">Account</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link logout-link" href="{{ url('/logout') }}"

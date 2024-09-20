@@ -1,4 +1,9 @@
 /* MetaSchool style */
+.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .home-and-account-btn-container {
     display: none;
 }
