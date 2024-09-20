@@ -72,6 +72,14 @@ php artisan key:generate
 
 Configure your environment settings in the .env file. Make sure to set your database connection details and other specific parameters.
 
+### Create Storage Link
+
+Create a symbolic link to the storage directory to access uploaded files:
+
+```bash
+php artisan storage:link
+```
+
 ### Database Migration
 
 Run migrations to set up your database:

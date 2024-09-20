@@ -246,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label for="document_description_${documentIndex}">Document Description</label>
                         <textarea class="form-control" id="document_description_${documentIndex}" name="documents[${documentIndex}][description]" rows="3"></textarea>
                         </div>
+                        <input type="hidden" name="documents[${documentIndex}][_delete]" value="0"> <!-- Hidden input for delete -->
                         <button type="button" class="btn btn-danger cancel-document-button mt-3" data-index="${documentIndex}">Cancel</button>
                         `;
 
