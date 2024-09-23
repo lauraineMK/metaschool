@@ -226,6 +226,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    /* Script for the “lesson viewed” button */
+    // Code for course view
+
     // Initialize visibility based on the current state
     toggleSections();
 });
