@@ -315,36 +315,22 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Data attributes not found.');
     }
 
-    // /* Script for the “lesson viewed” button */
-    // const lessonViewedButton = document.querySelector('.lesson-viewed-btn');
-    // const lessonId = lessonViewedButton.getAttribute('data-lesson-id');
-
-    // // Check whether the button has already been marked as “viewed“
-    // if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
-    //     lessonViewedButton.classList.add('viewed');
-    // }
-
-    // // Change button style after 30 seconds
-    // setTimeout(function () {
-    //     lessonViewedButton.classList.add('viewed');
-    //     localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
-    // }, 30000);
-
     /* Script for the “lesson viewed” button */
-    const lessonViewedButtons = document.querySelectorAll('.lesson-viewed-btn');
+    // Code for lesson view
+    const lessonViewedButton = document.getElementById('lesson-viewed-btn');
+    const lessonId = lessonViewedButton.getAttribute('data-lesson-id');
 
-    lessonViewedButtons.forEach(button => {
-        const lessonId = button.getAttribute('data-lesson-id');
+    // Check whether the button has already been marked as “viewed“
+    if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
+        lessonViewedButton.classList.add('viewed');
+    }
 
-        // Check whether the button has already been marked as “viewed“
-        if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
-            button.classList.add('viewed');
-        }
+    // Change button style after 30 seconds
+    setTimeout(function () {
+        lessonViewedButton.classList.add('viewed');
+        localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
+    }, 30000);
 
-        // Change button style after 30 seconds
-        setTimeout(function () {
-            button.classList.add('viewed');
-            localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
-        }, 30000);
-    });
+    // Code for lesson index
+
 });
