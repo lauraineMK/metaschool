@@ -314,4 +314,14 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         console.error('Data attributes not found.');
     }
+
+    /* Script for the “lesson viewed” button */
+    const lessonViewedButton = document.getElementById('lesson-viewed-btn');
+
+    if (lessonViewedButton) {
+        // Change button style after 30 seconds
+        setTimeout(function () {
+            lessonViewedButton.classList.add('viewed');
+        }, 30000); // 30000 milliseconds = 30 seconds
+    }
 });
