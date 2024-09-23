@@ -318,10 +318,16 @@ document.addEventListener('DOMContentLoaded', function () {
     /* Script for the “lesson viewed” button */
     const lessonViewedButton = document.getElementById('lesson-viewed-btn');
 
+    // Check whether the button has already been marked as “viewed
+    if (localStorage.getItem('lessonViewed') === 'true') {
+        lessonViewedButton.classList.add('viewed');
+    }
+
     if (lessonViewedButton) {
         // Change button style after 30 seconds
         setTimeout(function () {
             lessonViewedButton.classList.add('viewed');
+            localStorage.setItem('lessonViewed', 'true');
         }, 30000); // 30000 milliseconds = 30 seconds
     }
 });
