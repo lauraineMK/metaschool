@@ -79,6 +79,31 @@
     justify-content: space-between;
 }
 
+.lesson-viewed-btn {
+    border-radius: 50px;
+    padding: 5px 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #999;
+}
+
+.lesson-viewed-btn .fa-check-circle {
+    margin-right: 5px;
+    color: #999; /* Shaded by default */
+}
+
+/* When the lesson is marked as viewed */
+.lesson-viewed-btn.viewed {
+    background-color: #28a745;
+    color: white;
+}
+
+.lesson-viewed-btn.viewed .fa-check-circle {
+    color: white;
+}
+
 /* Common Module Container Styles */
 .module-container {
     display: flex;
@@ -174,31 +199,6 @@
 
 #add-section-btn {
     display: none;
-}
-
-#lesson-viewed-btn {
-    border-radius: 50px;
-    padding: 5px 10px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #999;
-}
-
-#lesson-viewed-btn .fa-check-circle {
-    margin-right: 5px;
-    color: #999; /* Shaded by default */
-}
-
-/* When the lesson is marked as viewed */
-#lesson-viewed-btn.viewed {
-    background-color: #28a745;
-    color: white;
-}
-
-#lesson-viewed-btn.viewed .fa-check-circle {
-    color: white;
 }
 
 #section-container {

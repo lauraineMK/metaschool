@@ -40,7 +40,7 @@
                         @foreach ($module->lessons as $lesson)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <a href="{{ route('student.lessons.show', $lesson->id) }}">{{ $lesson->title }}</a>
-                            <button id="lesson-viewed-btn" data-lesson-id="{{ $lesson->id }}" class="btn btn-outline-secondary">
+                            <button data-lesson-id="{{ $lesson->id }}" class="lesson-viewed-btn">
                                 <span class="fa fa-check-circle"></span>
                             </button>
                         </li>
@@ -67,7 +67,7 @@
                     @foreach ($module->lessons as $lesson)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <a href="{{ route('student.lessons.show', $lesson->id) }}">{{ $lesson->title }}</a>
-                        <button id="lesson-viewed-btn" data-lesson-id="{{ $lesson->id }}" class="btn btn-outline-secondary">
+                        <button data-lesson-id="{{ $lesson->id }}" class="lesson-viewed-btn">
                             <span class="fa fa-check-circle"></span>
                         </button>
                     </li>
@@ -84,7 +84,7 @@
                 @foreach ($course->lessons as $lesson)
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a href="{{ route('student.lessons.show', $lesson->id) }}">{{ $lesson->title }}</a>
-                    <button id="lesson-viewed-btn" data-lesson-id="{{ $lesson->id }}" class="btn btn-outline-secondary">
+                    <button data-lesson-id="{{ $lesson->id }}" class="lesson-viewed-btn">
                         <span class="fa fa-check-circle"></span>
                     </button>
                 </li>

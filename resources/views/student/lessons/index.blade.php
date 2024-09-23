@@ -27,7 +27,7 @@
                 <td>{{ $lesson->id }}</td>
                 <td>
                     <div class="d-flex justify-content-between align-items-center">{{ $lesson->title }}
-                        <button id="lesson-viewed-btn" data-lesson-id="{{ $lesson->id }}" class="btn btn-outline-secondary">
+                        <button data-lesson-id="{{ $lesson->id }}" class="lesson-viewed-btn">
                             <span class="fa fa-check-circle"></span>
                         </button>
                     </div>
