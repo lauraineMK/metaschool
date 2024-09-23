@@ -7,22 +7,28 @@
     <div class="wrapper">
         <!-- Left sidebar for buttons -->
         <div class="sidebar">
-                <!-- Button to go back to lessons list -->
-                <a href="{{ route('student.lessons.index') }}" class="btn btn-secondary mb-3 btn-block d-none d-md-block">Back to Lessons</a>
-                <a href="{{ route('student.lessons.index') }}" class="btn btn-secondary mt-4 btn-block d-block d-md-none">
-                    <i class="fa fa-list"></i>&nbsp;<i class="fa fa-arrow-left"></i>
-                </a>
+            <!-- Button to go back to lessons list -->
+            <a href="{{ route('student.lessons.index') }}" class="btn btn-secondary mb-3 btn-block d-none d-md-block">Back to Lessons</a>
+            <a href="{{ route('student.lessons.index') }}" class="btn btn-secondary mt-4 btn-block d-block d-md-none">
+                <i class="fa fa-list"></i>&nbsp;<i class="fa fa-arrow-left"></i>
+            </a>
 
-                <!-- Button to go back to course -->
-                <a href="{{ route('student.courses.show', $lesson->course->id) }}" class="btn btn-secondary mb-3 btn-block d-none d-md-block">Back to Course</a>
-                <a href="{{ route('student.courses.show', $lesson->course->id) }}" class="btn btn-secondary mt-4 btn-block d-block d-md-none">
-                    <i class="fa fa-book"></i>&nbsp;<i class="fa fa-arrow-left"></i>
-                </a>
+            <!-- Button to go back to course -->
+            <a href="{{ route('student.courses.show', $lesson->course->id) }}" class="btn btn-secondary mb-3 btn-block d-none d-md-block">Back to Course</a>
+            <a href="{{ route('student.courses.show', $lesson->course->id) }}" class="btn btn-secondary mt-4 btn-block d-block d-md-none">
+                <i class="fa fa-book"></i>&nbsp;<i class="fa fa-arrow-left"></i>
+            </a>
         </div>
 
         <!-- Right section for lesson details -->
         <div class="content">
-            <h1>{{ $lesson->title }}</h1>
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>{{ $lesson->title }}</h1>
+                <!-- Lesson Viewed Button -->
+                <button id="lesson-viewed-btn" class="btn btn-outline-secondary">
+                    <span class="fa fa-check-circle"></span> Lesson viewed
+                </button>
+            </div>
 
             <!-- Lesson Content -->
             <p>{{ $lesson->content }}</p>
