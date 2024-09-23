@@ -317,17 +317,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* Script for the “lesson viewed” button */
     const lessonViewedButton = document.getElementById('lesson-viewed-btn');
+    const lessonId = lessonViewedButton.getAttribute('data-lesson-id');
 
-    // Check whether the button has already been marked as “viewed
-    if (localStorage.getItem('lessonViewed') === 'true') {
+    // Check whether the button has already been marked as “viewed“
+    if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
         lessonViewedButton.classList.add('viewed');
     }
 
-    if (lessonViewedButton) {
-        // Change button style after 30 seconds
-        setTimeout(function () {
-            lessonViewedButton.classList.add('viewed');
-            localStorage.setItem('lessonViewed', 'true');
-        }, 30000); // 30000 milliseconds = 30 seconds
-    }
+    // Change button style after 30 seconds
+    setTimeout(function () {
+        lessonViewedButton.classList.add('viewed');
+        localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
+    }, 30000);
 });
