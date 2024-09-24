@@ -317,31 +317,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* Script for the “lesson viewed” button */
     // Code for lesson view
-    const lessonViewedButton = document.getElementById('lesson-viewed-btn');
-    const lessonViewedButtonIndex = document.getElementById('lesson-viewed-btn-index');
-    const lessonViewedButtonCourse = document.getElementById('lesson-viewed-btn-course');
+    document.querySelectorAll('[id^="lesson-viewed-btn"]').forEach(function (lessonViewedButton) {
 
-    const lessonId = lessonViewedButton?.getAttribute('data-lesson-id') ||
-                 lessonViewedButtonIndex?.getAttribute('data-lesson-id') ||
-                 lessonViewedButtonCourse?.getAttribute('data-lesson-id');
+        const lessonId = lessonViewedButton.getAttribute('data-lesson-id');
+        const lessonViewedButtonIndex = document.querySelector(`#lesson-viewed-btn-index[data-lesson-id="${lessonId}"]`);
+        const lessonViewedButtonCourse = document.querySelector(`#lesson-viewed-btn-course[data-lesson-id="${lessonId}"]`);
 
-    if (lessonId) {
-        // Check whether the button has already been marked as “viewed“
-        if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
-            if (lessonViewedButton) lessonViewedButton.classList.add('viewed');
-            if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
-            if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
+        if (lessonId) {
+            // Check whether the button has already been marked as “viewed“
+            if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
+                lessonViewedButton.classList.add('viewed');
+                if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
+                if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
+            }
+
+            // Change button style after 30 seconds
+            setTimeout(function () {
+                lessonViewedButton.classList.add('viewed');
+                if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
+                if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
+                localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
+            }, 30000);
         }
-
-        // Change button style after 30 seconds
-        setTimeout(function () {
-            if (lessonViewedButton) lessonViewedButton.classList.add('viewed');
-            if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
-            if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
-            localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
-        }, 30000);
-    }
-
+    });
     // Code for lesson index
 
 });
