@@ -315,8 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Data attributes not found.');
     }
 
-    /* Script for the “lesson viewed” button */
-    // Code for lesson view
+    /* Script for the “lesson viewed” buttons */
     document.querySelectorAll('[id^="lesson-viewed-btn"]').forEach(function (lessonViewedButton) {
 
         const lessonId = lessonViewedButton.getAttribute('data-lesson-id');
@@ -340,6 +339,4 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 30000);
         }
     });
-    // Code for lesson index
-
 });
