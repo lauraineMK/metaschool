@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\Student\ProgressController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\LessonController as StudentLessonController;
 use App\Http\Controllers\Teacher\CourseController as TeacherCourseController;
@@ -58,6 +59,7 @@ Route::prefix('students')->middleware(['auth', RoleMiddleware::class . ':student
    // Routes for managing lessons
    Route::get('lessons', [StudentLessonController::class, 'index'])->name('student.lessons.index');
    Route::get('lessons/{id}', [StudentLessonController::class, 'show'])->name('student.lessons.show');
+   Route::post('/progress', [ProgressController::class, 'store'])->name('student.progress.store');
 });
 
 // PHP Info (restricted to local environment)

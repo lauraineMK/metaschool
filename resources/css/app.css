@@ -176,7 +176,7 @@
     display: none;
 }
 
-#lesson-viewed-btn {
+#lesson-viewed-btn, #lesson-viewed-btn-index, #lesson-viewed-btn-course {
     border-radius: 50px;
     padding: 5px 10px;
     font-size: 14px;
@@ -186,18 +186,24 @@
     border: 2px solid #999;
 }
 
-#lesson-viewed-btn .fa-check-circle {
+#lesson-viewed-btn .fa-check-circle,
+#lesson-viewed-btn-index .fa-check-circle,
+#lesson-viewed-btn-course .fa-check-circle {
     margin-right: 5px;
     color: #999; /* Shaded by default */
 }
 
 /* When the lesson is marked as viewed */
-#lesson-viewed-btn.viewed {
+#lesson-viewed-btn.viewed,
+#lesson-viewed-btn-index.viewed,
+#lesson-viewed-btn-course.viewed {
     background-color: #28a745;
     color: white;
 }
 
-#lesson-viewed-btn.viewed .fa-check-circle {
+#lesson-viewed-btn.viewed .fa-check-circle,
+#lesson-viewed-btn-index.viewed .fa-check-circle,
+#lesson-viewed-btn-course.viewed .fa-check-circle {
     color: white;
 }
 
