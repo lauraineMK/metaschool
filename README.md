@@ -44,7 +44,7 @@ composer install
 
 ```bash
 npm install
-# ou
+# or
 yarn install
 ```
 
