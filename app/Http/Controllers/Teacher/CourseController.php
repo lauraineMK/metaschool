@@ -202,7 +202,7 @@ class CourseController extends Controller
         return view('teacher.courses.edit', compact('course'));
     }
 
-    //! Method to be reworked:
+    //! Method to be reworked ------------------------------------------------------------------------------------
     //? Updating works most of the time but — creation and modification largely
     //? functional but deletion does not work as it should — there's a problem
     //? with modules belonging to any section becoming independant when
@@ -405,6 +405,7 @@ class CourseController extends Controller
         return redirect()->route('teacher.courses.show', $course->id)
             ->with('success', 'Course updated successfully.');
     }
+    //! ----------------------------------------------------------------------------------------------------------
 
     /**
      * Delete a course
