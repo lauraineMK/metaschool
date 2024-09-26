@@ -322,6 +322,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const lessonViewedButtonIndex = document.querySelector(`#lesson-viewed-btn-index[data-lesson-id="${lessonId}"]`);
         const lessonViewedButtonCourse = document.querySelector(`#lesson-viewed-btn-course[data-lesson-id="${lessonId}"]`);
 
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         if (lessonId) {
             // Check whether the button has already been marked as “viewed“
             if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
@@ -330,52 +332,82 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
             }
 
-            // Only set the timeout for the current lesson button
-            setTimeout(function () {
-                // Change button style only if still on this lesson page
-                if (window.location.pathname.endsWith(`/lessons/${lessonId}`)) {
-                    lessonViewedButton.classList.add('viewed');
-                    if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
-                    if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
-                    localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
+            // Add a click event listener to mark the lesson as viewed
+        lessonViewedButton.addEventListener('click', function () {
+            // Change the style of the current button and the related buttons
+            lessonViewedButton.classList.add('viewed');
+            if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
+            if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
 
-                    // Call the function to save the lesson progress
-                    markLessonAsViewed(lessonId);
-                }
-            }, 30000);
+            // Store the viewed state in localStorage
+            localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
+        });
+
+                    // // Call the function to save the lesson progress
+                    // markLessonAsViewed(lessonId);
+                    // const baseUrl = window.location.origin;
+                    // console.log(`Fetching from: ${baseUrl}/students/progress`);
+                    // fetch(`${baseUrl}/students/progress`, {
+                    //     method: 'POST',
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         'X-CSRF-TOKEN': csrfToken,
+                    //     },
+                    //     body: JSON.stringify({
+                    //         lesson_id: lessonId,
+                    //         completed: true
+                    //     })
+                    // }).then(response => {
+                    //     // Check if the response is OK (status in the range 200-299)
+                    //     if (!response.ok) {
+                    //         throw new Error(`HTTP error! status: ${response.status}`);
+                    //     }
+                    //     return response.json();
+                    // }).then(data => {
+                    //     console.log('Response from server:', data);
+                    //     if (data.status === 'success') {
+                    //         console.log('Progress successfully recorded.');
+                    //     } else {
+                    //         console.error('Failed to save progress:', data.message);
+                    //     }
+                    // }).catch(error => {
+                    //     console.error('Query error:', error);
+                    // });
+            //     }
+            // }, 30000); // Wait 30 seconds before marking the lesson as viewed
         }
     });
 
     // Function to mark the lesson as viewed
-    function markLessonAsViewed(lessonId) {
-        console.log('Marking lesson as viewed:', lessonId);
-        const baseUrl = window.location.origin;
+    // function markLessonAsViewed(lessonId) {
+    //     console.log('Marking lesson as viewed:', lessonId);
+    //     const baseUrl = window.location.origin;
 
-        fetch(`${baseUrl}/students/progress`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-            body: JSON.stringify({ lesson_id: lessonId })
-        })
-            .then(response => {
-                // Check if the response is OK (status in the range 200-299)
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Response from server:', data); // Log the response
-                if (data.status === 'success') {
-                    // Additional logic if needed
-                } else {
-                    console.error('Failed to save progress:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
+    //     fetch(`${baseUrl}/students/progress`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    //         },
+    //         body: JSON.stringify({
+    //             lesson_id: lessonId,
+    //             completed: true
+    //         })
+    //     }).then(response => {
+    //         // Check if the response is OK (status in the range 200-299)
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! status: ${response.status}`);
+    //         }
+    //         return response.json();
+    //     }).then(data => {
+    //         console.log('Response from server:', data); // Log the response
+    //         if (data.status === 'success') {
+    //             // Additional logic if needed
+    //         } else {
+    //             console.error('Failed to save progress:', data.message);
+    //         }
+    //     }).catch(error => {
+    //         console.error('Error:', error);
+    //     });
+    // }
 });

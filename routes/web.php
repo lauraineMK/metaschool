@@ -50,7 +50,7 @@ Route::prefix('teachers')->middleware(['auth', RoleMiddleware::class . ':teacher
 });
 
 // Student routes
-Route::prefix('students')->middleware(['auth', RoleMiddleware::class . ':student'])->group(function () {
+Route::prefix('students')->middleware(['web', 'auth', RoleMiddleware::class . ':student'])->group(function () {
    // Student dashboard
    Route::get('/dashboard', [StudentCourseController::class, 'student_dashboard'])->name('student.dashboard');
    // Routes for managing courses

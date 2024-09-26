@@ -20,6 +20,7 @@ class ProgressController extends Controller
     {
         $request->validate([
             'lesson_id' => 'required|exists:lessons,id',
+            'completed' => 'required|boolean',
         ]);
 
         $user = Auth::user();
@@ -27,8 +28,14 @@ class ProgressController extends Controller
 
         // Save or update progress
         $progress = Progress::updateOrCreate(
-            ['user_id' => $user->id, 'lesson_id' => $lessonId],
-            ['completed' => true, 'completion_date' => now()]
+            [
+                'user_id' => $user->id,
+                'lesson_id' => $lessonId
+            ],
+            [
+                'completed' => $request->completed,
+                'completion_date' => now()
+            ]
         );
 
         return response()->json([
