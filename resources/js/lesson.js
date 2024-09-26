@@ -333,81 +333,42 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Add a click event listener to mark the lesson as viewed
-        lessonViewedButton.addEventListener('click', function () {
-            // Change the style of the current button and the related buttons
-            lessonViewedButton.classList.add('viewed');
-            if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
-            if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
+            lessonViewedButton.addEventListener('click', function () {
+                // Change the style of the current button and the related buttons
+                lessonViewedButton.classList.add('viewed');
+                if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
+                if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
 
-            // Store the viewed state in localStorage
-            localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
-        });
+                // Store the viewed state in localStorage
+                localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
 
-                    // // Call the function to save the lesson progress
-                    // markLessonAsViewed(lessonId);
-                    // const baseUrl = window.location.origin;
-                    // console.log(`Fetching from: ${baseUrl}/students/progress`);
-                    // fetch(`${baseUrl}/students/progress`, {
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //         'X-CSRF-TOKEN': csrfToken,
-                    //     },
-                    //     body: JSON.stringify({
-                    //         lesson_id: lessonId,
-                    //         completed: true
-                    //     })
-                    // }).then(response => {
-                    //     // Check if the response is OK (status in the range 200-299)
-                    //     if (!response.ok) {
-                    //         throw new Error(`HTTP error! status: ${response.status}`);
-                    //     }
-                    //     return response.json();
-                    // }).then(data => {
-                    //     console.log('Response from server:', data);
-                    //     if (data.status === 'success') {
-                    //         console.log('Progress successfully recorded.');
-                    //     } else {
-                    //         console.error('Failed to save progress:', data.message);
-                    //     }
-                    // }).catch(error => {
-                    //     console.error('Query error:', error);
-                    // });
-            //     }
-            // }, 30000); // Wait 30 seconds before marking the lesson as viewed
+                //! The progress of the lessons viewed by the student is
+                //! not taken into account in the database, despite many attempts,
+                //! many different and varied code tests.
+                // Send an AJAX request to store the progress in the database
+                fetch('/students/progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        lesson_id: lessonId,
+                        completed: true
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            console.log('Progress saved successfully:', data.progress);
+                        } else {
+                            console.error('Failed to save progress:', data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
         }
     });
-
-    // Function to mark the lesson as viewed
-    // function markLessonAsViewed(lessonId) {
-    //     console.log('Marking lesson as viewed:', lessonId);
-    //     const baseUrl = window.location.origin;
-
-    //     fetch(`${baseUrl}/students/progress`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-    //         },
-    //         body: JSON.stringify({
-    //             lesson_id: lessonId,
-    //             completed: true
-    //         })
-    //     }).then(response => {
-    //         // Check if the response is OK (status in the range 200-299)
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! status: ${response.status}`);
-    //         }
-    //         return response.json();
-    //     }).then(data => {
-    //         console.log('Response from server:', data); // Log the response
-    //         if (data.status === 'success') {
-    //             // Additional logic if needed
-    //         } else {
-    //             console.error('Failed to save progress:', data.message);
-    //         }
-    //     }).catch(error => {
-    //         console.error('Error:', error);
-    //     });
-    // }
 });

@@ -168,6 +168,10 @@ Contributions are welcome! Please follow these steps to contribute:
 5. Push to the branch (git push origin feature/amazing-feature)
 6. Open a Pull Request
 
+## Documentation
+
+There are files related to issues that need to be resolved located in the `doc` folder.
+
 ## License
 
 This project is licensed under the MIT License.

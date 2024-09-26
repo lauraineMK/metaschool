@@ -18,6 +18,7 @@ class ProgressController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'lesson_id' => 'required|exists:lessons,id',
             'completed' => 'required|boolean',
