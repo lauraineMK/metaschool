@@ -44,7 +44,7 @@ composer install
 
 ```bash
 npm install
-# ou
+# or
 yarn install
 ```
 
@@ -170,7 +170,7 @@ Contributions are welcome! Please follow these steps to contribute:
 
 ## Documentation
 
-There are files related to issues that need to be resolved located in the `doc` folder.
+There are files related to issues that need to be resolved located in the `docs` folder.
 
 ## License
 
