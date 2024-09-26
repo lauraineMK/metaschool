@@ -216,6 +216,7 @@ class LessonController extends Controller
         return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }
 
+    //!
     /**
      * Update an existing lesson
      *
@@ -299,6 +300,7 @@ class LessonController extends Controller
                 $video->delete();
             }
 
+            //! Document issue ----------------------------------------------------------------------------------
             /* Handle document logic */
             if (isset($validated['documents']) && is_array($validated['documents'])) {
                 foreach ($validated['documents'] as $index => $document) {
@@ -346,6 +348,8 @@ class LessonController extends Controller
                     }
                 }
             }
+            //! -------------------------------------------------------------------------------------------------
+
         } catch (\Exception $e) {
             // Redirect on update error with error message
             return redirect()->route('teacher.lessons.index')
