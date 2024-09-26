@@ -44,7 +44,7 @@ composer install
 
 ```bash
 npm install
-# ou
+# or
 yarn install
 ```
 
@@ -71,6 +71,14 @@ php artisan key:generate
 ```
 
 Configure your environment settings in the .env file. Make sure to set your database connection details and other specific parameters.
+
+### Create Storage Link
+
+Create a symbolic link to the storage directory to access uploaded files:
+
+```bash
+php artisan storage:link
+```
 
 ### Database Migration
 
@@ -159,6 +167,10 @@ Contributions are welcome! Please follow these steps to contribute:
 4. Commit your changes (git commit -am 'Add some amazing feature')
 5. Push to the branch (git push origin feature/amazing-feature)
 6. Open a Pull Request
+
+## Documentation
+
+There are files related to issues that need to be resolved located in the `docs` folder.
 
 ## License
 
