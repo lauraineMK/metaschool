@@ -23,7 +23,7 @@ The current implementation of the course editing functionality has the following
 
 #### Controller
 
-An `update` method is implemented in the controller located at `app/Http/Controllers/Teacher/CourseController.php`, which is intended to handle the progress storage logic.
+An `update` method is implemented in the controller located at `app/Http/Controllers/Teacher/CourseController.php`, which is intended to handle the course logic.
 The part of the code is commented in red, orange and blue for easier identification.
 
 #### JavaScript
