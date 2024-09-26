@@ -14,7 +14,7 @@ There are issues with handling documents in the lesson editing functionality. Th
 
 ### Controller
 
-An `update` method is implemented in the controller located at `app/Http/Controllers/Teacher/LessonController.php`, which is intended to handle the progress storage logic.
+An `update` method is implemented in the controller located at `app/Http/Controllers/Teacher/LessonController.php`, which is intended to handle the document storage logic.
 The part of the code that is not functioning as intended is separated in red for easier identification.
 
 ### JavaScript
