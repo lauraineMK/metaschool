@@ -2,7 +2,7 @@
 
 ## Summary
 
-There are issues with handling documents in the lesson editing functionality. The editing of a lesson, including its associated documents, is not working as expected.
+There are issues with handling documents in the lesson editing functionality. The creation of a lesson with one or more documents works perfectly. However, updating a lesson that includes one or more documents poses a problem: the lesson updates successfully, but modifications (addition, editing, or deletion) of the documents are not taken into account, despite seemingly correct code in the necessary areas.
 
 ## Detailed Description
 
@@ -12,9 +12,26 @@ There are issues with handling documents in the lesson editing functionality. Th
   - **Modification**: Updating document details or replacing existing documents.
   - **Deletion**: Removing documents from a lesson, ensuring they are deleted appropriately.
 
+### Controller
+
+An `update` method is implemented in the controller located at `app/Http/Controllers/Teacher/LessonController.php`, which is intended to handle the document storage logic.
+The part of the code that is not functioning as intended is separated in red for easier identification.
+
+### JavaScript
+
+The script responsible for the dynamic content of the lesson is placed on line 228 of the following file:
+
+`resources/js/lesson.js`
+
+The script is designed for creating and updating lessons.
+
+- Creating and updating lessons with or without videos works perfectly.
+- Creating lessons with documents also works.
+- Only updating with documents is dysfunctional: the lesson update works, but documents (additions, modifications, deletions) are not updated.
+
 ## Tasks
 
-### 1. Work on Document Management in Lessons
+### Work on Document Management in Lessons
 
 - **Objective**: Improve the handling of documents within lesson editing to ensure proper functionality.
 - **Details**:

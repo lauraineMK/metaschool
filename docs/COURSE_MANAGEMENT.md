@@ -9,6 +9,7 @@ Thank you for contributing to our project! To help streamline the process, pleas
 #### Summary
 
 The current implementation of the course editing functionality has the following issues:
+
 - **Creation and Modification**: These functionalities work most of the time but might have edge cases that need attention.
 - **Deletion**: This feature does not work as expected. Specifically, modules that belong to any section become independent when the section is deleted, rather than being deleted along with it.
 
@@ -19,6 +20,19 @@ The current implementation of the course editing functionality has the following
   - Creation of new sections and modules
   - Modification of existing sections and modules
   - Deletion of sections and modules
+
+#### Controller
+
+An `update` method is implemented in the controller located at `app/Http/Controllers/Teacher/CourseController.php`, which is intended to handle the course logic.
+The part of the code is commented in red, orange and blue for easier identification.
+
+#### JavaScript
+
+The script responsible for the dynamic content of the course is placed at the end of the following file:
+
+`resources/js/course.js`
+
+The script is designed for creating and updating courses. The creation of courses with sections and modules or with modules or on their own, is fully functional.
 
 ## Tasks
 

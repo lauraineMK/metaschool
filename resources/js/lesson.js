@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
+            //! Dynamic document part ---------------------------------------------------------------------------------------------------------------------------------------------------
             // Dynamic document addition script
             const addDocumentButton = document.getElementById('add-document-button');
             if (addDocumentButton) {
@@ -246,6 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label for="document_description_${documentIndex}">Document Description</label>
                         <textarea class="form-control" id="document_description_${documentIndex}" name="documents[${documentIndex}][description]" rows="3"></textarea>
                         </div>
+                        <input type="hidden" name="documents[${documentIndex}][_delete]" value="0"> <!-- Hidden input for delete -->
                         <button type="button" class="btn btn-danger cancel-document-button mt-3" data-index="${documentIndex}">Cancel</button>
                         `;
 
@@ -307,10 +309,70 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
+            //! -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         } else {
             console.error('One or more essential elements not found.');
         }
     } else {
         console.error('Data attributes not found.');
     }
+
+    /* Script for the “lesson viewed” buttons */
+    document.querySelectorAll('[id^="lesson-viewed-btn"]').forEach(function (lessonViewedButton) {
+
+        const lessonId = lessonViewedButton.getAttribute('data-lesson-id');
+        const lessonViewedButtonIndex = document.querySelector(`#lesson-viewed-btn-index[data-lesson-id="${lessonId}"]`);
+        const lessonViewedButtonCourse = document.querySelector(`#lesson-viewed-btn-course[data-lesson-id="${lessonId}"]`);
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        if (lessonId) {
+            // Check whether the button has already been marked as “viewed“
+            if (localStorage.getItem(`lessonViewed_${lessonId}`) === 'true') {
+                lessonViewedButton.classList.add('viewed');
+                if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
+                if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
+            }
+
+            // Add a click event listener to mark the lesson as viewed
+            lessonViewedButton.addEventListener('click', function () {
+                // Change the style of the current button and the related buttons
+                lessonViewedButton.classList.add('viewed');
+                if (lessonViewedButtonIndex) lessonViewedButtonIndex.classList.add('viewed');
+                if (lessonViewedButtonCourse) lessonViewedButtonCourse.classList.add('viewed');
+
+                // Store the viewed state in localStorage
+                localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
+
+                //! The progress of the lessons viewed by the student is ---------------------
+                //! not taken into account in the database, despite many attempts, -----------
+                //! many different and varied code tests. ------------------------------------
+                // Send an AJAX request to store the progress in the database
+                fetch('/students/progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        lesson_id: lessonId,
+                        completed: true
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            console.log('Progress saved successfully:', data.progress);
+                        } else {
+                            console.error('Failed to save progress:', data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                //! -------------------------------------------------------------------------
+            });
+        }
+    });
 });
