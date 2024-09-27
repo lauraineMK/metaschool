@@ -19,6 +19,11 @@ class Lesson extends Model
         'level',
     ];
 
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     public function section()
     {
         return $this->belongsTo(Section::class);
@@ -29,9 +34,9 @@ class Lesson extends Model
         return $this->belongsTo(Module::class);
     }
 
-    public function course()
+    public function quizzes()
     {
-        return $this->belongsTo(Course::class);
+        return $this->hasOne(Quiz::class);
     }
 
     public function videos()

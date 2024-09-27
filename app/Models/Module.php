@@ -18,14 +18,14 @@ class Module extends Model
         'level',
     ];
 
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
-    }
-
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
     }
 
     public function lessons()
