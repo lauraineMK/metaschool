@@ -22,6 +22,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('teachers/lessons') ? 'active' : '' }}" href="{{ url('teachers/lessons') }}">Lessons</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('teachers/quizzes') ? 'active' : '' }}" href="{{ url('teachers/quizzes') }}">Quizzes</a>
+                </li>
                 <!-- Check if the user is a student -->
                 @elseif (auth()->user()->role == 'student')
                 <li class="nav-item">
@@ -99,6 +102,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('teachers/lessons') ? 'active' : '' }}" href="{{ url('teachers/lessons') }}">Lessons</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('teachers/quizzes') ? 'active' : '' }}" href="{{ url('teachers/quizzes') }}">Quizzes</a>
                 </li>
                 <!-- Check if the user is a student -->
                 @elseif (auth()->user()->role == 'student')
