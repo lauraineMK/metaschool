@@ -42,10 +42,13 @@
             <!-- New questions will be added here -->
         </div>
 
-        <button type="button" class="add-question btn btn-secondary">Add Question</button>
+        <button type="button" class="add-question btn btn-secondary  mt-4">Add Question</button>
 
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary mt-3">Create Quiz</button>
+        <!-- Container for the Submit button -->
+        <div class="mt-4">
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">Create Quiz</button>
+        </div>
     </form>
 </div>
 @endsection

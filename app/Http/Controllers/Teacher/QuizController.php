@@ -7,6 +7,7 @@ use App\Models\Answer;
 use App\Models\Lesson;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class QuizController extends Controller
@@ -33,27 +34,34 @@ class QuizController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    { {
-            // Data validation
-            $validatedData = $request->validate([
-                'lesson_id' => 'required|exists:lessons,id',
-                'questions' => 'required|array',
-                'questions.*.type' => 'required|in:multiple_choice,open',
-                'questions.*.text' => 'required|string',
-                'questions.*.answers' => 'required_if:questions.*.type,multiple_choice|array',
-                'questions.*.answers.*.text' => 'required_if:questions.*.type,multiple_choice|string',
-                'questions.*.answer_text' => 'required_if:questions.*.type,open|string', // For open questions
-            ]);
+    {
+        dd($request->all());
+        // Data validation
+        $validatedData = $request->validate([
+            'lesson_id' => 'required|exists:lessons,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'questions' => 'required|array',
+            'questions.*.text' => 'required|string',
+            'questions.*.type' => 'required|in:multiple_choice,open',
+            'questions.*.answer_text' => 'required_if:questions.*.type,open|string', // For open questions
+            'questions.*.answers' => 'required_if:questions.*.type,multiple_choice|array',
+            'questions.*.answers.*.text' => 'required_if:questions.*.type,multiple_choice|string',
+            'questions.*.answers.*.is_correct' => 'boolean',
+        ]);
 
-            // Check if there are any questions in the request
-            if (empty($request->questions)) {
-                return redirect()->back()->withInput()->withErrors(['error' => 'You must add at least one question.']);
-            }
+        // Check if there are any questions in the request
+        if (empty($request->questions)) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'You must add at least one question.']);
+        }
 
+        // Quiz creation within a transaction
+        DB::transaction(function () use ($validatedData, $request) {
             // Quiz creation
             $quiz = Quiz::create([
                 'lesson_id' => $validatedData['lesson_id'],
-
+                'title' => $request->title,
+                'description' => $request->description,
             ]);
 
             // Add questions and answers
@@ -66,12 +74,12 @@ class QuizController extends Controller
                 $question->save();
 
                 // If it's a multiple-choice question, handle answers
-                if ($question->type === 'multiple_choice') {
+                if ($question->type === 'multiple_choice' && isset($questionData['answers'])) {
                     foreach ($questionData['answers'] as $answerData) {
                         $answer = new Answer();
                         $answer->question_id = $question->id;
                         $answer->answer_text = $answerData['text'];
-                        $answer->is_correct = isset($answerData['is_correct']) ? true : false; // Vérifie si la réponse est correcte
+                        $answer->is_correct = isset($answerData['is_correct']) && $answerData['is_correct']; // Check that the answer is correct
                         $answer->save();
                     }
                 }
@@ -85,9 +93,8 @@ class QuizController extends Controller
                     $answer->save();
                 }
             }
-
-            return redirect()->route('quizzes.index')->with('success', 'Quiz created successfully.');
-        }
+        });
+        return redirect()->route('quizzes.index')->with('success', 'Quiz created successfully.');
     }
 
     /**

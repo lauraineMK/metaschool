@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    console.log("Form submitted", this);
     let questionIndex = 0;
 
     // Function to add a new question
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         questionDiv.classList.add('question');
 
         questionDiv.innerHTML = `
-            <div class="question-wrapper">
+            <div class="question-wrapper mt-4">
                 <label>Question Type:</label>
                 <select name="questions[${questionIndex}][type]" data-question-index="${questionIndex}" class="question-type">
                     <option value="open">Open Question</option>
@@ -18,18 +19,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 <label>Question:</label>
                 <input type="text" name="questions[${questionIndex}][text]" placeholder="Enter the question">
 
-                <div id="open-answer-container-${questionIndex}" class="open-answer-container" style="display: block;">
+                <div id="open-answer-container-${questionIndex}" class="open-answer-container mt-3" style="display: block;">
                     <label>Expected Answer:</label>
-                    <textarea name="questions[${questionIndex}][answer_text]" placeholder="Enter the expected answer"></textarea>
+                    <input type="text" name="questions[${questionIndex}][answer_text]" placeholder="Answer" required>
                 </div>
 
-                <div id="answers-container-${questionIndex}" class="answers-container" style="display: none;">
+                <div id="answers-container-${questionIndex}" class="answers-container mt-3" style="display: none;">
                     <label>Answers:</label>
                     <button type="button" class="add-answer btn btn-secondary" data-question-index="${questionIndex}">Add Answer</button>
                     <div class="answers"></div>
                 </div>
 
-                <button type="button" class="remove-question btn btn-danger">Remove Question</button>
+                <button type="button" class="remove-question btn btn-danger mt-3">Remove Question</button>
             </div>
         `;
 
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <input type="text" name="questions[${questionIndex}][answers][][text]" placeholder="Answer">
             <label>Correct Answer</label>
             <input type="checkbox" name="questions[${questionIndex}][answers][][is_correct]">
-            <button type="button" class="remove-answer btn btn-danger">Remove Answer</button>
+            <button type="button" class="remove-answer btn btn-danger mt-3">Remove Answer</button>
         `;
 
         answersContainer.appendChild(answerDiv);
