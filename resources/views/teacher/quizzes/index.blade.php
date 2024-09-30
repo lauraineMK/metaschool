@@ -10,54 +10,58 @@
     <a href="{{ route('teacher.quizzes.create') }}" class="btn btn-primary mb-3">Create New Quiz</a>
 
     @if ($quizzes->isEmpty())
-        <p>No quizzes available.</p>
+    <p>No quizzes available.</p>
     @else
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Quiz Title</th>
-                    <th>Quiz Description</th>
-                    <th>Quiz Lesson</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($quizzes as $quiz)
-                    <tr>
-                        <td>{{ $quiz->id }}</td>
-                        <td>{{ $quiz->title }}</td>
-                        <td>{{ $quiz->description }}</td>
-                        <td>{{ $quiz->lesson ? $quiz->lesson->title : 'N/A' }}</td> <!-- Display lesson title or 'N/A' -->
-                        <td>
-                            <div class="btn-container">
-                                <!-- View Button -->
-                                <a href="{{ route('teacher.quizzes.show', $quiz->id) }}" class="btn btn-info btn-sm btn-view">
-                                    <span class="text-view">View</span>
-                                    <i class="fas fa-eye"></i> <!-- Eye icon -->
-                                </a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Quiz Title</th>
+                <th class="hide-on-small-mobile">Description</th>
+                <th>Lesson</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($quizzes as $quiz)
+            <tr>
+                <td>{{ $quiz->id }}</td>
+                <td>{{ $quiz->title }}</td>
+                <td class="hide-on-small-mobile">{{ $quiz->description }}</td>
+                <td>
+                    <a href="{{ route('teacher.lessons.show', $quiz->lesson->id) }}">
+                        {{ $quiz->lesson ? $quiz->lesson->title : 'N/A' }}
+                </td> <!-- Display lesson title or 'N/A' -->
+                </a>
+                <td>
+                    <div class="btn-container">
+                        <!-- View Button -->
+                        <a href="{{ route('teacher.quizzes.show', $quiz->id) }}" class="btn btn-info btn-sm btn-view">
+                            <span class="text-view">View</span>
+                            <i class="fas fa-eye"></i> <!-- Eye icon -->
+                        </a>
 
-                                <!-- Edit Button -->
-                                <a href="{{ route('teacher.quizzes.edit', $quiz->id) }}" class="btn btn-warning btn-sm btn-edit">
-                                    <span class="text-edit">Edit</span>
-                                    <i class="fas fa-edit"></i> <!-- Pencil icon -->
-                                </a>
+                        <!-- Edit Button -->
+                        <a href="{{ route('teacher.quizzes.edit', $quiz->id) }}" class="btn btn-warning btn-sm btn-edit">
+                            <span class="text-edit">Edit</span>
+                            <i class="fas fa-edit"></i> <!-- Pencil icon -->
+                        </a>
 
-                                <!-- Delete Button -->
-                                <form action="{{ route('teacher.quizzes.destroy', $quiz->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this quiz?')">
-                                        <span class="text-delete">Delete</span>
-                                        <i class="fas fa-trash"></i> <!-- Trash icon -->
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        <!-- Delete Button -->
+                        <form action="{{ route('teacher.quizzes.destroy', $quiz->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm btn-delete" onclick="return confirm('Are you sure you want to delete this quiz?')">
+                                <span class="text-delete">Delete</span>
+                                <i class="fas fa-trash"></i> <!-- Trash icon -->
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
     @endif
 </div>
 @endsection
