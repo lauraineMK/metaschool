@@ -32,14 +32,4 @@ class Module extends Model
     {
         return $this->hasMany(Lesson::class);
     }
-
-    public function videos()
-    {
-        return $this->morphMany(Video::class, 'entity');
-    }
-
-    public function documents()
-    {
-        return $this->morphMany(Document::class, 'entity');
-    }
 }

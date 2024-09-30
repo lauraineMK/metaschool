@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('teachers')->middleware(['auth', RoleMiddleware::class . ':teacher'])->group(function () {
     // Teacher dashboard
     Route::get('/dashboard', [TeacherCourseController::class, 'teacher_dashboard'])->name('teacher.dashboard');
+
     // Routes for managing courses
     Route::get('courses', [TeacherCourseController::class, 'index'])->name('teacher.courses.index');
     Route::get('courses/create', [TeacherCourseController::class, 'create'])->name('teacher.courses.create');
@@ -38,7 +39,8 @@ Route::prefix('teachers')->middleware(['auth', RoleMiddleware::class . ':teacher
     Route::get('courses/{id}/edit', [TeacherCourseController::class, 'edit'])->name('teacher.courses.edit');
     Route::put('courses/{id}', [TeacherCourseController::class, 'update'])->name('teacher.courses.update');
     Route::delete('courses/{id}', [TeacherCourseController::class, 'destroy'])->name('teacher.courses.destroy');
-
+    Route::delete('section/{id}', [TeacherCourseController::class, 'sectiondestroy'])->name('teacher.section.destroy');
+    Route::delete('module/{id}', [TeacherCourseController::class, 'moduledestroy'])->name('teacher.module.destroy');
 
     // Routes for managing lessons
     Route::get('lessons', [TeacherLessonController::class, 'index'])->name('teacher.lessons.index');
