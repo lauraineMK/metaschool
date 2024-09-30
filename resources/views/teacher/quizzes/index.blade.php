@@ -17,6 +17,8 @@
                 <tr>
                     <th>#</th>
                     <th>Quiz Title</th>
+                    <th>Quiz Description</th>
+                    <th>Quiz Lesson</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -25,6 +27,8 @@
                     <tr>
                         <td>{{ $quiz->id }}</td>
                         <td>{{ $quiz->title }}</td>
+                        <td>{{ $quiz->description }}</td>
+                        <td>{{ $quiz->lesson ? $quiz->lesson->title : 'N/A' }}</td> <!-- Display lesson title or 'N/A' -->
                         <td>
                             <div class="btn-container">
                                 <!-- View Button -->
