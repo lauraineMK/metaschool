@@ -94,7 +94,7 @@ class QuizController extends Controller
                 }
             }
         });
-        return redirect()->route('quizzes.index')->with('success', 'Quiz created successfully.');
+        return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz created successfully.');
     }
 
     /**
@@ -115,7 +115,7 @@ class QuizController extends Controller
         // Retrieve quiz questions
         $questions = $quiz->questions;
 
-        return view('quizzes.show', compact('quiz', 'lesson', 'previousQuiz', 'nextQuiz', 'questions'));
+        return view('teacher.quizzes.show', compact('quiz', 'lesson', 'previousQuiz', 'nextQuiz', 'questions'));
     }
 
     /**
