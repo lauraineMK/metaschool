@@ -202,16 +202,16 @@ class CourseController extends Controller
         return view('teacher.courses.edit', compact('course'));
     }
 
-    //! Method to be reworked:
+    //! Method to be reworked ------------------------------------------------------------------------------------
     //? Updating works most of the time but — creation and modification largely
     //? functional but deletion does not work as it should — there's a problem
     //? with modules belonging to any section becoming independant when
     //? that section is deleted, instead of being deleted with it.
     //TODO: 1. Work on deletion so that each section, each section module
     //TODO:    and each standalone module can be deleted down to the last.
-    //TODO: 2. Check that the creation still works after two or three sections
+    //TODO: 1. Check that the creation still works after two or three sections
     //TODO:    containing several modules have been created.
-    //TODO: 3. Finally, check that the update works, having created a new section
+    //TODO: 2. Finally, check that the update works, having created a new section
     //TODO:    and a module in that section, modified fields in a module and
     //TODO:    its section, deleted all modules in a section and then the section,
     //TODO:    deleted another section with modules, without having deleted them,
@@ -405,6 +405,7 @@ class CourseController extends Controller
         return redirect()->route('teacher.courses.show', $course->id)
             ->with('success', 'Course updated successfully.');
     }
+    //! ----------------------------------------------------------------------------------------------------------
 
     /**
      * Delete a course
@@ -431,5 +432,53 @@ class CourseController extends Controller
 
         return redirect()->route('teacher.courses.index')
             ->with('success', 'Course deleted successfully.');
+    }
+
+    public function sectiondestroy($id)
+    {
+        $section = Section::find($id);
+        if (!$section) {
+
+            return response()->json(['message' =>  'Section not found'], 404);
+        }
+
+        $course = Course::find($section->course_id);
+        // Check if the authenticated user is the author of the course
+        if (Auth::user()->id !== $course->author_id) {
+            return response()->json(['message' => 'Unauthorized'], 405);
+        }
+
+
+
+        $section->delete();
+
+//        $section->modules()->forceDelete(); // Permanently delete modules
+//        $section->forceDelete(); // Permanently delete section
+
+        return response()->json(['message' => 'Section deleted successfully.'], 200);
+    }
+
+    public function moduledestroy($id)
+    {
+        $module = Module::find($id);
+        if (!$module) {
+
+            return response()->json(['message' =>  'Module not found'], 404);
+        }
+
+        $course = Course::find($module->course_id);
+        // Check if the authenticated user is the author of the course
+        if (Auth::user()->id !== $course->author_id) {
+            return response()->json(['message' => 'Unauthorized'], 405);
+        }
+
+
+
+        $module->delete();
+
+//        $section->modules()->forceDelete(); // Permanently delete modules
+//        $section->forceDelete(); // Permanently delete section
+
+        return response()->json(['message' => 'Module deleted successfully.'], 200);
     }
 }

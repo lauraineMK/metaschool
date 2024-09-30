@@ -9,27 +9,48 @@ Thank you for contributing to our project! To help streamline the process, pleas
 #### Summary
 
 The current implementation of the course editing functionality has the following issues:
-- **Creation and Modification**: These functionalities work most of the time but might have edge cases that need attention.
-- **Deletion**: This feature does not work as expected. Specifically, modules that belong to any section become independent when the section is deleted, rather than being deleted along with it.
+
+- **Creation and Modification**: Creation and Modification: The addition of new sections and modules is not functioning correctly. Instead of creating new entries, they seem to replace or merge with existing ones.
+- **Deletion**: The deletion feature for sections and modules works in most cases but fails for the last section or the last module, which does not delete properly.
 
 #### Detailed Description
 
-- **Issue**: When editing a course, if a section is deleted, the modules that were part of that section should also be deleted. However, currently, these modules become standalone and remain in the system.
+- **Issue**:  When editing a course, if a new section and its modules are created, they replace the existing ones rather than being added as new entries. For example, if Section 1 has Module 1A and Module 2A, creating Section X with Module X during the edit process results in Section 1 being replaced by Section X, Module 1A being replaced by Module X, and no new section or module being created. Additionally, while the deletion of sections and modules works correctly, the last section or module does not delete as expected, leaving remnants in the system.
 - **Scope**:
   - Creation of new sections and modules
   - Modification of existing sections and modules
   - Deletion of sections and modules
 
+#### Controller
+
+An `update` method is implemented in the controller located at `app/Http/Controllers/Teacher/CourseController.php`, which is intended to handle the course logic.
+The part of the code is commented in red, orange and blue for easier identification.
+
+#### JavaScript
+
+The script responsible for the dynamic content of the course is placed at the end of the following file:
+
+`resources/js/course.js`
+
+The script is designed for creating and updating courses. The creation of courses with sections and modules or with modules or on their own, is fully functional.
+
 ## Tasks
 
-### 1. Work on Deletion
+### 1. Work on Creation Functionality
 
-- **Objective**: Ensure that each section, each section module, and each standalone module can be deleted appropriately.
+- **Objective**: Ensure that the addition of new sections and modules works without merging or replacing existing entries.
+- **Details*:
+  - Implement functionality to create new sections and modules independently without affecting existing ones.
+  - Verify that creating a section and adding modules does not result in the overwriting of existing data.
+
+### 2. Work on Deletion (Partial Functionality)
+
+- **Objective**: Ensure that the deletion of sections and their main modules works correctly.
 - **Details**:
-  - Implement functionality to delete all modules associated with a section when the section is deleted.
-  - Verify that no orphaned modules remain after the deletion of a section.
+  - Implement functionality to delete sections and their associated main modules properly.
+  - Confirm that deleting a section removes all related data and does not leave any orphaned modules or sections in the system, except for the last section or module.
 
-### 2. Verify Creation Functionality
+### 3. Verify Creation Functionality
 
 - **Objective**: Ensure that the creation functionality still works correctly after multiple sections and modules have been added.
 - **Details**:
@@ -46,10 +67,10 @@ The current implementation of the course editing functionality has the following
   - Delete another section with modules but without deleting the modules first.
   - Check that all modifications, deletions, and updates have been executed correctly.
   - Perform the same checks with a course containing standalone modules:
-    - Create a new course with standalone modules.
-    - Edit fields of some modules.
-    - Delete some of the modules.
-
+        - Create a new course with standalone modules.
+        - Edit fields of some modules.
+        - Delete some of the modules.
+  
 ## How to Test
 
 1. **Set up**:

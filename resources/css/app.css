@@ -231,7 +231,7 @@
     }
 
     .btn-delete i {
-      display: none; /* Cache l'icône de corbeille */
+      display: none; /* Hide trash icon */
     }
   }
 
@@ -601,20 +601,25 @@
         margin-right: 5px; /* Space between icon and text */
     }
 
-    .lessons-view h1 {
+    .lessons-view h1,
+    .quizzes-view h1 {
         font-size: 1.7rem;
     }
 
-    .lessons-view .btn.btn-primary.mb-3 {
+    .lessons-view .btn.btn-primary.mb-3,
+    .quizzes-view .btn.btn-primary.mb-3 {
         font-size: 0.8rem;
     }
 
-    .lessons-view.container.mt-5 {
+    .lessons-view.container.mt-5,
+    .quizzes-view.container.mt-5 {
         margin-left: 0;
     }
 
     .lessons-view table.table th,
-    .lessons-view table.table td {
+    .lessons-view table.table td,
+    .quizzes-view table.table th,
+    .quizzes-view table.table td {
         padding: 0.4rem;
         font-size: 0.775rem;
     }
@@ -745,55 +750,45 @@
 
 /* Page adjustments for a “Mobile M” */
 @media (max-width: 387px) {
-    .courses-view h1 {
+    .courses-view h1,
+    .lessons-view h1,
+    .quizzes-view h1 {
         font-size: 1.5rem;
     }
 
-    .courses-view .btn.btn-primary.mb-3 {
+    .courses-view .btn.btn-primary.mb-3,
+    .lessons-view .btn.btn-primary.mb-3,
+    .quizzes-view .btn.btn-primary.mb-3 {
         font-size: 0.6rem;
     }
 
     .courses-view table.table th,
-    .courses-view table.table td {
-        padding: 0.4rem;
-        font-size: 0.625rem;
-    }
-
-    .lessons-view h1 {
-        font-size: 1.5rem;
-    }
-
-    .lessons-view .btn.btn-primary.mb-3 {
-        font-size: 0.6rem;
-    }
-
+    .courses-view table.table td,
     .lessons-view table.table th,
-    .lessons-view table.table td {
-        padding: 0.4rem;
-        font-size: 0.625rem;
+    .lessons-view table.table td,
+    .quizzes-view table.table th,
+    .quizzes-view table.table td {
+            padding: 0.4rem;
+            font-size: 0.625rem;
     }
 }
 
 /* Page adjustments for a “Mobile S” */
 @media (max-width: 350px) {
-    .courses-view h1 {
+    .courses-view h1,
+    .lessons-view h1,
+    .quizzes-view h1 {
         font-size: 1.4rem;
     }
 
     .courses-view table.table th,
-    .courses-view table.table td {
-        padding: 0.25rem;
-        font-size: 0.625rem;
-    }
-
-    .lessons-view h1 {
-        font-size: 1.4rem;
-    }
-
+    .courses-view table.table td,
     .lessons-view table.table th,
-    .lessons-view table.table td {
-        padding: 0.25rem;
-        font-size: 0.625rem;
+    .lessons-view table.table td,
+    .quizzes-view table.table th,
+    .quizzes-view table.table td {
+       padding: 0.25rem;
+       font-size: 0.625rem;
     }
 
     .btn-delete i,

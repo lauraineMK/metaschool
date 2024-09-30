@@ -48,7 +48,7 @@ npm install
 yarn install
 ```
 
-#### After installing JavaScript dependencies, you may also need to build frontend assets:
+#### After installing JavaScript dependencies, you may also need to build frontend assets
 
 ```bash
 npm run dev
@@ -102,7 +102,7 @@ Start the Laravel development server:
 php artisan serve
 ```
 
-Access the application at http://localhost:8000.
+Access the application at <http://localhost:8000>.
 
 ## Configuration
 
@@ -120,9 +120,9 @@ Authentication routes are defined in routes/web.php. You can customize authentic
 
 ## Usage
 
-- Create a Course: Go to http://localhost:8000/teachers/courses/create to add a new course.
-- View Courses: Go to http://localhost:8000/teachers/courses to see the list of courses.
-- Edit a Course: Go to http://localhost:8000/teachers/courses/{id}/edit to edit an existing course.
+- Create a Course: Go to <http://localhost:8000/teachers/courses/create> to add a new course.
+- View Courses: Go to <http://localhost:8000/teachers/courses> to see the list of courses.
+- Edit a Course: Go to <http://localhost:8000/teachers/courses/{id}/edit> to edit an existing course.
 - Delete a Course: Use the delete button on the course list page.
 
 ## Ordering Lessons, Modules, and Sections

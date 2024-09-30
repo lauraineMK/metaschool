@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
+            //! Dynamic document part ---------------------------------------------------------------------------------------------------------------------------------------------------
             // Dynamic document addition script
             const addDocumentButton = document.getElementById('add-document-button');
             if (addDocumentButton) {
@@ -308,6 +309,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
+            //! -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         } else {
             console.error('One or more essential elements not found.');
         }
@@ -342,9 +345,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Store the viewed state in localStorage
                 localStorage.setItem(`lessonViewed_${lessonId}`, 'true');
 
-                //! The progress of the lessons viewed by the student is
-                //! not taken into account in the database, despite many attempts,
-                //! many different and varied code tests.
+                //! The progress of the lessons viewed by the student is ---------------------
+                //! not taken into account in the database, despite many attempts, -----------
+                //! many different and varied code tests. ------------------------------------
                 // Send an AJAX request to store the progress in the database
                 fetch('/students/progress', {
                     method: 'POST',
@@ -368,6 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     .catch(error => {
                         console.error('Error:', error);
                     });
+                //! -------------------------------------------------------------------------
             });
         }
     });

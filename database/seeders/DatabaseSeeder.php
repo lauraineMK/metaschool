@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             FinalFantasySeeder::class,
             MusicSeeder::class,
+            QuizSeeder::class,
+            QuestionSeeder::class,
+            AnswerSeeder::class,
             StudentsSeeder::class,
             TeachersSeeder::class,
             // Other seeders here

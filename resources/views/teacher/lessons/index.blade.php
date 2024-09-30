@@ -30,7 +30,11 @@
                 <td>{{ $lesson->id }}</td>
                 <td>{{ $lesson->title }}</td>
                 <td class="hide-on-small-mobile">{{ Str::limit($lesson->content, 50) }}</td>
-                <td>{{ $lesson->course->name }}</td>
+                <td>
+                    <a href="{{ route('teacher.courses.show', $lesson->course->id) }}">
+                        {{ $lesson->course->name }}
+                    </a>
+                </td>
                 <td class="hide-on-mobile">{{ $lesson->section ? $lesson->section->name : 'N/A' }}</td>
                 <td class="hide-on-mobile">{{ $lesson->module ? $lesson->module->name : 'N/A' }}</td>
                 <td>
