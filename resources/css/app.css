@@ -231,7 +231,7 @@
     }
 
     .btn-delete i {
-      display: none; /* Cache l'icône de corbeille */
+      display: none; /* Hide trash icon */
     }
   }
 
