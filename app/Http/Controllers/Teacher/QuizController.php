@@ -123,7 +123,9 @@ class QuizController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $quiz = Quiz::with('questions')->findOrFail($id);
+        $lessons = Lesson::all(); // Retrieve all lessons
+        return view('teacher.quizzes.edit', compact('quiz', 'lessons'));
     }
 
     /**

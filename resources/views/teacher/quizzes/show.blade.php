@@ -49,10 +49,10 @@
                 <h3>Questions</h3>
                 @foreach($quiz->questions as $question)
                 <div class="mb-3">
-                    <h5>{{ $question->text }}</h5>
+                    <h5>{{ $question->question_text }}</h5>
                     <ul>
                         @foreach($question->answers as $answer)
-                        <li>{{ $answer->text }} ({{ $answer->is_correct ? 'Correct' : 'Incorrect' }})</li>
+                        <li>{{ $answer->answer_text }} ({{ $answer->is_correct ? 'Correct' : 'Incorrect' }})</li>
                         @endforeach
                     </ul>
                 </div>
