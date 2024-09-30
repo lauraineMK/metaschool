@@ -94,7 +94,7 @@ class QuizController extends Controller
                 }
             }
         });
-        return redirect()->route('quizzes.index')->with('success', 'Quiz created successfully.');
+        return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz created successfully.');
     }
 
     /**
@@ -115,7 +115,7 @@ class QuizController extends Controller
         // Retrieve quiz questions
         $questions = $quiz->questions;
 
-        return view('quizzes.show', compact('quiz', 'lesson', 'previousQuiz', 'nextQuiz', 'questions'));
+        return view('teacher.quizzes.show', compact('quiz', 'lesson', 'previousQuiz', 'nextQuiz', 'questions'));
     }
 
     /**
@@ -123,7 +123,9 @@ class QuizController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $quiz = Quiz::with('questions')->findOrFail($id);
+        $lessons = Lesson::all(); // Retrieve all lessons
+        return view('teacher.quizzes.edit', compact('quiz', 'lessons'));
     }
 
     /**
