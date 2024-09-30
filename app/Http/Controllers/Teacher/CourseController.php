@@ -433,4 +433,52 @@ class CourseController extends Controller
         return redirect()->route('teacher.courses.index')
             ->with('success', 'Course deleted successfully.');
     }
+
+    public function sectiondestroy($id)
+    {
+        $section = Section::find($id);
+        if (!$section) {
+
+            return response()->json(['message' =>  'Section not found'], 404);
+        }
+
+        $course = Course::find($section->course_id);
+        // Check if the authenticated user is the author of the course
+        if (Auth::user()->id !== $course->author_id) {
+            return response()->json(['message' => 'Unauthorized'], 405);
+        }
+
+
+
+        $section->delete();
+
+//        $section->modules()->forceDelete(); // Permanently delete modules
+//        $section->forceDelete(); // Permanently delete section
+
+        return response()->json(['message' => 'Section deleted successfully.'], 200);
+    }
+
+    public function moduledestroy($id)
+    {
+        $module = Module::find($id);
+        if (!$module) {
+
+            return response()->json(['message' =>  'Module not found'], 404);
+        }
+
+        $course = Course::find($module->course_id);
+        // Check if the authenticated user is the author of the course
+        if (Auth::user()->id !== $course->author_id) {
+            return response()->json(['message' => 'Unauthorized'], 405);
+        }
+
+
+
+        $module->delete();
+
+//        $section->modules()->forceDelete(); // Permanently delete modules
+//        $section->forceDelete(); // Permanently delete section
+
+        return response()->json(['message' => 'Module deleted successfully.'], 200);
+    }
 }

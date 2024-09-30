@@ -71,8 +71,8 @@
                     <button type="button" class="btn btn-secondary add-module-btn mobile-only">
                         <i class="fas fa-plus"></i>
                     </button>
-                    <button type="button" class="btn btn-danger remove-section-btn desktop-only">Remove Section</button>
-                    <button type="button" class="btn btn-danger remove-section-btn mobile-only">
+                    <button type="button" data-section-id="{{$section->id}}" class="btn btn-danger remove-section-btn desktop-only">Remove Section</button>
+                    <button type="button" data-section-id="{{$section->id}}" class="btn btn-danger remove-section-btn mobile-only">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -94,8 +94,8 @@
                             <label for="sesections_{{ $index }}_modules_{{ $moduleIndex }}_level">Module Level:</label>
                             <input type="number" id="sections_{{ $index }}_modules_{{ $moduleIndex }}_level" name="sections[{{ $index }}][modules][{{ $moduleIndex }}][level]" class="form-control" value="{{ old('sections.' . $index . '.modules.' . $moduleIndex . '.level', $module->level) }}">
                         </div>
-                        <button type="button" class="btn btn-danger remove-module-btn desktop-only">Remove Module</button>
-                        <button type="button" class="btn btn-danger remove-module-btn mobile-only">
+                        <button type="button" data-module-id="{{$module->id}}" class="btn btn-danger remove-module-btn desktop-only">Remove Module</button>
+                        <button type="button" data-module-id="{{$module->id}}" class="btn btn-danger remove-module-btn mobile-only">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -123,8 +123,8 @@
                     <label for="modules_{{ $moduleIndex }}_level">Module Level:</label>
                     <input type="number" id="modules_{{ $moduleIndex }}_level" name="modules[{{ $moduleIndex }}][level]" class="form-control" value="{{ old('modules.' . $moduleIndex . '.level', $module->level) }}">
                 </div>
-                <button type="button" class="btn btn-danger remove-module-btn desktop-only">Remove Module</button>
-                <button type="button" class="btn btn-danger remove-module-btn mobile-only">
+                <button type="button" data-module-id="{{$module->id}}" class="btn btn-danger remove-module-btn desktop-only">Remove Module</button>
+                <button type="button" data-module-id="{{$module->id}}" class="btn btn-danger remove-module-btn mobile-only">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>

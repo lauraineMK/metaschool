@@ -17,6 +17,16 @@ class Section extends Model
         'level',
     ];
 
+    protected static function boot()
+{
+    parent::boot();
+
+    static::deleting(function ($section) {
+        // Delete all associated modules before deleting the section
+        $section->modules()->delete();
+    });
+}
+
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -30,15 +40,5 @@ class Section extends Model
     public function lessons()
     {
         return $this->hasMany(Lesson::class);
-    }
-
-    public function videos()
-    {
-        return $this->morphMany(Video::class, 'entity');
-    }
-
-    public function documents()
-    {
-        return $this->morphMany(Document::class, 'entity');
     }
 }
