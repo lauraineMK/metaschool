@@ -209,9 +209,9 @@ class CourseController extends Controller
     //? that section is deleted, instead of being deleted with it.
     //TODO: 1. Work on deletion so that each section, each section module
     //TODO:    and each standalone module can be deleted down to the last.
-    //TODO: 2. Check that the creation still works after two or three sections
+    //TODO: 1. Check that the creation still works after two or three sections
     //TODO:    containing several modules have been created.
-    //TODO: 3. Finally, check that the update works, having created a new section
+    //TODO: 2. Finally, check that the update works, having created a new section
     //TODO:    and a module in that section, modified fields in a module and
     //TODO:    its section, deleted all modules in a section and then the section,
     //TODO:    deleted another section with modules, without having deleted them,
