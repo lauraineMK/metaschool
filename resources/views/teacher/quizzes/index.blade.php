@@ -17,7 +17,7 @@
             <tr>
                 <th>#</th>
                 <th>Quiz Title</th>
-                <th>Description</th>
+                <th class="hide-on-small-mobile">Description</th>
                 <th>Lesson</th>
                 <th>Actions</th>
             </tr>
@@ -27,7 +27,7 @@
             <tr>
                 <td>{{ $quiz->id }}</td>
                 <td>{{ $quiz->title }}</td>
-                <td>{{ $quiz->description }}</td>
+                <td class="hide-on-small-mobile">{{ $quiz->description }}</td>
                 <td>
                     <a href="{{ route('teacher.lessons.show', $quiz->lesson->id) }}">
                         {{ $quiz->lesson ? $quiz->lesson->title : 'N/A' }}
