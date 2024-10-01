@@ -38,9 +38,9 @@
                 @endforeach
             </div>
 
-            <!-- Button to go back to quizzes list -->
+            <!-- Button to go back to the lesson -->
             <div class="mt-4">
-                <a href="{{ route('student.quizzes.index') }}" class="btn btn-secondary">Back to Quizzes</a>
+                <a href="{{ route('student.lessons.show', $lesson->id) }}" class="btn btn-secondary">Back to Lesson</a>
             </div>
         </div>
     </div>

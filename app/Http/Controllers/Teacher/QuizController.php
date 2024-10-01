@@ -14,6 +14,8 @@ class QuizController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -23,6 +25,8 @@ class QuizController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -32,6 +36,9 @@ class QuizController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming request containing quiz data.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -99,6 +106,9 @@ class QuizController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * @param  string  $id  The ID of the quiz to display.
+     * @return \Illuminate\View\View
      */
     public function show(string $id)
     {
@@ -120,6 +130,9 @@ class QuizController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param  string  $id  The ID of the quiz to edit.
+     * @return \Illuminate\View\View
      */
     public function edit(string $id)
     {
@@ -130,6 +143,10 @@ class QuizController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming request containing updated quiz data.
+     * @param  string  $id  The ID of the quiz to update.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, string $id)
     {
@@ -138,6 +155,9 @@ class QuizController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param  string  $id  The ID of the quiz to remove.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(string $id)
     {

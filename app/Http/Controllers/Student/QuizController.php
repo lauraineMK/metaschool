@@ -8,12 +8,23 @@ use App\Http\Controllers\Controller;
 
 class QuizController extends Controller
 {
+    /**
+     * Display a listing of the quizzes.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         $quizzes = Quiz::all();
         return view('student.quizzes.index', compact('quizzes'));
     }
 
+    /**
+     * Display the specified quiz.
+     *
+     * @param  int  $id  The ID of the quiz to show.
+     * @return \Illuminate\View\View
+     */
     public function show($id)
     {
         // Retrieve the quiz by its ID
@@ -33,10 +44,22 @@ class QuizController extends Controller
         return view('student.quizzes.show', compact('quiz', 'lesson', 'previousQuiz', 'nextQuiz', 'questions'));
     }
 
+    /**
+     * Submit the user's answers for the specified quiz and calculate the score.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming request containing user answers.
+     * @param  int  $id  The ID of the quiz being submitted.
+     * @return \Illuminate\View\View
+     */
     public function submit(Request $request, $id)
     {
         // Retrieve the quiz by its ID
-        $quiz = Quiz::with('questions.answers')->findOrFail($id);
+        $quiz = Quiz::with('questions.answers', 'lesson')->findOrFail($id);
+
+        // Validation of answers
+        $request->validate([
+            'questions.*' => 'required|exists:answers,id',
+        ]);
 
         // Initialize the score
         $score = 0;
@@ -67,6 +90,7 @@ class QuizController extends Controller
             'quiz' => $quiz,
             'score' => $score,
             'userAnswers' => $userAnswers,
+            'lesson' => $quiz->lesson
         ]);
     }
 }
