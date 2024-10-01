@@ -74,6 +74,8 @@ class LessonController extends Controller
         $videos = $lesson->videos;
         // Retrieve the documents associated with the lesson
         $documents = $lesson->documents;
+        // Retrieve the quizassociated with the lesson
+        $quiz = $lesson->quiz;
 
         // Pass the lesson details to the view
         return view('student.lessons.show', [
@@ -81,6 +83,7 @@ class LessonController extends Controller
             'course' => $course,
             'videos' => $videos,
             'documents' => $documents,
+            'quiz' => $quiz,
             'previousLesson' => $previousLesson,
             'nextLesson' => $nextLesson
         ]);

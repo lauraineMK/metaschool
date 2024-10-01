@@ -82,6 +82,41 @@ document.addEventListener('DOMContentLoaded', function () {
         element.closest('.answer').remove();
     }
 
+    // Function to validate the form before submission
+    function validateForm(event) {
+        const questions = document.querySelectorAll('.question-container');
+        let allAnswered = true;
+
+        questions.forEach(question => {
+            const questionType = question.querySelector('.question-type').value;
+            let answered = false;
+
+            if (questionType === 'open') {
+                const openAnswer = question.querySelector('textarea[name^="questions"]');
+                if (openAnswer && openAnswer.value.trim() !== '') {
+                    answered = true;
+                }
+            } else {
+                const selectedAnswer = question.querySelector('input[type="radio"]:checked');
+                if (selectedAnswer) {
+                    answered = true;
+                }
+            }
+
+            if (!answered) {
+                allAnswered = false;
+                question.classList.add('border-danger'); // Add red border to indicate the question is unanswered
+            } else {
+                question.classList.remove('border-danger'); // Remove red border if answered
+            }
+        });
+
+        if (!allAnswered) {
+            event.preventDefault(); // Prevent form submission
+            alert('Please answer all questions before submitting the quiz.'); // Inform the student
+        }
+    }
+
     // Event listener for adding questions
     document.querySelector('body').addEventListener('click', function (event) {
         if (event.target.matches('.add-question')) {
@@ -111,4 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleAnswers(event);
         }
     });
+
+    // Add the event listener for form validation on submit
+    const quizForm = document.getElementById('quizForm');
+    if (quizForm) {
+        quizForm.addEventListener('submit', validateForm);
+    }
 });

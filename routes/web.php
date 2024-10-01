@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
-use App\Http\Controllers\Teacher\QuizController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Student\ProgressController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\LessonController as StudentLessonController;
+use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Teacher\CourseController as TeacherCourseController;
 use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
+use App\Http\Controllers\Teacher\QuizController as TeacherQuizController;
 
 Route::get('/', function () {
     return view('home');
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
 // Teacher routes
 Route::prefix('teachers')->middleware(['auth', RoleMiddleware::class . ':teacher'])->group(function () {
     // Teacher dashboard
-    Route::get('/dashboard', [TeacherCourseController::class, 'teacher_dashboard'])->name('teacher.dashboard');
+    Route::get('dashboard', [TeacherCourseController::class, 'teacher_dashboard'])->name('teacher.dashboard');
 
     // Routes for managing courses
     Route::get('courses', [TeacherCourseController::class, 'index'])->name('teacher.courses.index');
@@ -52,25 +53,34 @@ Route::prefix('teachers')->middleware(['auth', RoleMiddleware::class . ':teacher
     Route::delete('lessons/{id}', [TeacherLessonController::class, 'destroy'])->name('teacher.lessons.destroy');
 
     // Routes for managing quizzes
-    Route::get('/quizzes', [QuizController::class, 'index'])->name('teacher.quizzes.index');
-    Route::get('/quizzes/create', [QuizController::class, 'create'])->name('teacher.quizzes.create');
-    Route::post('/quizzes', [QuizController::class, 'store'])->name('teacher.quizzes.store');
-    Route::get('/quizzes/{quiz}', [QuizController::class, 'show'])->name('teacher.quizzes.show');
-    Route::get('/quizzes/{quiz}/edit', [QuizController::class, 'edit'])->name('teacher.quizzes.edit');
-    Route::put('/quizzes/{quiz}', [QuizController::class, 'update'])->name('teacher.quizzes.update');
-    Route::delete('/quizzes/{quiz}', [QuizController::class, 'destroy'])->name('teacher.quizzes.destroy');
+    Route::get('quizzes', [TeacherQuizController::class, 'index'])->name('teacher.quizzes.index');
+    Route::get('quizzes/create', [TeacherQuizController::class, 'create'])->name('teacher.quizzes.create');
+    Route::post('quizzes', [TeacherQuizController::class, 'store'])->name('teacher.quizzes.store');
+    Route::get('quizzes/{quiz}', [TeacherQuizController::class, 'show'])->name('teacher.quizzes.show');
+    Route::get('quizzes/{quiz}/edit', [TeacherQuizController::class, 'edit'])->name('teacher.quizzes.edit');
+    Route::put('quizzes/{quiz}', [TeacherQuizController::class, 'update'])->name('teacher.quizzes.update');
+    Route::delete('quizzes/{quiz}', [TeacherQuizController::class, 'destroy'])->name('teacher.quizzes.destroy');
 });
 
 // Student routes
 Route::prefix('students')->middleware(['web', 'auth', RoleMiddleware::class . ':student'])->group(function () {
     // Student dashboard
-    Route::get('/dashboard', [StudentCourseController::class, 'student_dashboard'])->name('student.dashboard');
+    Route::get('dashboard', [StudentCourseController::class, 'student_dashboard'])->name('student.dashboard');
+
     // Routes for managing courses
     Route::get('courses', [StudentCourseController::class, 'index'])->name('student.courses.index');
     Route::get('courses/{id}', [StudentCourseController::class, 'show'])->name('student.courses.show');
+
     // Routes for managing lessons
     Route::get('lessons', [StudentLessonController::class, 'index'])->name('student.lessons.index');
     Route::get('lessons/{id}', [StudentLessonController::class, 'show'])->name('student.lessons.show');
+
+    // Routes for managing quizzes
+    Route::get('quizzes', [StudentQuizController::class, 'index'])->name('student.quizzes.index');
+    Route::get('quizzes/{id}', [StudentQuizController::class, 'show'])->name('student.quizzes.show');
+    Route::post('quizzes/{quiz}/submit', [StudentQuizController::class, 'submit'])->name('student.quizzes.submit');
+
+    // Route for storing progress
     Route::post('/progress', [ProgressController::class, 'store'])->name('student.progress.store');
 });
 

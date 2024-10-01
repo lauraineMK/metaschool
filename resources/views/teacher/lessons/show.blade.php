@@ -140,6 +140,20 @@
             </div>
             @endif
 
+            <!-- Quiz Section -->
+            @if($lesson->quiz)
+            <div class="mt-4">
+                <h3>Quiz</h3>
+                <a href="{{ route('teacher.quizzes.show', $lesson->quiz->id) }}" class="btn btn-info">
+                    {{ $lesson->quiz->title }}
+                </a>
+            </div>
+            @else
+            <div class="mt-4">
+                <p>No quiz available for this lesson.</p>
+            </div>
+            @endif
+
             <!-- Navigation Buttons -->
             <div class="mt-4">
                 @if ($previousLesson)
