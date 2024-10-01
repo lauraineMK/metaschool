@@ -25,12 +25,12 @@
 
                         @if($question->type === 'open')
                         <!-- Text area for open questions -->
-                        <textarea class="form-control" name="questions[{{ $question->id }}]" rows="3" placeholder="Your answer..."></textarea>
+                        <textarea class="form-control" name="questions[{{ $question->id }}]" rows="3" placeholder="Your answer..."  required></textarea>
                         @else
                         <!-- Radio buttons for multiple choice questions -->
                         @foreach($question->answers as $answer)
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="questions[{{ $question->id }}]" id="answer_{{ $answer->id }}" value="{{ $answer->id }}">
+                            <input class="form-check-input" type="radio" name="questions[{{ $question->id }}]" id="answer_{{ $answer->id }}" value="{{ $answer->id }}"  required>
                             <label class="form-check-label" for="answer_{{ $answer->id }}">
                                 {{ $answer->answer_text }}
                             </label>
