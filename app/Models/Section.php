@@ -18,14 +18,14 @@ class Section extends Model
     ];
 
     protected static function boot()
-{
-    parent::boot();
+    {
+        parent::boot();
 
-    static::deleting(function ($section) {
-        // Delete all associated modules before deleting the section
-        $section->modules()->delete();
-    });
-}
+        static::deleting(function ($section) {
+            // Delete all associated modules before deleting the section
+            $section->modules()->delete();
+        });
+    }
 
     public function course()
     {

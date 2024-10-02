@@ -28,11 +28,6 @@
             </div>
 
             <div class="form-group">
-                <label for="course_price">Course Price:</label>
-                <input type="number" id="course_price" name="price" class="form-control" value="{{ old('price', $course->price) }}">
-            </div>
-
-            <div class="form-group">
                 <label for="course_creation_date">Creation Date:</label>
                 <input type="date" id="course_creation_date" name="creation_date" class="form-control" value="{{ old('creation_date', $course->creation_date instanceof \DateTime ? $course->creation_date->format('Y-m-d') : $course->creation_date) }}">
             </div>

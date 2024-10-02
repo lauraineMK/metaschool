@@ -13,7 +13,6 @@ class Course extends Model
         'name',
         'description',
         'cover_image',
-        'price',
         'creation_date',
         'author_id',
         'level',
