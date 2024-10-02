@@ -511,11 +511,11 @@
     }
 
     #dropdownMenu {
+        display: none; /* Hide the menu by default */
         position: absolute; /* Position the dropdown menu under the navbar */
         top: 100%; /* Place the menu directly under the navbar */
         right: 0; /* Align the menu with the right edge of the navbar */
         width: 100px; /* Set a specific width for the dropdown menu */
-        display: none; /* Hide the menu by default */
         background-color: #f8f9fa; /* Background color for the dropdown menu */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow to give a depth effect */
         z-index: 1000; /* Ensure the menu is above other content */
