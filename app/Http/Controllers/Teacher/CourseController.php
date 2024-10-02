@@ -86,7 +86,6 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric',
             'creation_date' => 'nullable|date',
             'author_id' => 'required|exists:users,id',
             'sections' => 'nullable|array',
@@ -113,7 +112,6 @@ class CourseController extends Controller
         $course = Course::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            'price' => $validated['price'],
             'creation_date' => $validated['creation_date'],
             'author_id' => $validated['author_id'],
         ]);
@@ -231,7 +229,6 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric',
             'creation_date' => 'nullable|date',
             'author_id' => 'sometimes|required|exists:users,id',
             'sections' => 'nullable|array',

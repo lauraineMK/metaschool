@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('cover_image')->nullable();
-            $table->decimal('price', 10, 2)->nullable();
             $table->date('creation_date')->nullable();
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->integer('level')->nullable();
