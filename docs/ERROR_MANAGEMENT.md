@@ -43,6 +43,20 @@
 **File:** `/var/www/html/internship/lms-metaboussole/resources/views/layouts/head.blade.php`  
 **Details:**
 
+### 3. Database Errors
+
+- **Failed to Insert Question**
+** `SQLSTATE[HY000]: General error: 1364 Field 'type' doesn't have a default value`  
+**Date:** 2024-10-02 12:09:51  
+**File:** `/var/www/html/internship/lms-metaboussole/app/Http/Controllers/Teacher/QuizController.php`  
+**User ID:** 1  
+**Details:**  
+- ** SQL query attempted:  
+
+```sql
+insert into `questions` (`question_text`, `quiz_id`, `updated_at`, `created_at`) values (Where?, 25, 2024-10-02 12:09:51, 2024-10-02 12:09:51)
+```
+
 ## Resolution Suggestions
 
 1. **For Undefined Variables:** Ensure that variables are correctly passed to the view from the controller.
