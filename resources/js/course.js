@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const isEditMode = document.body.classList.contains('edit-mode');
     const isCreateMode = document.body.classList.contains('create-mode');
 
-    console.log("Edit mode:", isEditMode);
-    console.log("Create mode:", isCreateMode);
-
     function applyClassesToModules() {
         if (isEditMode || isCreateMode) {
             document.querySelectorAll('.module-group').forEach(el => {
@@ -25,9 +22,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initial class application
     applyClassesToModules();
 
-    // Initialize counters for sections and modules
-    let sectionCount = parseInt(document.getElementById('section-container').getAttribute('data-count') || 0);
-    let moduleCount = parseInt(document.getElementById('module-container').getAttribute('data-count') || 0);
+    // Initialize counters for sections and modules using the greater value between data-count and actual elements count
+    let sectionCount = Math.max(
+        parseInt(document.getElementById('section-container').getAttribute('data-count') || 0),
+        document.querySelectorAll('.section-group').length
+    );
+
+    // Count for standalone modules
+    let moduleCount = Math.max(
+        parseInt(document.getElementById('module-container').getAttribute('data-count') || 0),
+        document.querySelectorAll('.module-group').length // Select standalone modules
+    );
 
     // Function to toggle the visibility of section-related elements
     function toggleSections() {
@@ -102,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let addModuleBtn = document.getElementById('add-module-btn');
     if (addModuleBtn) {
         addModuleBtn.addEventListener('click', function () {
-            console.log('Add Module button clicked');
             let moduleIndex = moduleCount++;
             let moduleContainer = document.getElementById('module-container');
 
@@ -198,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const sectionId = event.target.getAttribute('data-section-id');
 
                     if (sectionId) {
-                    // Example of function call
+                        // Example of function call
                         deleteCourseSession(sectionId);
                     } else {
                         console.error('Section ID not found');
@@ -244,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const moduleId = event.target.getAttribute('data-module-id');
 
                     if (moduleId) {
-                    // Example of function call
+                        // Example of function call
                         deleteModule(moduleId);
                     } else {
                         console.error('Module ID not found');
@@ -258,10 +262,14 @@ document.addEventListener('DOMContentLoaded', function () {
             let sectionGroup = event.target.closest('.section-group');
             let moduleContainer = sectionGroup.querySelector('.module-container');
             let sectionIndex = Array.from(sectionGroup.parentNode.children).indexOf(sectionGroup);
+
+            // Set moduleIndex based on existing modules in the specific section
             let moduleIndex = moduleContainer.querySelectorAll('.module-group').length;
+
+            // Module creation
             let newModule = document.createElement('div');
             newModule.classList.add('form-section', 'module-group');
-            newModule.id = `module-group-${moduleIndex}`;
+            newModule.id = `module-group-${sectionIndex}-${moduleIndex}`; // Updated ID for uniqueness
             newModule.innerHTML = `
                 <h2>Module Details</h2>
                 <div class="form-group">
