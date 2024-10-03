@@ -25,9 +25,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initial class application
     applyClassesToModules();
 
-    // Initialize counters for sections and modules
-    let sectionCount = parseInt(document.getElementById('section-container').getAttribute('data-count') || 0);
-    let moduleCount = parseInt(document.getElementById('module-container').getAttribute('data-count') || 0);
+    // Initialize counters for sections and modules using the greater value between data-count and actual elements count
+    let sectionCount = Math.max(
+        parseInt(document.getElementById('section-container').getAttribute('data-count') || 0),
+        document.querySelectorAll('.section-group').length
+    );
+
+    let moduleCount = Math.max(
+        parseInt(document.getElementById('module-container').getAttribute('data-count') || 0),
+        document.querySelectorAll('.module-group').length
+    );
 
     // Function to toggle the visibility of section-related elements
     function toggleSections() {
@@ -198,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const sectionId = event.target.getAttribute('data-section-id');
 
                     if (sectionId) {
-                    // Example of function call
+                        // Example of function call
                         deleteCourseSession(sectionId);
                     } else {
                         console.error('Section ID not found');
@@ -244,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const moduleId = event.target.getAttribute('data-module-id');
 
                     if (moduleId) {
-                    // Example of function call
+                        // Example of function call
                         deleteModule(moduleId);
                     } else {
                         console.error('Module ID not found');
