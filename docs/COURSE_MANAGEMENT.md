@@ -10,16 +10,24 @@ Thank you for contributing to our project! To help streamline the process, pleas
 
 The current implementation of the course editing functionality has the following issues:
 
-- **Creation and Modification**: Creation and Modification: The addition of new sections and modules is not functioning correctly. Instead of creating new entries, they seem to replace or merge with existing ones.
-- **Deletion**: The deletion feature for sections and modules works in most cases but fails for the last section or the last module, which does not delete properly.
+- **Creation and Modification**:  The addition of new sections or new standalone modules is functioning properly; However, there is still a problem with section modules if they are added with a section, all at once.
+- **Deletion**: The deletion feature for sections and standalone modules works correctly, including for the last section or module.
 
 #### Detailed Description
 
-- **Issue**:  When editing a course, if a new section and its modules are created, they replace the existing ones rather than being added as new entries. For example, if Section 1 has Module 1A and Module 2A, creating Section X with Module X during the edit process results in Section 1 being replaced by Section X, Module 1A being replaced by Module X, and no new section or module being created. Additionally, while the deletion of sections and modules works correctly, the last section or module does not delete as expected, leaving remnants in the system.
+- **Resolved Issues**:  
+  - The issue of deleting sections and standalone modules, including the last ones, has been fixed.
+  - The addition of new sections or standalone modules during the update process is now functioning correctly.
+  - Updating a course with sections or standalone modules now works perfectly, including creation, modification, and deletion.
+
+- **Resolved Issues**:
+  - Updating a course with sections and modules within those sections works partially. While existing modules within sections are functioning correctly, the issue arises when creating a new section with a module in it. In this case, the new section is created, but the module may not be created properly. It could lead to either:
+    - Only the section being created.
+    - A second section being created with the title of the desired module instead of a new module being added to the created section.
+  - This inconsistency results in errors during the update process.
+
 - **Scope**:
-  - Creation of new sections and modules
-  - Modification of existing sections and modules
-  - Deletion of sections and modules
+Creation of a new module within a new section, all created with the same update
 
 #### Controller
 
