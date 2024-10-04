@@ -305,6 +305,8 @@ class CourseController extends Controller
 
                     // Section's module update or creation
                     if (!empty($sectionData['modules'])) {
+
+                        // Store current section module ids
                         $currentModuleIdsForSection = [];
                         $currentModuleOrder = Module::where('section_id', $section->id)->max('order') ?? 0;
 
@@ -393,7 +395,7 @@ class CourseController extends Controller
             // Deletion of modules not present in the request for this section
             foreach ($currentSectionIds as $sectionId) {
                 Module::where('section_id', $sectionId)
-                    ->whereNotIn('id', $currentModuleIds)
+                    ->whereNotIn('id', $currentModuleIdsForSection)
                     ->delete();
             }
         } catch (\Exception $e) {
