@@ -288,6 +288,7 @@ class CourseController extends Controller
                                 'level' => $sectionData['level'] ?? $section->level,
                                 'order' => $sectionData['order'] ?? $section->order,
                             ]);
+                            // Store updated section ID
                             $currentSectionIds[] = $section->id;
                         }
                     } else {
@@ -300,12 +301,15 @@ class CourseController extends Controller
                             'level' => $sectionData['level'],
                             'order' => $sectionData['order'] ?? $currentSectionOrder,
                         ]);
+                        // Store newly created section ID
                         $currentSectionIds[] = $newSection->id;
                     }
 
+                    // Store current section module ids
+                    $currentModuleIdsForSection = [];
+
                     // Section's module update or creation
                     if (!empty($sectionData['modules'])) {
-                        $currentModuleIdsForSection = [];
                         $currentModuleOrder = Module::where('section_id', $section->id)->max('order') ?? 0;
 
                         foreach ($sectionData['modules'] as $moduleData) {
@@ -319,6 +323,7 @@ class CourseController extends Controller
                                         'level' => $moduleData['level'] ?? $module->level,
                                         'order' => $moduleData['order'] ?? $module->order,
                                     ]);
+                                    // Store updated section module ID
                                     $currentModuleIdsForSection[] = $module->id;
                                 }
                             } else {
@@ -332,6 +337,7 @@ class CourseController extends Controller
                                     'level' => $moduleData['level'],
                                     'order' => $moduleData['order'] ?? $currentModuleOrder,
                                 ]);
+                                // Store newly created section module ID
                                 $currentModuleIdsForSection[] = $newModule->id;
                             }
                         }
@@ -357,6 +363,7 @@ class CourseController extends Controller
                                 'section_id' => $moduleData['section_id'] ?? $module->section_id,
                                 'order' => $moduleData['order'] ?? $module->order,
                             ]);
+                            // Store updated module ID
                             $currentModuleIds[] = $module->id;
                         }
                     } else {
@@ -370,6 +377,7 @@ class CourseController extends Controller
                             'level' => $moduleData['level'],
                             'order' => $moduleData['order'] ?? $currentStandaloneModuleOrder,
                         ]);
+                        // Store newly created module ID
                         $currentModuleIds[] = $newModule->id;
                     }
                 }
@@ -393,12 +401,15 @@ class CourseController extends Controller
             // Deletion of modules not present in the request for this section
             foreach ($currentSectionIds as $sectionId) {
                 Module::where('section_id', $sectionId)
-                    ->whereNotIn('id', $currentModuleIds)
+                    ->whereNotIn('id', $currentModuleIdsForSection)
                     ->delete();
             }
         } catch (\Exception $e) {
             // Log the exception for debugging purposes
             Log::error('Failed to update course: ' . $e->getMessage());
+
+            // Optionally, you can include the request data for more context
+            Log::error('Request data: ' . json_encode($request->all()));
 
             // Redirect on update error with error message
             return redirect()->route('teacher.courses.index')
