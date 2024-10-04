@@ -34,6 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.module-group').length // Select standalone modules
     );
 
+    // Count for section modules
+    // let sectionModuleCount = Math.max(
+    //     parseInt(document.getElementById('module-container').getAttribute('data-count') || 0),
+    //     document.querySelectorAll('.module-group').length // Select section modules
+    // );
+
     // Function to toggle the visibility of section-related elements
     function toggleSections() {
         let includeSections = document.getElementById('include_sections');
@@ -158,8 +164,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Handle cancel button for modules
         if (event.target && event.target.classList.contains('cancel-module-btn')) {
+            let sectionIndex = event.target.getAttribute('data-index');
             let moduleIndex = event.target.getAttribute('data-index');
-            let moduleGroup = document.querySelector(`#module-group-${moduleIndex}`);
+            let moduleGroup = document.querySelector(
+                `#module-group-${moduleIndex}, #section-${sectionIndex}-module-group-${moduleIndex}`
+            );
             if (moduleGroup) {
                 moduleGroup.remove();
             }
@@ -269,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Module creation
             let newModule = document.createElement('div');
             newModule.classList.add('form-section', 'module-group');
-            newModule.id = `module-group-${sectionIndex}-${moduleIndex}`; // Updated ID for uniqueness
+            newModule.id = `section-${sectionIndex}-module-group-${moduleIndex}`; // Updated ID for uniqueness
             newModule.innerHTML = `
                 <h2>Module Details</h2>
                 <div class="form-group">
