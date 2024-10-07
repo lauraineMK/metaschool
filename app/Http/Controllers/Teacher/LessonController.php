@@ -311,7 +311,7 @@ class LessonController extends Controller
                         // Update the existing document
                         $doc = Document::find($document['id']);
                         if ($doc) {
-
+                            /* Document deletion */
                             // Retrieve the IDs of existing documents associated with the lesson
                             $existingDocuments = Document::where('lesson_id', $lesson->id)->pluck('id')->toArray();
 
