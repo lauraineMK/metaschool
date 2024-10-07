@@ -303,7 +303,7 @@ class LessonController extends Controller
                 $video->delete();
             }
 
-            //! Document issue ----------------------------------------------------------------------------------
+            //! Document issue: Problem of deleting the last document ----------------------------------------------
             /* Handle document logic */
             if (isset($validated['documents']) && is_array($validated['documents'])) {
                 foreach ($validated['documents'] as $index => $document) {
@@ -331,7 +331,8 @@ class LessonController extends Controller
 
                             // Check if a new file is uploaded
                             if (isset($document['file']) && $request->hasFile("documents.$index.file")) {
-                                Storage::disk('public')->delete($doc->file); // Delete the old file
+                                // Delete the old file
+                                Storage::disk('public')->delete($doc->file);
                                 $file = $request->file("documents.$index.file");
                                 $path = $file->store('documents', 'public');
 
