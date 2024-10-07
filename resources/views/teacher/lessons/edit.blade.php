@@ -10,7 +10,7 @@
     </div>
 
     <!-- Form to edit an existing lesson -->
-    <form action="{{ route('teacher.lessons.update', $lesson->id) }}" method="POST">
+    <form action="{{ route('teacher.lessons.update', $lesson->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -74,6 +74,9 @@
             <h3>Documents</h3>
             @foreach($lesson->documents as $index => $document)
             <div class="document-group" id="document-group-{{ $index }}">
+                <!-- Hidden input for document ID -->
+                <input type="hidden" name="documents[{{ $index }}][id]" value="{{ $document->id ?? '' }}">
+
                 <div class="form-group mt-3">
                     <label for="document_title_{{ $index }}">Document Title</label>
                     <input type="text" class="form-control" id="document_title_{{ $index }}" name="documents[{{ $index }}][title]"

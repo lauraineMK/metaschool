@@ -307,17 +307,28 @@ class LessonController extends Controller
             /* Handle document logic */
             if (isset($validated['documents']) && is_array($validated['documents'])) {
                 foreach ($validated['documents'] as $index => $document) {
-                    // Document deletion
-                    if (isset($document['delete']) && $document['delete'] && isset($document['id'])) {
-                        $doc = Document::find($document['id']);
-                        if ($doc) {
-                            Storage::disk('public')->delete($doc->file); // Delete the file
-                            $doc->delete(); // Delete the database record
-                        }
-                    } elseif (isset($document['id'])) {
+                    if (isset($document['id'])) {
                         // Update the existing document
                         $doc = Document::find($document['id']);
                         if ($doc) {
+
+                            // Retrieve the IDs of existing documents associated with the lesson
+                            $existingDocuments = Document::where('lesson_id', $lesson->id)->pluck('id')->toArray();
+
+                            // Collect the IDs of the documents provided in the validated request data
+                            $newDocumentIds = collect($validated['documents'] ?? null)->pluck('id')->filter()->toArray();
+
+                            // Determine which documents need to be deleted
+                            $documentsToDelete = array_diff($existingDocuments, $newDocumentIds);
+
+                            // Loop through the IDs of documents to delete and remove them from storage and the database
+                            Document::whereIn('id', $documentsToDelete)->each(function ($doc) {
+                                // Delete the file from storage
+                                Storage::disk('public')->delete($doc->file);
+                                // Delete the document record from the database
+                                $doc->delete();
+                            });
+
                             // Check if a new file is uploaded
                             if (isset($document['file']) && $request->hasFile("documents.$index.file")) {
                                 Storage::disk('public')->delete($doc->file); // Delete the old file
