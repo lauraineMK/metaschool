@@ -225,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            //! Dynamic document part ---------------------------------------------------------------------------------------------------------------------------------------------------
             // Dynamic document addition script
             const addDocumentButton = document.getElementById('add-document-button');
             if (addDocumentButton) {
@@ -309,7 +308,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
-            //! -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         } else {
             console.error('One or more essential elements not found.');

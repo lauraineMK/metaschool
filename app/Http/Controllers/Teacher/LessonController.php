@@ -219,7 +219,6 @@ class LessonController extends Controller
         return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }
 
-    //!
     /**
      * Update an existing lesson
      *
