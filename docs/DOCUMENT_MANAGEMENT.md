@@ -6,7 +6,8 @@ There are issues with handling documents in the lesson editing functionality. Th
 
 ## Detailed Description
 
-- **Issue**: When editing a lesson, the management of documents does not function correctly. This includes adding, updating, or deleting documents associated with a lesson.
+- **Former Issue**: When editing a lesson, the management of documents did not function correctly. This included adding, updating, or deleting documents associated with a lesson.
+- **Resolved Issue**: Adding, modifying or deleting documents while updating a lesson is fully functional.
 - **Scope**:
   - **Creation**: Adding documents to a lesson.
   - **Modification**: Updating document details or replacing existing documents.

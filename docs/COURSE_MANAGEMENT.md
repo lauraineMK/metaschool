@@ -20,7 +20,7 @@ The current implementation of the course editing functionality has the following
   - The addition of new sections or standalone modules during the update process is now functioning correctly.
   - Updating a course with sections or standalone modules now works perfectly, including creation, modification, and deletion.
 
-- **Resolved Issues**:
+- **Unresolved Issues**:
   - Updating a course with sections and modules within those sections works partially. While existing modules within sections are functioning correctly, the issue arises when creating a new section with a module in it. In this case, the new section is created, but the module may not be created properly. It could lead to either:
     - Only the section being created.
     - A second section being created with the title of the desired module instead of a new module being added to the created section.

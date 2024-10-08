@@ -114,6 +114,7 @@
                     @endphp
 
                     @if($fileExtension === 'pdf')
+                    <p>URL du PDF : {{ url('storage/' . $document->file) }}</p>
                     <iframe src="{{ url('storage/' . $document->file) }}" width="100%" height="600px" frameborder="0"></iframe>
                     @elseif(in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif']))
                     <img src="{{ url('storage/' . $document->file) }}" alt="{{ $document->title }}" style="max-width: 100%; height: auto;">
