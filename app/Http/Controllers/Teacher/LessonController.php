@@ -303,32 +303,32 @@ class LessonController extends Controller
                 $video->delete();
             }
 
-            //! Document issue: Problem of deleting the last document ----------------------------------------------
             /* Handle document logic */
+            /* Document deletion */
+            // Retrieve the IDs of existing documents associated with the lesson
+            $existingDocuments = Document::where('lesson_id', $lesson->id)->pluck('id')->toArray();
+
+            // Collect the IDs of the documents provided in the validated request data
+            $newDocumentIds = collect($validated['documents'] ?? [])->pluck('id')->filter()->toArray();
+
+            // Determine which documents need to be deleted
+            $documentsToDelete = array_diff($existingDocuments, $newDocumentIds);
+
+            // Loop through the IDs of documents to delete and remove them from storage and the database
+            Document::whereIn('id', $documentsToDelete)->each(function ($doc) {
+                // Delete the file from storage
+                Storage::disk('public')->delete($doc->file);
+                // Delete the document record from the database
+                $doc->delete();
+            });
+
+            /* Document addition and modification */
             if (isset($validated['documents']) && is_array($validated['documents'])) {
                 foreach ($validated['documents'] as $index => $document) {
                     if (isset($document['id'])) {
                         // Update the existing document
                         $doc = Document::find($document['id']);
                         if ($doc) {
-                            /* Document deletion */
-                            // Retrieve the IDs of existing documents associated with the lesson
-                            $existingDocuments = Document::where('lesson_id', $lesson->id)->pluck('id')->toArray();
-
-                            // Collect the IDs of the documents provided in the validated request data
-                            $newDocumentIds = collect($validated['documents'] ?? null)->pluck('id')->filter()->toArray();
-
-                            // Determine which documents need to be deleted
-                            $documentsToDelete = array_diff($existingDocuments, $newDocumentIds);
-
-                            // Loop through the IDs of documents to delete and remove them from storage and the database
-                            Document::whereIn('id', $documentsToDelete)->each(function ($doc) {
-                                // Delete the file from storage
-                                Storage::disk('public')->delete($doc->file);
-                                // Delete the document record from the database
-                                $doc->delete();
-                            });
-
                             // Check if a new file is uploaded
                             if (isset($document['file']) && $request->hasFile("documents.$index.file")) {
                                 // Delete the old file
@@ -363,12 +363,11 @@ class LessonController extends Controller
                     }
                 }
             }
-            //! -------------------------------------------------------------------------------------------------
 
         } catch (\Exception $e) {
             // Redirect on update error with error message
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Failed to update lesson');
+                ->with('Failed to update lesson: ' . $e->getMessage());
         }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
