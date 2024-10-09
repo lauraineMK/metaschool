@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container text-center pt-5">
-    <h1 class="pt-5">Welcome to MetaSchool</h1>
+    <h1 class="pt-5">{{ __('welcome_to_metaschool') }}</h1>
 
     <p class="lead highlight-paragraph text-justify mt-4">
         MetaSchool is part of Metaboussolle, offering courses designed by teachers.

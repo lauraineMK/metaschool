@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Http\Middleware\LocaleMiddleware;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(StartSession::class);
         // $middleware->append(VerifyCsrfToken::class);
         // $middleware->append(RoleMiddleware::class);
+        $middleware->web(append: [
+
+            LocaleMiddleware::class,
+
+        ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions) {
