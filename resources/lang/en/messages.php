@@ -29,6 +29,10 @@ return [
     'quizzes' => 'Quizzes',
 
     /* --- Auth --- */
+    //     Controller
+    'invalid_credentials' => 'Invalid credentials.',
+    'account_successfully_updated' => 'Account successfully updated.',
+
     //     Account view
     'new_password' => 'New Password',
     'save' => 'Save changes',
@@ -49,8 +53,8 @@ return [
     'confirm_password' => 'Confirm Password',
 
     //!/* --- Teacher --- */
-    //     Dashboard
-    'teacher_dashboard' => 'Teacher Dashboard',
+    //     Controllers
+    'unauthorized' => 'Unauthorized',
 
     //     CRUD features
     'are_you_sure_you_want_to_delete_this_course' => 'Are you sure you want to delete this course?',
@@ -62,7 +66,22 @@ return [
     'delete_course' => 'Delete Course',
     'delete_lesson' => 'Delete Lesson',
 
+    //     Dashboard
+    'teacher_dashboard' => 'Teacher Dashboard',
+
     //?/*     Courses     */
+    //     Controller
+    'course_successfully_created' => 'Course successfully created.',
+    'course_successfully_deleted' => 'Course successfully deleted.',
+    'course_successfully_updated' => 'Course successfully updated.',
+    'failed_to_update_course' => 'Failed to update course',
+    'module_not_found' => 'Module not found',
+    'module_successfully_deleted' => 'Module successfully deleted.',
+    'section_not_found' => 'Section not found',
+    'section_successfully_deleted' => 'Section successfully deleted.',
+
+    'you_must_be_logged_in_to_create_a_course' => 'You must be logged in to create a course.',
+
     //     Create view
     'create_a_new_course' => 'Create a New Course',
     'create_course' => 'Create Course',
@@ -99,6 +118,16 @@ return [
     'course_content' => 'Course Content',
 
     //?/*     Lessons     */
+    //     Controller
+    'course_associated_with_the_lesson_not_found' => 'Course associated with the lesson not found',
+    'failed_to_create_lesson' => 'Failed to create lesson: ',
+    'failed_to_update_lesson' => 'Failed to update lesson: ',
+    'lesson_successfully_created' => 'Lesson successfully created.',
+    'lesson_successfully_deleted' => 'Lesson successfully deleted.',
+    'lesson_successfully_updated' => 'Lesson successfully updated.',
+    'you_must_be_logged_in_to_create_a_lesson' => 'You must be logged in to create a lesson.',
+    '' => '',
+
     //     Create view
     'create_a_new_lesson' => 'Create a New Lesson',
     'create_lesson' => 'Create Lesson',
@@ -142,6 +171,9 @@ return [
     'actions' => 'Actions',
 
     //?/*   Courses     */
+    // Controller
+    'course_not_found' => 'Course not found',
+
     //     Index views
     'courses' => 'Courses',
     'course_name(2)' => 'Course Name',
@@ -156,6 +188,9 @@ return [
     'section' => 'Section:',
 
     //?/*   Lessons      */
+    // Controller
+    'lesson_not_found' => 'Lesson not found',
+
     //     Index views
     'lessons' => 'Lessons',
     'lesson_content(2)' => 'Content',
@@ -184,6 +219,9 @@ return [
     'student_dashboard' => 'Student Dashboard',
 
     //?/*     Lessons     */
+    // Controller
+    'you_must_complete_the_previous_lesson_first' => 'You must complete the previous lesson first.',
+
     //     Show view
     'lesson_viewed' => 'Lesson viewed',
 
@@ -191,6 +229,5 @@ return [
     //     Index view
     //     Show view
 
-    /*  */
-    '' => '',
+
 ];
