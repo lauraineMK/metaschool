@@ -41,7 +41,6 @@ return [
     'email' => 'Email address',
 
     //     Account & register views
-    'email' => 'Email address',
     'firstname' => 'First Name',
     'middlename' => 'Middle Name',
     'lastname' => 'Last Name',
@@ -105,17 +104,12 @@ return [
     'section_name' => 'Section Name:',
     'section_description' => 'Section Description:',
     'section_details' => 'Section Details',
-
     'section_level' => 'Section Level:',
     'update_course' => 'Update Course',
 
     //     Index view
-    'courses' => 'Courses',
     'create_new_course' => 'Create New Course',
     'no_courses_available' => 'No courses available.',
-
-    //     Show view
-    'course_content' => 'Course Content',
 
     //?/*     Lessons     */
     //     Controller
@@ -126,7 +120,6 @@ return [
     'lesson_successfully_deleted' => 'Lesson successfully deleted.',
     'lesson_successfully_updated' => 'Lesson successfully updated.',
     'you_must_be_logged_in_to_create_a_lesson' => 'You must be logged in to create a lesson.',
-    '' => '',
 
     //     Create view
     'create_a_new_lesson' => 'Create a New Lesson',
@@ -148,10 +141,8 @@ return [
     'video_title' => 'Video Title:',
     'video_URL' => 'Video URL:',
 
-    //     Create, Edit & Show views
+    //     Create & Edit views
     'course' => 'Course:',
-    'module' => 'Module:',
-    'section' => 'Section:',
 
     //     Edit view
     'update_lesson' => 'Update Lesson',
@@ -213,7 +204,6 @@ return [
     'unsupported_video_format_or_URL' => 'Unsupported video format or URL.',
     'videos' => 'Videos',
 
-
     //!/* --- Student --- */
     //     Dashboard
     'student_dashboard' => 'Student Dashboard',
@@ -229,5 +219,16 @@ return [
     //     Index view
     //     Show view
 
+    //!/* --- Errors --- */
+    //     404.blade.php
+    'page_not_found' => 'Page not found',
 
+    //     419.blade.php
+    'page_expired' => 'Page expired',
+
+    //     500.blade.php
+    'internal_server_error' => 'Internal server error',
+
+    //     503.blade.php
+    'service_unavailable' => 'Service unavailable',
 ];
