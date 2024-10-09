@@ -127,9 +127,9 @@
 
         <!-- Section selection (optional) -->
         <div class="form-group mt-3" id="section-container" style="display: none;">
-            <label for="section_id">Section (Optional)</label>
+            <label for="section_id">Section</label>
             <select class="form-control" id="section_id" name="section_id">
-                <option value="">No section</option>
+                <option value="">Select a section</option>
                 @foreach($sections as $section)
                 <option value="{{ $section->id }}" {{ old('section_id', $lesson->section_id) == $section->id ? 'selected' : '' }}>
                     {{ $section->name }}
@@ -140,9 +140,9 @@
 
         <!-- Module selection (optional) -->
         <div class="form-group mt-3" id="module-container" style="display: none;">
-            <label for="module_id">Module (Optional)</label>
+            <label for="module_id">Module</label>
             <select class="form-control" id="module_id" name="module_id">
-                <option value="">No module</option>
+                <option value="">Select a module</option>
                 @foreach($modules as $module)
                 <option value="{{ $module->id }}" {{ old('module_id', $lesson->module_id) == $module->id ? 'selected' : '' }}>
                     {{ $module->name }}

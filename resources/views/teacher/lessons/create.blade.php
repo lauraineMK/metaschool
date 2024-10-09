@@ -90,17 +90,17 @@
 
         <!-- Section selection (optional) -->
         <div class="form-group mt-3" id="section-container" style="display: none;">
-            <label for="section_id">Section (Optional)</label>
+            <label for="section_id">Section</label>
             <select class="form-control" id="section_id" name="section_id">
-                <option value="" selected>No section</option>
+                <option value="" selected>Select a section</option>
             </select>
         </div>
 
         <!-- Module selection (optional) -->
         <div class="form-group mt-3" id="module-container" style="display: none;">
-            <label for="module_id">Module (Optional)</label>
+            <label for="module_id">Module</label>
             <select class="form-control" id="module_id" name="module_id">
-                <option value="" selected>No module</option>
+                <option value="" selected>Select a module</option>
             </select>
         </div>
 
