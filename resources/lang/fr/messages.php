@@ -176,6 +176,7 @@ return [
     'back_to_courses' => 'Retour aux cours',
     'course_content' => 'Contenu du cours',
     'module' => 'Module :',
+    'no_lessons_available_for_this_course' => 'Aucune leçon n\'est disponible pour ce cours.',
     'no_lessons_available_in_this_module' => 'Aucune leçon disponible dans ce module.',
     'no_modules_available_in_this_section' => 'Aucun module disponible dans cette section.',
     'section' => 'Section :',
@@ -189,6 +190,7 @@ return [
     'lesson_content(2)' => 'Contenu',
     'lesson_title(2)' => 'Titre de la leçon',
     'module(2)' => 'Module',
+    'no_lessons_available' => 'Aucune leçon n\'est disponible.',
     'section(2)' => 'Section',
 
     //        Vues détail

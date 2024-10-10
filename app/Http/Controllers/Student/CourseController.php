@@ -43,7 +43,7 @@ class CourseController extends Controller
         // If the course is not found, redirect to the course index with an error message
         if (!$course) {
             return redirect()->route('student.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error',  __('messages.course_not_found'));
         }
 
         // Pass the course details to the view

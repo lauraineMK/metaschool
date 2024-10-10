@@ -176,6 +176,7 @@ return [
     'back_to_courses' => 'Back to Courses',
     'course_content' => 'Course Content',
     'module' => 'Module:',
+    'no_lessons_available_for_this_course' => 'No lessons available for this course.',
     'no_lessons_available_in_this_module' => 'No lessons available in this module.',
     'no_modules_available_in_this_section' => 'No modules available in this section.',
     'section' => 'Section:',
@@ -189,6 +190,7 @@ return [
     'lesson_content(2)' => 'Content',
     'lesson_title(2)' => 'Lesson Title',
     'module(2)' => 'Module',
+    'no_lessons_available' => 'No lessons available.',
     'section(2)' => 'Section',
 
     //        Show views

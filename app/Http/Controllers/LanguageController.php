@@ -7,8 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Class LanguageController
+ *
+ * This controller handles the language change functionality of the application.
+ * It allows users to switch between supported languages and stores the selected
+ * language in the session for future requests.
+ *
+ * Supported languages: English (en), French (fr), German (de), Dutch (nl).
+ */
 class LanguageController extends Controller
 {
+    /**
+     * Change the application language.
+     *
+     * @param string $locale The locale to switch to.
+     * @return \Illuminate\Http\RedirectResponse Redirects back to the previous page.
+     */
     public function change($locale)
     {
         // Check if the language is supported
