@@ -184,7 +184,7 @@ class LessonController extends Controller
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Failed to create lesson');
+                ->with('error', 'Failed to create lesson: ' . $e->getMessage());
         }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)

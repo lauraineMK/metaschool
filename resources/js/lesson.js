@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 var selectedModuleId = parseInt(moduleSelect.dataset.selected) || null;
 
                 // Clear previous options
-                sectionSelect.innerHTML = '<option value="" selected>No section</option>';
-                moduleSelect.innerHTML = '<option value="" selected>No module</option>';
+                sectionSelect.innerHTML = '<option value="" selected>Select a section</option>';
+                moduleSelect.innerHTML = '<option value="" selected>Select a module</option>';
 
                 var hasSections = false;
                 var hasModules = false;
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var selectedSectionId = parseInt(sectionSelect.value);
 
                 // Clear previous module options
-                moduleSelect.innerHTML = '<option value="" selected>No module</option>';
+                moduleSelect.innerHTML = '<option value="" selected>Select a module</option>';
 
                 var hasModules = false;
 

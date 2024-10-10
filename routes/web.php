@@ -2,18 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Student\ProgressController;
+use App\Http\Controllers\Student\QuizController as StudentQuizController;
+use App\Http\Controllers\Teacher\QuizController as TeacherQuizController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\LessonController as StudentLessonController;
-use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Teacher\CourseController as TeacherCourseController;
 use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
-use App\Http\Controllers\Teacher\QuizController as TeacherQuizController;
 
 Route::get('/', function () {
     return view('home');
 });
+
+Route::get('/lang/{locale}', [LanguageController::class, 'change']);
 
 // Auth Routes
 Route::get('login', [AuthenticationController::class, 'showLoginForm'])->name('login');

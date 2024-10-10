@@ -21,7 +21,7 @@
     <form method="POST" action="{{ url('register') }}">
         @csrf
         <div class="form-group">
-            <label for="firstname">Firstname</label>
+            <label for="firstname">First Name</label>
             <input type="text" class="form-control" id="firstname" name="firstname" required>
         </div>
         <div class="form-group mt-3">
