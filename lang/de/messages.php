@@ -230,6 +230,5 @@ return [
     'internal_server_error' => 'Interner Serverfehler',
 
     //        503.blade.php
-    'service_unavailable' => 'Dienst nicht verfügbar',
-
+    'service_unavailable' => 'Dienst nicht verfügbar'
 ];
