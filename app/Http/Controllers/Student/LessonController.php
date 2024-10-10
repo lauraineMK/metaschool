@@ -35,7 +35,7 @@ class LessonController extends Controller
         // If the lesson is not found, redirect to the lesson index with an error message
         if (!$lesson) {
             return redirect()->route('student.lessons.index')
-                ->with('error', 'Lesson not found');
+                ->with('error', __('messages.lesson_not_found'));
         }
 
         // Retrieve the course associated with the lesson

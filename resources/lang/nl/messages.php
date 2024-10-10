@@ -19,7 +19,8 @@ return [
 
     /* --- Deeltaken --- */
     //     Voettekst
-    'footer_rights' => '&copy; :year MetaSchool. Alle rechten voorbehouden.',
+    'languages' => 'Talen',
+    'footer_rights' => 'MetaSchool. Alle rechten voorbehouden.',
 
     //     Navigatiebalk
     'about' => 'Over',
@@ -34,6 +35,7 @@ return [
     'account_successfully_updated' => 'Account succesvol bijgewerkt.',
 
     //     Accountweergave
+    'welcome_back' => 'Welkom terug',
     'new_password' => 'Nieuw wachtwoord',
     'save' => 'Wijzigingen opslaan',
 
@@ -174,6 +176,7 @@ return [
     'back_to_courses' => 'Terug naar de cursussen',
     'course_content' => 'Cursusinhoud',
     'module' => 'Module:',
+    'no_lessons_available_for_this_course' => 'Geen lessen beschikbaar voor deze cursus.',
     'no_lessons_available_in_this_module' => 'Geen lessen beschikbaar in deze module.',
     'no_modules_available_in_this_section' => 'Geen modules beschikbaar in deze sectie.',
     'section' => 'Sectie:',
@@ -187,6 +190,7 @@ return [
     'lesson_content(2)' => 'Inhoud',
     'lesson_title(2)' => 'Les titel',
     'module(2)' => 'Module',
+    'no_lessons_available' => 'Geen lessen beschikbaar.',
     'section(2)' => 'Sectie',
 
     //        Weergave

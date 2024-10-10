@@ -4,21 +4,21 @@
 
 @section('content')
 <div class="container mt-5 lessons-view">
-    <h1>Lessons</h1>
+    <h1>{{ __('messages.lessons') }}</h1>
 
     @if ($lessons->isEmpty())
-    <p>No lessons available.</p>
+    <p>{{ __('messages.no_lessons_available') }}</p>
     @else
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Lesson Title</th>
-                <th class="hide-on-small-mobile">Content</th>
-                <th>Course</th>
-                <th class="hide-on-mobile">Section</th>
-                <th class="hide-on-mobile">Module</th>
-                <th>Actions</th>
+                <th>{{ __('messages.lesson_title(2)') }}</th>
+                <th class="hide-on-small-mobile">{{ __('messages.lesson_content(2)') }}</th>
+                <th>{{ __('messages.courses') }}</th>
+                <th class="hide-on-mobile">{{ __('messages.section(2)') }}</th>
+                <th class="hide-on-mobile">{{ __('messages.module(2)') }}</th>
+                <th>{{ __('messages.actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
                 <td>
                     <!-- View Button -->
                     <a href="{{ route('student.lessons.show', $lesson->id) }}" class="btn btn-info btn-sm btn-view">
-                        <span class="text-view">View</span>
+                        <span class="text-view">{{ __('messages.view') }}</span>
                         <i class="fas fa-eye"></i> <!-- Eye icon -->
                     </a>
                 </td>

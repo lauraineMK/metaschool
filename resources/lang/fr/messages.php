@@ -19,7 +19,8 @@ return [
 
     /* --- Partiels --- */
     //     Pied de page
-    'footer_rights' => '&copy; :year MetaSchool. Tous droits réservés.',
+    'languages' => 'Langues',
+    'footer_rights' => 'MetaSchool. Tous droits réservés.',
 
     //     Barre de navigation
     'about' => 'À propos',
@@ -34,6 +35,7 @@ return [
     'account_successfully_updated' => 'Compte mis à jour avec succès.',
 
     //     Vue compte
+    'welcome_back' => 'Bienvenue à nouveau',
     'new_password' => 'Nouveau mot de passe',
     'save' => 'Sauvegarder les modifications',
 
@@ -174,6 +176,7 @@ return [
     'back_to_courses' => 'Retour aux cours',
     'course_content' => 'Contenu du cours',
     'module' => 'Module :',
+    'no_lessons_available_for_this_course' => 'Aucune leçon n\'est disponible pour ce cours.',
     'no_lessons_available_in_this_module' => 'Aucune leçon disponible dans ce module.',
     'no_modules_available_in_this_section' => 'Aucun module disponible dans cette section.',
     'section' => 'Section :',
@@ -187,6 +190,7 @@ return [
     'lesson_content(2)' => 'Contenu',
     'lesson_title(2)' => 'Titre de la leçon',
     'module(2)' => 'Module',
+    'no_lessons_available' => 'Aucune leçon n\'est disponible.',
     'section(2)' => 'Section',
 
     //        Vues détail
