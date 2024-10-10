@@ -57,12 +57,12 @@ class LessonController extends Controller
             $previousLesson = $lessonIndex > 0 ? $lessons->slice($lessonIndex - 1, 1)->first() : null;
             $nextLesson = $lessonIndex < $lessons->count() - 1 ? $lessons->slice($lessonIndex + 1, 1)->first() : null;
 
-            // If there is a previous lesson, check if the user has completed it
-            if ($previousLesson && !$request->user()->hasCompletedLesson($previousLesson->id)) {
-                // Redirect if the user hasn't completed the previous lesson
-                return redirect()->route('student.lessons.index')
-                    ->with('error', 'You must complete the previous lesson before accessing this one.');
-            }
+            // // If there is a previous lesson, check if the user has completed it
+            // if ($previousLesson && !$request->user()->hasCompletedLesson($previousLesson->id)) {
+            //     // Redirect if the user hasn't completed the previous lesson
+            //     return redirect()->route('student.lessons.index')
+            //         ->with('error', 'You must complete the previous lesson before accessing this one.');
+            // }
         }
 
         // Retrieve the videos, documents, and quiz associated with the lesson
@@ -89,39 +89,39 @@ class LessonController extends Controller
      * @param int $id The ID of the lesson to mark as completed.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function completeCurrentLesson(Request $request, $lessonId)
-    {
-        // Retrieve the authenticated user
-        $user = $request->user();
+    // public function completeCurrentLesson(Request $request, $lessonId)
+    // {
+    //     // Retrieve the authenticated user
+    //     $user = $request->user();
 
-        /// Mark the lesson as completed
-        $user->completeLesson($lessonId);
+    //     /// Mark the lesson as completed
+    //     $user->completeLesson($lessonId);
 
-        // Retrieve the current lesson
-        $lesson = Lesson::find($lessonId);
+    //     // Retrieve the current lesson
+    //     $lesson = Lesson::find($lessonId);
 
-        // If the lesson is not found, redirect with an error message
-        if (!$lesson) {
-            return redirect()->route('student.lessons.index')->with('error', 'Lesson not found.');
-        }
+    //     // If the lesson is not found, redirect with an error message
+    //     if (!$lesson) {
+    //         return redirect()->route('student.lessons.index')->with('error', 'Lesson not found.');
+    //     }
 
-        // Retrieve the associated course
-        $course = $lesson->course;
+    //     // Retrieve the associated course
+    //     $course = $lesson->course;
 
-        // Retrieve the lessons sorted by order
-        $lessons = $course->lessons->sortBy('order');
-        $lessonIndex = $lessons->search(fn($item) => $item->id === $lesson->id);
+    //     // Retrieve the lessons sorted by order
+    //     $lessons = $course->lessons->sortBy('order');
+    //     $lessonIndex = $lessons->search(fn($item) => $item->id === $lesson->id);
 
-        // Determine the next lesson
-        $nextLesson = $lessonIndex < $lessons->count() - 1 ? $lessons->slice($lessonIndex + 1, 1)->first() : null;
+    //     // Determine the next lesson
+    //     $nextLesson = $lessonIndex < $lessons->count() - 1 ? $lessons->slice($lessonIndex + 1, 1)->first() : null;
 
-        // Unlock the next lesson if it exists
-        if ($nextLesson) {
-            $user->unlockLesson($nextLesson->id);
-            return redirect()->route('student.lessons.show', $nextLesson->id);
-        }
+    //     // Unlock the next lesson if it exists
+    //     if ($nextLesson) {
+    //         $user->unlockLesson($nextLesson->id);
+    //         return redirect()->route('student.lessons.show', $nextLesson->id);
+    //     }
 
-        // If no next lesson exists, redirect to the lessons index
-        return redirect()->route('student.lessons.index')->with('success', 'Lesson completed, you have finished the course.');
-    }
+    //     // If no next lesson exists, redirect to the lessons index
+    //     return redirect()->route('student.lessons.index')->with('success', 'Lesson completed, you have finished the course.');
+    // }
 }
