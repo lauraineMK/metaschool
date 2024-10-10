@@ -42,7 +42,7 @@ return [
 
     //     Account- & registratieweergaven
     'firstname' => 'Voornaam',
-    'middlename' => 'Middelste naam',
+    'middlename' => 'Tweede naam',
     'lastname' => 'Achternaam',
 
     //     Inlog- & registratieweergaven

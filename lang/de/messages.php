@@ -42,7 +42,7 @@ return [
 
     //     Konto- & Registrierungsansichten
     'firstname' => 'Vorname',
-    'middlename' => 'Zweiter Vorname',
+    'middlename' => 'Zweiter Name',
     'lastname' => 'Nachname',
 
     //     Anmelde- & Registrierungsansichten
