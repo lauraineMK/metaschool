@@ -19,7 +19,8 @@ return [
 
     /* --- Teilansichten --- */
     //     Fußzeile
-    'footer_rights' => '&copy; :year MetaSchool. Alle Rechte vorbehalten.',
+    'languages' => 'Sprachen',
+    'footer_rights' => 'MetaSchool. Alle Rechte vorbehalten.',
 
     //     Navigationsleiste
     'about' => 'Über',
@@ -34,6 +35,7 @@ return [
     'account_successfully_updated' => 'Konto erfolgreich aktualisiert.',
 
     //     Kontoansicht
+    'welcome_back' => 'Willkommen zurück',
     'new_password' => 'Neues Passwort',
     'save' => 'Änderungen speichern',
 

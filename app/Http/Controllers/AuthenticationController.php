@@ -45,7 +45,7 @@ class AuthenticationController extends Controller
             return redirect()->route('student.dashboard');
         }
 
-        return redirect('login')->withErrors(['email' => 'Invalid credentials.']);
+        return redirect('login')->withErrors(['email' => __('messages.invalid_credentials')]);
     }
 
     /**
@@ -159,6 +159,6 @@ class AuthenticationController extends Controller
 
         $user->save();
 
-        return redirect()->back()->with('success', 'Account updated successfully.');
+        return redirect()->back()->with('success',  __('messages.account_successfully_updated'));
     }
 }

@@ -19,7 +19,8 @@ return [
 
     /* --- Deeltaken --- */
     //     Voettekst
-    'footer_rights' => '&copy; :year MetaSchool. Alle rechten voorbehouden.',
+    'languages' => 'Talen',
+    'footer_rights' => 'MetaSchool. Alle rechten voorbehouden.',
 
     //     Navigatiebalk
     'about' => 'Over',
@@ -34,6 +35,7 @@ return [
     'account_successfully_updated' => 'Account succesvol bijgewerkt.',
 
     //     Accountweergave
+    'welcome_back' => 'Welkom terug',
     'new_password' => 'Nieuw wachtwoord',
     'save' => 'Wijzigingen opslaan',
 

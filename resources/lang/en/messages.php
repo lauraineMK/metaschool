@@ -19,7 +19,8 @@ return [
 
     /* --- Partials --- */
     //     Footer
-    'footer_rights' => '&copy; :year MetaSchool. All rights reserved.',
+    'languages' => 'Languages',
+    'footer_rights' => 'MetaSchool. All rights reserved.',
 
     //     Navigation bar
     'about' => 'About',
@@ -34,6 +35,7 @@ return [
     'account_successfully_updated' => 'Account successfully updated.',
 
     //     Account view
+    'welcome_back' => 'Welcome back',
     'new_password' => 'New Password',
     'save' => 'Save changes',
 
