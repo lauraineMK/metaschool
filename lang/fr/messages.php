@@ -52,10 +52,10 @@ return [
     'confirm_password' => 'Confirmer le mot de passe',
 
     //!/* --- Enseignant --- */
-    //     Contrôleurs
+    //        Contrôleurs
     'unauthorized' => 'Non autorisé',
 
-    //     Fonctionnalités CRUD
+    //        Fonctionnalités CRUD
     'are_you_sure_you_want_to_delete_this_course' => 'Êtes-vous sûr de vouloir supprimer ce cours ?',
     'are_you_sure_you_want_to_delete_this_lesson' => 'Êtes-vous sûr de vouloir supprimer cette leçon ?',
     'edit' => 'Modifier',
@@ -65,11 +65,11 @@ return [
     'delete_course' => 'Supprimer le cours',
     'delete_lesson' => 'Supprimer la leçon',
 
-    //     Tableau de bord
+    //        Tableau de bord
     'teacher_dashboard' => 'Tableau de bord enseignant',
 
     //?/*     Cours     */
-    //     Contrôleur
+    //        Contrôleur
     'course_successfully_created' => 'Cours créé avec succès.',
     'course_successfully_deleted' => 'Cours supprimé avec succès.',
     'course_successfully_updated' => 'Cours mis à jour avec succès.',
@@ -81,11 +81,11 @@ return [
 
     'you_must_be_logged_in_to_create_a_course' => 'Vous devez être connecté pour créer un cours.',
 
-    //     Vue création
+    //        Vue création
     'create_a_new_course' => 'Créer un nouveau cours',
     'create_course' => 'Créer un cours',
 
-    //     Vues création et modification
+    //        Vues création et modification
     'add_module' => 'Ajouter un module',
     'add_section' => 'Ajouter une section',
     'course_description' => 'Description du cours :',
@@ -94,7 +94,7 @@ return [
     'creation_date' => 'Date de création :',
     'include_sections_and_modules' => 'Inclure des sections et des modules',
 
-    //     Vue modification
+    //        Vue modification
     'module_name' => 'Nom du module :',
     'module_description' => 'Description du module :',
     'module_details' => 'Détails du module',
@@ -107,12 +107,12 @@ return [
     'section_level' => 'Niveau de la section :',
     'update_course' => 'Mettre à jour le cours',
 
-    //     Vue index
+    //        Vue index
     'create_new_course' => 'Créer un nouveau cours',
     'no_courses_available' => 'Aucun cours disponible.',
 
     //?/*     Leçons     */
-    //     Contrôleur
+    //        Contrôleur
     'course_associated_with_the_lesson_not_found' => 'Cours associé à la leçon non trouvé',
     'failed_to_create_lesson' => 'Échec de la création de la leçon :',
     'failed_to_update_lesson' => 'Échec de la mise à jour de la leçon :',
@@ -121,11 +121,11 @@ return [
     'lesson_successfully_updated' => 'Leçon mise à jour avec succès.',
     'you_must_be_logged_in_to_create_a_lesson' => 'Vous devez être connecté pour créer une leçon.',
 
-    //     Vue création
+    //        Vue création
     'create_a_new_lesson' => 'Créer une nouvelle leçon',
     'create_lesson' => 'Créer une leçon',
 
-    //     Vues création et modification
+    //        Vues création et modification
     'add_document' => 'Ajouter un document',
     'add_video' => 'Ajouter une vidéo',
     'document_description' => 'Description du document :',
@@ -141,36 +141,36 @@ return [
     'video_title' => 'Titre de la vidéo :',
     'video_URL' => 'URL de la vidéo :',
 
-    //     Vues création et modification
+    //        Vues création et modification
     'course' => 'Cours :',
 
-    //     Vue modification
+    //        Vue modification
     'update_lesson' => 'Mettre à jour la leçon',
 
-    //     Vue index
+    //        Vue index
     'course(2)' => 'Cours',
     'create_new_lesson' => 'Créer une nouvelle leçon',
 
     //?/*     Quiz     */
-    //     Vue création
-    //     Vue modification
-    //     Vue index
-    //     Vue détail
+    //        Vue création
+    //        Vue modification
+    //        Vue index
+    //        Vue détail
 
     //!/* --- Enseignant & Étudiant --- */
-    //     Index
+    //        Index
     'actions' => 'Actions',
 
-    //?/*   Cours     */
-    // Contrôleur
+    //?/*     Cours     */
+    //        Contrôleur
     'course_not_found' => 'Cours non trouvé',
 
-    //     Vues index
+    //        Vues index
     'courses' => 'Cours',
     'course_name(2)' => 'Nom du cours',
     'description' => 'Description',
 
-    //     Vues détail
+    //        Vues détail
     'back_to_courses' => 'Retour aux cours',
     'course_content' => 'Contenu du cours',
     'module' => 'Module :',
@@ -178,18 +178,18 @@ return [
     'no_modules_available_in_this_section' => 'Aucun module disponible dans cette section.',
     'section' => 'Section :',
 
-    //?/*   Leçons     */
-    // Contrôleur
+    //?/*     Leçons     */
+    //        Contrôleur
     'lesson_not_found' => 'Leçon non trouvée',
 
-    //     Vues index
+    //        Vues index
     'lessons' => 'Leçons',
     'lesson_content(2)' => 'Contenu',
     'lesson_title(2)' => 'Titre de la leçon',
     'module(2)' => 'Module',
     'section(2)' => 'Section',
 
-    //     Vues détail
+    //        Vues détail
     'back_to_course' => 'Retour au cours',
     'back_to_lessons' => 'Retour aux leçons',
     'documents' => 'Documents',
@@ -205,30 +205,30 @@ return [
     'videos' => 'Vidéos',
 
     //!/* --- Étudiant --- */
-    //     Tableaux de bord
+    //        Tableaux de bord
     'student_dashboard' => 'Tableau de bord étudiant',
 
-    //?/*   Leçons     */
-    // Controller
+    //?/*     Leçons     */
+    //        Controller
     'you_must_complete_the_previous_lesson_first' => 'Vous devez d\'abord terminer la leçon précédente.',
 
-    //     Show view
+    //        Show view
     'lesson_viewed' => 'Leçon vue',
 
     //?/*     Quizzes     */
-    //     Index view
-    //     Show view
+    //        Index view
+    //        Show view
 
     //!/* --- Erreurs --- */
-    //     404.blade.php
+    //        404.blade.php
     'page_not_found' => 'Page non trouvée',
 
-    //     419.blade.php
+    //        419.blade.php
     'page_expired' => 'Page expirée',
 
-    //     500.blade.php
+    //        500.blade.php
     'internal_server_error' => 'Erreur interne du serveur',
 
-    //     503.blade.php
+    //        503.blade.php
     'service_unavailable' => 'Service indisponible',
 ];
