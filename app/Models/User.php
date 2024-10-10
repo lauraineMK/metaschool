@@ -53,12 +53,12 @@ class User extends Authenticatable
         return $this->hasMany(Course::class, 'author_id');
     }
 
-    // public function lessons()
-    // {
-    //     return $this->belongsToMany(Lesson::class, 'progress')
-    //         ->withPivot('completed', 'completion_date')
-    //         ->withTimestamps();
-    // }
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class, 'progress')
+            ->withPivot('completed', 'completion_date')
+            ->withTimestamps();
+    }
 
     // public function hasCompletedLesson($lessonId)
     // {
