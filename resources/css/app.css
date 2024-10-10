@@ -118,6 +118,12 @@
     text-align: center;
 }
 
+.position-top-right {
+    position: absolute; /* Permet de positionner par rapport au parent */
+    top: 10px; /* Ajustez selon vos besoins */
+    right: 10px; /* Ajustez selon vos besoins */
+}
+
 .remove-module-btn {
     display: block;
     margin-top: 10px;
@@ -545,6 +551,10 @@
         display: inline-block;
     }
 
+    .dropdown-menu-visible {
+        display: none !important;
+    }
+
     .mobile-only {
         display: none;
     }
@@ -565,6 +575,10 @@
 
     .desktop-only {
         display: none;
+    }
+
+    .dropup-menu-visible {
+        display: none !important;
     }
 
     .hide-on-mobile {

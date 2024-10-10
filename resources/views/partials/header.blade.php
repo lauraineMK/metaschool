@@ -87,7 +87,6 @@
                 </li>
                 @endguest
             </ul>
-
         </div>
 
         <!-- Dropdown menu for screens between 600px and 767px -->
