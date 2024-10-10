@@ -10,10 +10,10 @@
                     Languages
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languagesDropdown">
-                    <li><a class="dropdown-item" href="#">English</a></li>
-                    <li><a class="dropdown-item" href="#">Français</a></li>
-                    <li><a class="dropdown-item" href="#">Deutsch</a></li>
-                    <li><a class="dropdown-item" href="#">Nederlands</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/en') }}">English</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/fr') }}">Français</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/de') }}">Deutsch</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/nl') }}">Nederlands</a></li>
                 </ul>
             </li>
         </ul>
@@ -27,10 +27,10 @@
                     Languages
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languagesDropdownDropup">
-                    <li><a class="dropdown-item" href="#">English</a></li>
-                    <li><a class="dropdown-item" href="#">Français</a></li>
-                    <li><a class="dropdown-item" href="#">Deutsch</a></li>
-                    <li><a class="dropdown-item" href="#">Nederlands</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/en') }}">English</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/fr') }}">Français</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/de') }}">Deutsch</a></li>
+                    <li><a class="dropdown-item" href="{{ url('lang/nl') }}">Nederlands</a></li>
                 </ul>
             </li>
         </ul>
