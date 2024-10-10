@@ -52,10 +52,10 @@ return [
     'confirm_password' => 'Confirm Password',
 
     //!/* --- Teacher --- */
-    //     Controllers
+    //        Controllers
     'unauthorized' => 'Unauthorized',
 
-    //     CRUD features
+    //        CRUD features
     'are_you_sure_you_want_to_delete_this_course' => 'Are you sure you want to delete this course?',
     'are_you_sure_you_want_to_delete_this_lesson' => 'Are you sure you want to delete this lesson?',
     'edit' => 'Edit',
@@ -65,11 +65,11 @@ return [
     'delete_course' => 'Delete Course',
     'delete_lesson' => 'Delete Lesson',
 
-    //     Dashboard
+    //        Dashboard
     'teacher_dashboard' => 'Teacher Dashboard',
 
     //?/*     Courses     */
-    //     Controller
+    //        Controller
     'course_successfully_created' => 'Course successfully created.',
     'course_successfully_deleted' => 'Course successfully deleted.',
     'course_successfully_updated' => 'Course successfully updated.',
@@ -81,11 +81,11 @@ return [
 
     'you_must_be_logged_in_to_create_a_course' => 'You must be logged in to create a course.',
 
-    //     Create view
+    //        Create view
     'create_a_new_course' => 'Create a New Course',
     'create_course' => 'Create Course',
 
-    //     Create & Edit views
+    //        Create & Edit views
     'add_module' => 'Add Module',
     'add_section' => 'Add Section',
     'course_description' => 'Course Description:',
@@ -94,7 +94,7 @@ return [
     'creation_date' => 'Creation_date:',
     'include_sections_and_modules' => 'Include Sections and Modules',
 
-    //     Edit view
+    //        Edit view
     'module_name' => 'Module Name:',
     'module_description' => 'Module Description:',
     'module_details' => 'Module Details',
@@ -107,12 +107,12 @@ return [
     'section_level' => 'Section Level:',
     'update_course' => 'Update Course',
 
-    //     Index view
+    //        Index view
     'create_new_course' => 'Create New Course',
     'no_courses_available' => 'No courses available.',
 
     //?/*     Lessons     */
-    //     Controller
+    //        Controller
     'course_associated_with_the_lesson_not_found' => 'Course associated with the lesson not found',
     'failed_to_create_lesson' => 'Failed to create lesson: ',
     'failed_to_update_lesson' => 'Failed to update lesson: ',
@@ -121,11 +121,11 @@ return [
     'lesson_successfully_updated' => 'Lesson successfully updated.',
     'you_must_be_logged_in_to_create_a_lesson' => 'You must be logged in to create a lesson.',
 
-    //     Create view
+    //        Create view
     'create_a_new_lesson' => 'Create a New Lesson',
     'create_lesson' => 'Create Lesson',
 
-    //     Create & Edit views
+    //        Create & Edit views
     'add_document' => 'Add Document',
     'add_video' => 'Add Video',
     'document_description' => 'Document Description:',
@@ -141,36 +141,36 @@ return [
     'video_title' => 'Video Title:',
     'video_URL' => 'Video URL:',
 
-    //     Create & Edit views
+    //        Create & Edit views
     'course' => 'Course:',
 
-    //     Edit view
+    //        Edit view
     'update_lesson' => 'Update Lesson',
 
-    //     Index view
+    //        Index view
     'course(2)' => 'Course',
     'create_new_lesson' => 'Create New Lesson',
 
     //?/*     Quizzes     */
-    //     Create view
-    //     Edit view
-    //     Index view
-    //     Show view
+    //        Create view
+    //        Edit view
+    //        Index view
+    //        Show view
 
     //!/* --- Teacher & Student --- */
-    //     Indexes
+    //        Indexes
     'actions' => 'Actions',
 
-    //?/*   Courses     */
-    // Controller
+    //?/*     Courses     */
+    //        Controller
     'course_not_found' => 'Course not found',
 
-    //     Index views
+    //        Index views
     'courses' => 'Courses',
     'course_name(2)' => 'Course Name',
     'description' => 'Description',
 
-    //     Show views
+    //        Show views
     'back_to_courses' => 'Back to Courses',
     'course_content' => 'Course Content',
     'module' => 'Module:',
@@ -178,18 +178,18 @@ return [
     'no_modules_available_in_this_section' => 'No modules available in this section.',
     'section' => 'Section:',
 
-    //?/*   Lessons      */
-    // Controller
+    //?/*     Lessons      */
+    //        Controller
     'lesson_not_found' => 'Lesson not found',
 
-    //     Index views
+    //        Index views
     'lessons' => 'Lessons',
     'lesson_content(2)' => 'Content',
     'lesson_title(2)' => 'Lesson Title',
     'module(2)' => 'Module',
     'section(2)' => 'Section',
 
-    //     Show views
+    //        Show views
     'back_to_course' => 'Back to Course',
     'back_to_lessons' => 'Back to Lessons',
     'documents' => 'Documents',
@@ -205,30 +205,30 @@ return [
     'videos' => 'Videos',
 
     //!/* --- Student --- */
-    //     Dashboard
+    //        Dashboard
     'student_dashboard' => 'Student Dashboard',
 
     //?/*     Lessons     */
-    // Controller
+    //        Controller
     'you_must_complete_the_previous_lesson_first' => 'You must complete the previous lesson first.',
 
-    //     Show view
+    //        Show view
     'lesson_viewed' => 'Lesson viewed',
 
     //?/*     Quizzes     */
-    //     Index view
-    //     Show view
+    //        Index view
+    //        Show view
 
     //!/* --- Errors --- */
-    //     404.blade.php
+    //        404.blade.php
     'page_not_found' => 'Page not found',
 
-    //     419.blade.php
+    //        419.blade.php
     'page_expired' => 'Page expired',
 
-    //     500.blade.php
+    //        500.blade.php
     'internal_server_error' => 'Internal server error',
 
-    //     503.blade.php
+    //        503.blade.php
     'service_unavailable' => 'Service unavailable',
 ];
