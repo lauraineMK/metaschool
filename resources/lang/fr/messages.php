@@ -56,6 +56,8 @@ return [
     //!/* --- Enseignant --- */
     //        Contrôleurs
     'unauthorized' => 'Non autorisé',
+    'failed_to_update_course(2)' => 'Échec de la mise à jour du cours :',
+    'request_data' => 'Données de la requête :',
 
     //        Fonctionnalités CRUD
     'are_you_sure_you_want_to_delete_this_course' => 'Êtes-vous sûr de vouloir supprimer ce cours ?',

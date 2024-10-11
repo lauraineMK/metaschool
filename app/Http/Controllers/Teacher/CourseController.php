@@ -49,7 +49,7 @@ class CourseController extends Controller
         // If the course is not found, redirect to the course index with an error message
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error',  __('messages.course_not_found'));
         }
 
         // Pass the course details to the view
@@ -79,7 +79,7 @@ class CourseController extends Controller
         // Check if the user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')
-                ->with('error', 'You must be logged in to create a course.');
+                ->with('error', __('messages.you_must_be_logged_in_to_create_a_course'));
         }
 
         // Data validation
@@ -174,7 +174,7 @@ class CourseController extends Controller
         }
 
         return redirect()->route('teacher.courses.show', $course->id)
-            ->with('success', 'Course created successfully.');
+            ->with('success', __('messages.course_successfully_created'));
     }
 
     /**
@@ -189,12 +189,12 @@ class CourseController extends Controller
 
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error',  __('messages.course_not_found'));
         }
 
         if (Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Unauthorized');
+                ->with('error',  __('messages.unauthorized'));
         }
 
         return view('teacher.courses.edit', compact('course'));
@@ -256,13 +256,13 @@ class CourseController extends Controller
 
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error', __('messages.course_not_found'));
         }
 
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Unauthorized');
+                ->with('error', __('messages.unauthorized'));
         }
 
         try {
@@ -406,19 +406,19 @@ class CourseController extends Controller
             }
         } catch (\Exception $e) {
             // Log the exception for debugging purposes
-            Log::error('Failed to update course: ' . $e->getMessage());
+            Log::error(__('messages.failed_to_update_course(2)') . $e->getMessage());
 
             // Optionally, you can include the request data for more context
-            Log::error('Request data: ' . json_encode($request->all()));
+            Log::error( __('messages.request_data') . json_encode($request->all()));
 
             // Redirect on update error with error message
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Failed to update course');
+                ->with('error', __('messages.failed_to_update_course'));
         }
 
         // Redirect to course view with success message
         return redirect()->route('teacher.courses.show', $course->id)
-            ->with('success', 'Course updated successfully.');
+            ->with('success', __('messages.course_successfully_updated'));
     }
     //! ----------------------------------------------------------------------------------------------------------
 
@@ -433,20 +433,20 @@ class CourseController extends Controller
         $course = Course::find($id);
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error', __('messages.course_not_found'));
         }
 
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Unauthorized');
+                ->with('error', __('messages.unauthorized'));
         }
 
 
         $course->delete();
 
         return redirect()->route('teacher.courses.index')
-            ->with('success', 'Course deleted successfully.');
+            ->with('success', __('messages.course_successfully_deleted'));
     }
 
     public function sectiondestroy($id)
@@ -454,13 +454,13 @@ class CourseController extends Controller
         $section = Section::find($id);
         if (!$section) {
 
-            return response()->json(['message' =>  'Section not found'], 404);
+            return response()->json(['message' => __('messages.section_not_found')], 404);
         }
 
         $course = Course::find($section->course_id);
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
-            return response()->json(['message' => 'Unauthorized'], 405);
+            return response()->json(['message' => __('messages.unauthorized')], 405);
         }
 
 
@@ -470,7 +470,7 @@ class CourseController extends Controller
         //        $section->modules()->forceDelete(); // Permanently delete modules
         //        $section->forceDelete(); // Permanently delete section
 
-        return response()->json(['message' => 'Section deleted successfully.'], 200);
+        return response()->json(['message' => __('messages.section_successfully_deleted')], 200);
     }
 
     public function moduledestroy($id)
@@ -478,13 +478,13 @@ class CourseController extends Controller
         $module = Module::find($id);
         if (!$module) {
 
-            return response()->json(['message' =>  'Module not found'], 404);
+            return response()->json(['message' =>  __('messages.module_not_found')], 404);
         }
 
         $course = Course::find($module->course_id);
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
-            return response()->json(['message' => 'Unauthorized'], 405);
+            return response()->json(['message' => __('messages.unauthorized')], 405);
         }
 
 
@@ -494,6 +494,6 @@ class CourseController extends Controller
         //        $section->modules()->forceDelete(); // Permanently delete modules
         //        $section->forceDelete(); // Permanently delete section
 
-        return response()->json(['message' => 'Module deleted successfully.'], 200);
+        return response()->json(['message' => __('messages.module_successfully_deleted')], 200);
     }
 }

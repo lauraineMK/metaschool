@@ -56,6 +56,8 @@ return [
     //!/* --- Docent --- */
     //        Controller
     'unauthorized' => 'Onbevoegd',
+    'failed_to_update_course(2)' => 'Cursus bijwerken mislukt:',
+    'request_data' => 'Verzoekgegevens:',
 
     //        CRUD-functies
     'are_you_sure_you_want_to_delete_this_course' => 'Weet u zeker dat u deze cursus wilt verwijderen?',

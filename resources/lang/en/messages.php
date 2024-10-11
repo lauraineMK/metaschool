@@ -56,6 +56,8 @@ return [
     //!/* --- Teacher --- */
     //        Controllers
     'unauthorized' => 'Unauthorized',
+    'failed_to_update_course(2)' => 'Failed to update course: ',
+    'request_data' => 'Request data: ',
 
     //        CRUD features
     'are_you_sure_you_want_to_delete_this_course' => 'Are you sure you want to delete this course?',

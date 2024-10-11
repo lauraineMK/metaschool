@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mt-5">
     <div class="header">
-        <h1>Create a New Course</h1>
+        <h1>{{ __('messages.create_a_new_course') }}</h1>
         <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary">Cancel</a>
     </div>
 
@@ -55,7 +55,7 @@
         <div class="d-flex justify-content-between mt-3">
             <button type="button" class="btn btn-secondary" id="add-section-btn" style="display: none;">Add Section</button>
             <button type="button" class="btn btn-secondary" id="add-module-btn">Add Module</button>
-            <button type="submit" class="btn btn-primary">Create Course</button>
+            <button type="submit" class="btn btn-primary">{{ __('messages.create_course') }}</button>
         </div>
     </form>
 </div>
