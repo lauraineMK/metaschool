@@ -34,7 +34,7 @@ class Lesson extends Model
         return $this->belongsTo(Module::class);
     }
 
-    public function quizzes()
+    public function quiz()
     {
         return $this->hasOne(Quiz::class);
     }

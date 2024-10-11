@@ -14,6 +14,8 @@ class QuizController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -23,6 +25,8 @@ class QuizController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -32,10 +36,13 @@ class QuizController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming request containing quiz data.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         // Data validation
         $validatedData = $request->validate([
             'lesson_id' => 'required|exists:lessons,id',
@@ -50,47 +57,43 @@ class QuizController extends Controller
             'questions.*.answers.*.is_correct' => 'boolean',
         ]);
 
-        // Check if there are any questions in the request
-        if (empty($request->questions)) {
-            return redirect()->back()->withInput()->withErrors(['error' => 'You must add at least one question.']);
-        }
+        // dd($validatedData);
 
         // Quiz creation within a transaction
         DB::transaction(function () use ($validatedData, $request) {
             // Quiz creation
             $quiz = Quiz::create([
                 'lesson_id' => $validatedData['lesson_id'],
-                'title' => $request->title,
-                'description' => $request->description,
+                'title' => $validatedData['title'],
+                'description' => $validatedData['description'],
             ]);
 
+            // dd($validatedData['title'], $validatedData['description']);
+
             // Add questions and answers
-            foreach ($request->questions as $questionData) {
+            foreach ($validatedData['questions'] as $questionData) {
                 // Create question
-                $question = new Question();
-                $question->quiz_id = $quiz->id;
-                $question->type = $questionData['type'];
-                $question->question_text = $questionData['text'];
-                $question->save();
+                $question = $quiz->questions()->create([
+                    'type' => $questionData['type'],
+                    'question_text' => $questionData['text'],
+                ]);
 
                 // If it's a multiple-choice question, handle answers
-                if ($question->type === 'multiple_choice' && isset($questionData['answers'])) {
+                if ($questionData['type'] === 'multiple_choice' && isset($questionData['answers'])) {
                     foreach ($questionData['answers'] as $answerData) {
-                        $answer = new Answer();
-                        $answer->question_id = $question->id;
-                        $answer->answer_text = $answerData['text'];
-                        $answer->is_correct = isset($answerData['is_correct']) && $answerData['is_correct']; // Check that the answer is correct
-                        $answer->save();
+                        $question->answers()->create([
+                            'answer_text' => $answerData['text'],
+                            'is_correct' => isset($answerData['is_correct']) ? $answerData['is_correct'] : false,
+                        ]);
                     }
                 }
 
                 // If it's an open-ended question, save the expected answer
-                elseif ($question->type === 'open') {
-                    $answer = new Answer();
-                    $answer->question_id = $question->id;
-                    $answer->answer_text = $questionData['answer_text']; // Save open answer
-                    $answer->is_correct = false; // Open-ended questions generally have no correct/incorrect answer
-                    $answer->save();
+                elseif ($questionData['type'] === 'open') {
+                    $question->answers()->create([
+                        'answer_text' => $questionData['answer_text'],
+                        'is_correct' => false, // Open-ended questions generally have no correct/incorrect answer
+                    ]);
                 }
             }
         });
@@ -99,6 +102,9 @@ class QuizController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * @param  string  $id  The ID of the quiz to display.
+     * @return \Illuminate\View\View
      */
     public function show(string $id)
     {
@@ -120,6 +126,9 @@ class QuizController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param  string  $id  The ID of the quiz to edit.
+     * @return \Illuminate\View\View
      */
     public function edit(string $id)
     {
@@ -130,6 +139,10 @@ class QuizController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request  The incoming request containing updated quiz data.
+     * @param  string  $id  The ID of the quiz to update.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, string $id)
     {
@@ -138,6 +151,9 @@ class QuizController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param  string  $id  The ID of the quiz to remove.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(string $id)
     {

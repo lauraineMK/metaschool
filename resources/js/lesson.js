@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 var selectedModuleId = parseInt(moduleSelect.dataset.selected) || null;
 
                 // Clear previous options
-                sectionSelect.innerHTML = '<option value="" selected>No section</option>';
-                moduleSelect.innerHTML = '<option value="" selected>No module</option>';
+                sectionSelect.innerHTML = '<option value="" selected>Select a section</option>';
+                moduleSelect.innerHTML = '<option value="" selected>Select a module</option>';
 
                 var hasSections = false;
                 var hasModules = false;
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var selectedSectionId = parseInt(sectionSelect.value);
 
                 // Clear previous module options
-                moduleSelect.innerHTML = '<option value="" selected>No module</option>';
+                moduleSelect.innerHTML = '<option value="" selected>Select a module</option>';
 
                 var hasModules = false;
 
@@ -152,18 +152,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     newVideoGroup.innerHTML = `
                         <div class="form-group mt-3">
-                        <label for="video_title_${videoIndex}">Video Title</label>
+                        <label for="video_title_${videoIndex}">${translations.videoTitle}</label>
                         <input type="text" class="form-control" id="video_title_${videoIndex}" name="videos[${videoIndex}][title]">
                         </div>
                         <div class="form-group mt-3">
-                        <label for="video_url_${videoIndex}">Video URL</label>
+                        <label for="video_url_${videoIndex}">${translations.videoURL}</label>
                         <input type="url" class="form-control" id="video_url_${videoIndex}" name="videos[${videoIndex}][url]">
                         </div>
                         <div class="form-group mt-3">
-                        <label for="video_description_${videoIndex}">Video Description</label>
+                        <label for="video_description_${videoIndex}">${translations.videoDescription}</label>
                         <textarea class="form-control" id="video_description_${videoIndex}" name="videos[${videoIndex}][description]" rows="3"></textarea>
                         </div>
-                        <button type="button" class="btn btn-danger cancel-video-button mt-3" data-index="${videoIndex}">Cancel</button>
+                        <button type="button" class="btn btn-danger cancel-video-button mt-3" data-index="${videoIndex}">${translations.cancel}</button>
                         `;
 
                     videoSection.appendChild(newVideoGroup);
@@ -225,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            //! Dynamic document part ---------------------------------------------------------------------------------------------------------------------------------------------------
             // Dynamic document addition script
             const addDocumentButton = document.getElementById('add-document-button');
             if (addDocumentButton) {
@@ -236,19 +235,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     newDocumentGroup.innerHTML = `
                         <div class="form-group mt-3">
-                        <label for="document_title_${documentIndex}">Document Title</label>
+                        <label for="document_title_${documentIndex}">${translations.documentTitle}</label>
                         <input type="text" class="form-control" id="document_title_${documentIndex}" name="documents[${documentIndex}][title]">
                         </div>
                         <div class="form-group mt-3">
-                        <label for="document_file_${documentIndex}">Document File</label>
+                        <label for="document_file_${documentIndex}">${translations.documentFile}</label>
                         <input type="file" class="form-control" id="document_file_${documentIndex}" name="documents[${documentIndex}][file]" accept=".pdf,.doc,.docx,.xls,.xlsx, .txt">
                         </div>
                         <div class="form-group mt-3">
-                        <label for="document_description_${documentIndex}">Document Description</label>
+                        <label for="document_description_${documentIndex}">${translations.documentDescription}</label>
                         <textarea class="form-control" id="document_description_${documentIndex}" name="documents[${documentIndex}][description]" rows="3"></textarea>
                         </div>
                         <input type="hidden" name="documents[${documentIndex}][_delete]" value="0"> <!-- Hidden input for delete -->
-                        <button type="button" class="btn btn-danger cancel-document-button mt-3" data-index="${documentIndex}">Cancel</button>
+                        <button type="button" class="btn btn-danger cancel-document-button mt-3" data-index="${documentIndex}">${translations.cancel}</button>
                         `;
 
                     documentSection.appendChild(newDocumentGroup);
@@ -309,7 +308,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
-            //! -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         } else {
             console.error('One or more essential elements not found.');

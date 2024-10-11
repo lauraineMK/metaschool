@@ -4,18 +4,18 @@
 
 @section('content')
 <div class="container mt-5 courses-view">
-    <h1>Courses</h1>
+    <h1>{{ __('messages.courses') }}</h1>
 
     @if ($courses->isEmpty())
-    <p>No courses available.</p>
+    <p>{{ __('messages.no_courses_available') }}</p>
     @else
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Course Name</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>{{ __('messages.course_name(2)') }}</th>
+                <th>{{ __('messages.description') }}</th>
+                <th>{{ __('messages.actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@
                 <td>
                     <!-- View Button -->
                     <a href="{{ route('student.courses.show', $course->id) }}" class="btn btn-info btn-sm btn-view">
-                        <span class="text-view">View</span>
+                        <span class="text-view">{{ __('messages.view') }}</span>
                         <i class="fas fa-eye"></i> <!-- Eye icon -->
                     </a>
                 </td>

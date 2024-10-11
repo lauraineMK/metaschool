@@ -69,7 +69,7 @@ class MusicSeeder extends Seeder
                 ],
                 'Lady Gaga' => [
                     'Nancy Sinatra, Bang Bang',
-                    'Frank Sinatra, New-York, New-York',
+                    'Frank Sinatra, New York, New York',
                 ],
             ],
             'Pop' => [

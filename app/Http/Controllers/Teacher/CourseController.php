@@ -49,7 +49,7 @@ class CourseController extends Controller
         // If the course is not found, redirect to the course index with an error message
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error',  __('messages.course_not_found'));
         }
 
         // Pass the course details to the view
@@ -79,14 +79,13 @@ class CourseController extends Controller
         // Check if the user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')
-                ->with('error', 'You must be logged in to create a course.');
+                ->with('error', __('messages.you_must_be_logged_in_to_create_a_course'));
         }
 
         // Data validation
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric',
             'creation_date' => 'nullable|date',
             'author_id' => 'required|exists:users,id',
             'sections' => 'nullable|array',
@@ -113,7 +112,6 @@ class CourseController extends Controller
         $course = Course::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            'price' => $validated['price'],
             'creation_date' => $validated['creation_date'],
             'author_id' => $validated['author_id'],
         ]);
@@ -176,7 +174,7 @@ class CourseController extends Controller
         }
 
         return redirect()->route('teacher.courses.show', $course->id)
-            ->with('success', 'Course created successfully.');
+            ->with('success', __('messages.course_successfully_created'));
     }
 
     /**
@@ -191,12 +189,12 @@ class CourseController extends Controller
 
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error',  __('messages.course_not_found'));
         }
 
         if (Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Unauthorized');
+                ->with('error',  __('messages.unauthorized'));
         }
 
         return view('teacher.courses.edit', compact('course'));
@@ -231,7 +229,6 @@ class CourseController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric',
             'creation_date' => 'nullable|date',
             'author_id' => 'sometimes|required|exists:users,id',
             'sections' => 'nullable|array',
@@ -259,22 +256,25 @@ class CourseController extends Controller
 
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error', __('messages.course_not_found'));
         }
 
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Unauthorized');
+                ->with('error', __('messages.unauthorized'));
         }
 
         try {
             // Course update
             $course->update($validated);
 
+            // Store current section ids and standalone module ids
+            $currentSectionIds = [];
+            $currentModuleIds = [];
+
             // Section update or creation
             if ($request->has('sections')) {
-                $currentSectionIds = [];
                 $currentSectionOrder = Section::where('course_id', $course->id)->max('order') ?? 0;
 
                 foreach ($request->sections as $sectionData) {
@@ -288,6 +288,7 @@ class CourseController extends Controller
                                 'level' => $sectionData['level'] ?? $section->level,
                                 'order' => $sectionData['order'] ?? $section->order,
                             ]);
+                            // Store updated section ID
                             $currentSectionIds[] = $section->id;
                         }
                     } else {
@@ -300,12 +301,15 @@ class CourseController extends Controller
                             'level' => $sectionData['level'],
                             'order' => $sectionData['order'] ?? $currentSectionOrder,
                         ]);
+                        // Store newly created section ID
                         $currentSectionIds[] = $newSection->id;
                     }
 
+                    // Store current section module ids
+                    $currentModuleIdsForSection = [];
+
                     // Section's module update or creation
                     if (!empty($sectionData['modules'])) {
-                        $currentModuleIds = [];
                         $currentModuleOrder = Module::where('section_id', $section->id)->max('order') ?? 0;
 
                         foreach ($sectionData['modules'] as $moduleData) {
@@ -319,7 +323,8 @@ class CourseController extends Controller
                                         'level' => $moduleData['level'] ?? $module->level,
                                         'order' => $moduleData['order'] ?? $module->order,
                                     ]);
-                                    $currentModuleIds[] = $module->id;
+                                    // Store updated section module ID
+                                    $currentModuleIdsForSection[] = $module->id;
                                 }
                             } else {
                                 // Create new module
@@ -332,31 +337,19 @@ class CourseController extends Controller
                                     'level' => $moduleData['level'],
                                     'order' => $moduleData['order'] ?? $currentModuleOrder,
                                 ]);
-                                $currentModuleIds[] = $newModule->id;
+                                // Store newly created section module ID
+                                $currentModuleIdsForSection[] = $newModule->id;
                             }
                         }
-                        // Deletion of modules not present in the request data
-                        Module::where('section_id', $section->id)
-                            ->whereNotIn('id', $currentModuleIds)
-                            ->delete();
                     }
                 }
-                // Deletion of sections not present in the request data
-                Section::where('course_id', $course->id)
-                    ->whereNotIn('id', $currentSectionIds)
-                    ->each(function ($section) {
-                        // Delete associated modules when deleting section
-                        Module::where('section_id', $section->id)->delete();
-                        $section->delete();
-                    });
             }
 
             // Standalone modules update or creation
             if ($request->has('modules')) {
-                $currentModuleIds = [];
                 $currentStandaloneModuleOrder = Module::where('course_id', $course->id)
-                ->whereNull('section_id')
-                ->max('order') ?? 0;
+                    ->whereNull('section_id')
+                    ->max('order') ?? 0;
 
                 foreach ($request->modules as $moduleData) {
                     if (isset($moduleData['id'])) {
@@ -370,6 +363,7 @@ class CourseController extends Controller
                                 'section_id' => $moduleData['section_id'] ?? $module->section_id,
                                 'order' => $moduleData['order'] ?? $module->order,
                             ]);
+                            // Store updated module ID
                             $currentModuleIds[] = $module->id;
                         }
                     } else {
@@ -383,27 +377,48 @@ class CourseController extends Controller
                             'level' => $moduleData['level'],
                             'order' => $moduleData['order'] ?? $currentStandaloneModuleOrder,
                         ]);
+                        // Store newly created module ID
                         $currentModuleIds[] = $newModule->id;
                     }
                 }
-                // Deletion of modules not present in the request data
-                Module::where('course_id', $course->id)
-                    ->whereNull('section_id')
-                    ->whereNotIn('id', $currentModuleIds)
+            }
+
+            // Deletion of modules not present in the request data
+            Module::where('course_id', $course->id)
+                ->whereNull('section_id')
+                ->whereNotIn('id', $currentModuleIds)
+                ->delete();
+
+            // Deletion of sections not present in the request data
+            Section::where('course_id', $course->id)
+                ->whereNotIn('id', $currentSectionIds)
+                ->each(function ($section) {
+                    // Delete associated modules when deleting section
+                    Module::where('section_id', $section->id)->delete();
+                    $section->delete();
+                });
+
+            // Deletion of modules not present in the request for this section
+            foreach ($currentSectionIds as $sectionId) {
+                Module::where('section_id', $sectionId)
+                    ->whereNotIn('id', $currentModuleIdsForSection)
                     ->delete();
             }
         } catch (\Exception $e) {
             // Log the exception for debugging purposes
-            Log::error('Failed to update course: ' . $e->getMessage());
+            Log::error(__('messages.failed_to_update_course(2)') . $e->getMessage());
+
+            // Optionally, you can include the request data for more context
+            Log::error( __('messages.request_data') . json_encode($request->all()));
 
             // Redirect on update error with error message
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Failed to update course');
+                ->with('error', __('messages.failed_to_update_course'));
         }
 
         // Redirect to course view with success message
         return redirect()->route('teacher.courses.show', $course->id)
-            ->with('success', 'Course updated successfully.');
+            ->with('success', __('messages.course_successfully_updated'));
     }
     //! ----------------------------------------------------------------------------------------------------------
 
@@ -418,20 +433,20 @@ class CourseController extends Controller
         $course = Course::find($id);
         if (!$course) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Course not found');
+                ->with('error', __('messages.course_not_found'));
         }
 
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.courses.index')
-                ->with('error', 'Unauthorized');
+                ->with('error', __('messages.unauthorized'));
         }
 
 
         $course->delete();
 
         return redirect()->route('teacher.courses.index')
-            ->with('success', 'Course deleted successfully.');
+            ->with('success', __('messages.course_successfully_deleted'));
     }
 
     public function sectiondestroy($id)
@@ -439,23 +454,23 @@ class CourseController extends Controller
         $section = Section::find($id);
         if (!$section) {
 
-            return response()->json(['message' =>  'Section not found'], 404);
+            return response()->json(['message' => __('messages.section_not_found')], 404);
         }
 
         $course = Course::find($section->course_id);
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
-            return response()->json(['message' => 'Unauthorized'], 405);
+            return response()->json(['message' => __('messages.unauthorized')], 405);
         }
 
 
 
         $section->delete();
 
-//        $section->modules()->forceDelete(); // Permanently delete modules
-//        $section->forceDelete(); // Permanently delete section
+        //        $section->modules()->forceDelete(); // Permanently delete modules
+        //        $section->forceDelete(); // Permanently delete section
 
-        return response()->json(['message' => 'Section deleted successfully.'], 200);
+        return response()->json(['message' => __('messages.section_successfully_deleted')], 200);
     }
 
     public function moduledestroy($id)
@@ -463,22 +478,22 @@ class CourseController extends Controller
         $module = Module::find($id);
         if (!$module) {
 
-            return response()->json(['message' =>  'Module not found'], 404);
+            return response()->json(['message' =>  __('messages.module_not_found')], 404);
         }
 
         $course = Course::find($module->course_id);
         // Check if the authenticated user is the author of the course
         if (Auth::user()->id !== $course->author_id) {
-            return response()->json(['message' => 'Unauthorized'], 405);
+            return response()->json(['message' => __('messages.unauthorized')], 405);
         }
 
 
 
         $module->delete();
 
-//        $section->modules()->forceDelete(); // Permanently delete modules
-//        $section->forceDelete(); // Permanently delete section
+        //        $section->modules()->forceDelete(); // Permanently delete modules
+        //        $section->forceDelete(); // Permanently delete section
 
-        return response()->json(['message' => 'Module deleted successfully.'], 200);
+        return response()->json(['message' => __('messages.module_successfully_deleted')], 200);
     }
 }

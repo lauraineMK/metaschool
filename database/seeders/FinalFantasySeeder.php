@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -21,30 +20,49 @@ class FinalFantasySeeder extends Seeder
      */
     public function run(): void
     {
-        // // Path to the directory containing the files to copy
-        // $sourcePath = database_path('seeders/files');
+        // Path to the directory containing the files to copy
+        $sourcePath = database_path('seeders/files');
 
-        // // Path to the destination directory
-        // $destinationPath = 'public/documents'; // This is relative to the 'storage/app' directory
+        // Path to the destination directory (relative to the 'storage/app' directory)
+        $destinationPath = 'public/documents';
 
-        // // Create the destination directory if it does not exist
-        // if (!Storage::exists($destinationPath)) {
-        //     Storage::makeDirectory($destinationPath, 0755, true);
-        // }
+        // Checking source directory permissions
+        if (!File::isDirectory($sourcePath) || !File::isReadable($sourcePath)) {
+            dd("The source directory does not exist or is not readable: " . $sourcePath);
+        }
 
-        // // Get the list of files in the source directory
-        // $files = File::files($sourcePath);
+        // Create the destination directory if it does not exist
+        if (!Storage::exists($destinationPath)) {
+            // Checking whether the destination directory can be created
+            if (!Storage::makeDirectory($destinationPath, 0755, true)) {
+                dd("Unable to create destination directory : " . $destinationPath);
+            }
+        }
 
-        // foreach ($files as $file) {
-        //     // File name
-        //     $fileName = basename($file);
+        // Checking destination directory permissions
+        $fullDestinationPath = storage_path('app/' . $destinationPath);
+        if (!File::isWritable($fullDestinationPath)) {
+            dd("The destination directory is not writable: " . $fullDestinationPath);
+        }
 
-        //     // Full path of the destination file
-        //     $destinationFile = $destinationPath . '/' . $fileName;
+        // Get the list of files in the source directory
+        $files = File::files($sourcePath);
 
-        //     // Copy the file to the destination directory
-        //     Storage::copy('seeders/files/' . $fileName, $destinationFile);
-        // }
+        foreach ($files as $file) {
+            // File name
+            $fileName = $file->getFilename();
+
+            // Full path of the destination file
+            $destinationFile = $destinationPath . '/' . $fileName;
+
+            // Checking source file permissions
+            if (!File::isReadable($file)) {
+                dd("The source file is not readable: " . $file);
+            }
+
+            // Copy the file to the destination directory
+            Storage::put($destinationFile, File::get($file));
+        }
 
         // Create a user to be the author
         $author = User::firstOrCreate([
@@ -94,12 +112,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson1_1->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Tifa Lockhart Profile',
-        //     'file' => 'documents/Tifa-Lockhart.pdf',
-        //     'description' => 'Detailed profile of Tifa Lockhart.',
-        //     'lesson_id' => $lesson1_1->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Tifa Lockhart Profile',
+            'file' => 'documents/Tifa-Lockhart.pdf',
+            'description' => 'Detailed profile of Tifa Lockhart.',
+            'lesson_id' => $lesson1_1->id,
+        ]);
 
         $lesson1_2 = Lesson::firstOrCreate([
             'title' => 'Aeris Gainsborough',
@@ -116,13 +134,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson1_2->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Aeris Gainsborough Profile',
-        //     'file' => 'documents/Aerith-Gainsborough.pdf',
-        //     'description' => 'Detailed profile of Aeris Gainsborough.',
-        //     'lesson_id' => $lesson1_2->id,
-        // ]);
-
+        Document::firstOrCreate([
+            'title' => 'Aeris Gainsborough Profile',
+            'file' => 'documents/Aerith-Gainsborough.pdf',
+            'description' => 'Detailed profile of Aeris Gainsborough.',
+            'lesson_id' => $lesson1_2->id,
+        ]);
 
         $lesson1_3 = Lesson::firstOrCreate([
             'title' => 'Jessie Raspberry',
@@ -139,12 +156,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson1_3->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Jessie Raspberry Profile',
-        //     'file' => 'documents/Jessie-Raspberry.pdf',
-        //     'description' => 'Detailed profile of Jessie Raspberry.',
-        //     'lesson_id' => $lesson1_3->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Jessie Raspberry Profile',
+            'file' => 'documents/Jessie-Raspberry.pdf',
+            'description' => 'Detailed profile of Jessie Raspberry.',
+            'lesson_id' => $lesson1_3->id,
+        ]);
 
         // Module 2: City Themes
         $module1_2 = Module::firstOrCreate([
@@ -170,12 +187,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson2_1->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Midgar City Guide',
-        //     'file' => 'documents/Midgar.pdf',
-        //     'description' => 'Detailed guide to the city of Midgar.',
-        //     'lesson_id' => $lesson2_1->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Midgar City Guide',
+            'file' => 'documents/Midgar.pdf',
+            'description' => 'Detailed guide to the city of Midgar.',
+            'lesson_id' => $lesson2_1->id,
+        ]);
 
         $lesson2_2 = Lesson::firstOrCreate([
             'title' => 'Kalm',
@@ -192,12 +209,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson2_2->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Kalm Town Overview',
-        //     'file' => 'documents/Kalm.pdf',
-        //     'description' => 'Detailed overview of the town of Kalm.',
-        //     'lesson_id' => $lesson2_2->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Kalm Town Overview',
+            'file' => 'documents/Kalm.pdf',
+            'description' => 'Detailed overview of the town of Kalm.',
+            'lesson_id' => $lesson2_2->id,
+        ]);
 
         $lesson2_3 = Lesson::firstOrCreate([
             'title' => 'Junon',
@@ -214,12 +231,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson2_3->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Junon Port Guide',
-        //     'file' => 'documents/Junon.pdf',
-        //     'description' => 'Detailed guide to the port town of Junon.',
-        //     'lesson_id' => $lesson2_3->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Junon Port Guide',
+            'file' => 'documents/Junon.pdf',
+            'description' => 'Detailed guide to the port town of Junon.',
+            'lesson_id' => $lesson2_3->id,
+        ]);
 
         // Section 2: Final Fantasy VIII
         $section2 = Section::firstOrCreate([
@@ -252,12 +269,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson3_1->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Squall Leonhart Profile',
-        //     'file' => 'documents/Squall-Leonhart.pdf',
-        //     'description' => 'Detailed profile of Squall Leonhart.',
-        //     'lesson_id' => $lesson3_1->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Squall Leonhart Profile',
+            'file' => 'documents/Squall-Leonhart.pdf',
+            'description' => 'Detailed profile of Squall Leonhart.',
+            'lesson_id' => $lesson3_1->id,
+        ]);
 
         $lesson3_2 = Lesson::firstOrCreate([
             'title' => 'Rinoa Heartilly',
@@ -274,12 +291,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson3_2->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Rinoa Heartilly Profile',
-        //     'file' => 'documents/Rinoa-Heartilly.pdf',
-        //     'description' => 'Detailed profile of Rinoa Heartilly.',
-        //     'lesson_id' => $lesson3_2->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Rinoa Heartilly Profile',
+            'file' => 'documents/Rinoa-Heartilly.pdf',
+            'description' => 'Detailed profile of Rinoa Heartilly.',
+            'lesson_id' => $lesson3_2->id,
+        ]);
 
         $lesson3_3 = Lesson::firstOrCreate([
             'title' => 'Edea Kramer',
@@ -296,12 +313,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson3_3->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Edea Kramer Profile',
-        //     'file' => 'documents/Edea-Kramer.pdf',
-        //     'description' => 'Detailed profile of Edea Kramer.',
-        //     'lesson_id' => $lesson3_3->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Edea Kramer Profile',
+            'file' => 'documents/Edea-Kramer.pdf',
+            'description' => 'Detailed profile of Edea Kramer.',
+            'lesson_id' => $lesson3_3->id,
+        ]);
 
         // Module 2: City Themes
         $module4 = Module::firstOrCreate([
@@ -327,12 +344,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson4_1->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Dollet Guide',
-        //     'file' => 'documents/Dollet.pdf',
-        //     'description' => 'Detailed guide to Dollet.',
-        //     'lesson_id' => $lesson4_1->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Dollet Guide',
+            'file' => 'documents/Dollet.pdf',
+            'description' => 'Detailed guide to Dollet.',
+            'lesson_id' => $lesson4_1->id,
+        ]);
 
         $lesson4_2 = Lesson::firstOrCreate([
             'title' => 'Timber',
@@ -349,12 +366,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson4_2->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Timber Guide',
-        //     'file' => 'documents/Timber.pdf',
-        //     'description' => 'Detailed guide to Timber.',
-        //     'lesson_id' => $lesson4_2->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Timber Guide',
+            'file' => 'documents/Timber.pdf',
+            'description' => 'Detailed guide to Timber.',
+            'lesson_id' => $lesson4_2->id,
+        ]);
 
         $lesson4_3 = Lesson::firstOrCreate([
             'title' => 'Deling City',
@@ -371,12 +388,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson4_3->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Deling City Guide',
-        //     'file' => 'documents/Deling-City.pdf',
-        //     'description' => 'Detailed guide to Deling City.',
-        //     'lesson_id' => $lesson4_3->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Deling City Guide',
+            'file' => 'documents/Deling-City.pdf',
+            'description' => 'Detailed guide to Deling City.',
+            'lesson_id' => $lesson4_3->id,
+        ]);
 
         // Section 3: Final Fantasy IX
         $section3 = Section::firstOrCreate([
@@ -409,12 +426,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson5_1->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Vivi Ornitier Profile',
-        //     'file' => 'documents/Vivi-Ornitier.pdf',
-        //     'description' => 'Detailed profile of Vivi Ornitier.',
-        //     'lesson_id' => $lesson5_1->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Vivi Ornitier Profile',
+            'file' => 'documents/Vivi-Ornitier.pdf',
+            'description' => 'Detailed profile of Vivi Ornitier.',
+            'lesson_id' => $lesson5_1->id,
+        ]);
 
         $lesson5_2 = Lesson::firstOrCreate([
             'title' => 'Adelbert Steiner',
@@ -431,12 +448,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson5_2->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Adelbert Steiner Profile',
-        //     'file' => 'documents/Adelbert-Steiner.pdf',
-        //     'description' => 'Detailed profile of Adelbert Steiner.',
-        //     'lesson_id' => $lesson5_2->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Adelbert Steiner Profile',
+            'file' => 'documents/Adelbert-Steiner.pdf',
+            'description' => 'Detailed profile of Adelbert Steiner.',
+            'lesson_id' => $lesson5_2->id,
+        ]);
 
         $lesson5_3 = Lesson::firstOrCreate([
             'title' => 'Beatrix',
@@ -453,12 +470,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson5_3->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Beatrix Profile',
-        //     'file' => 'documents/Beatrix.pdf',
-        //     'description' => 'Detailed profile of Beatrix.',
-        //     'lesson_id' => $lesson5_3->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Beatrix Profile',
+            'file' => 'documents/Beatrix.pdf',
+            'description' => 'Detailed profile of Beatrix.',
+            'lesson_id' => $lesson5_3->id,
+        ]);
 
         // Module 2: City Themes
         $module6 = Module::firstOrCreate([
@@ -484,12 +501,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson6_1->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Lindblum City',
-        //     'file' => 'documents/Lindblum.pdf',
-        //     'description' => 'Details about the city of Lindblum.',
-        //     'lesson_id' => $lesson6_1->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Lindblum City',
+            'file' => 'documents/Lindblum.pdf',
+            'description' => 'Details about the city of Lindblum.',
+            'lesson_id' => $lesson6_1->id,
+        ]);
 
         $lesson6_2 = Lesson::firstOrCreate([
             'title' => 'Burmecia',
@@ -506,12 +523,12 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson6_2->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Kingdom of Burmecia',
-        //     'file' => 'documents/Burmecia.pdf',
-        //     'description' => 'Details about the kingdom of Burmecia.',
-        //     'lesson_id' => $lesson6_2->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Kingdom of Burmecia',
+            'file' => 'documents/Burmecia.pdf',
+            'description' => 'Details about the kingdom of Burmecia.',
+            'lesson_id' => $lesson6_2->id,
+        ]);
 
         $lesson6_3 = Lesson::firstOrCreate([
             'title' => 'Treno',
@@ -528,11 +545,11 @@ class FinalFantasySeeder extends Seeder
             'lesson_id' => $lesson6_3->id,
         ]);
 
-        // Document::firstOrCreate([
-        //     'title' => 'Treno City',
-        //     'file' => 'documents/Treno.pdf',
-        //     'description' => 'Details about the city of Treno.',
-        //     'lesson_id' => $lesson6_3->id,
-        // ]);
+        Document::firstOrCreate([
+            'title' => 'Treno City',
+            'file' => 'documents/Treno.pdf',
+            'description' => 'Details about the city of Treno.',
+            'lesson_id' => $lesson6_3->id,
+        ]);
     }
 }

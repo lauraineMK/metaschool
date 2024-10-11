@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const isEditMode = document.body.classList.contains('edit-mode');
     const isCreateMode = document.body.classList.contains('create-mode');
 
-    console.log("Edit mode:", isEditMode);
-    console.log("Create mode:", isCreateMode);
-
     function applyClassesToModules() {
         if (isEditMode || isCreateMode) {
             document.querySelectorAll('.module-group').forEach(el => {
@@ -25,9 +22,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initial class application
     applyClassesToModules();
 
-    // Initialize counters for sections and modules
-    let sectionCount = parseInt(document.getElementById('section-container').getAttribute('data-count') || 0);
-    let moduleCount = parseInt(document.getElementById('module-container').getAttribute('data-count') || 0);
+    // Initialize counters for sections and modules using the greater value between data-count and actual elements count
+    let sectionCount = Math.max(
+        parseInt(document.getElementById('section-container').getAttribute('data-count') || 0),
+        document.querySelectorAll('.section-group').length
+    );
+
+    // Count for standalone modules
+    let moduleCount = Math.max(
+        parseInt(document.getElementById('module-container').getAttribute('data-count') || 0),
+        document.querySelectorAll('.module-group').length // Select standalone modules
+    );
+
+    // Count for section modules
+    // let sectionModuleCount = Math.max(
+    //     parseInt(document.getElementById('module-container').getAttribute('data-count') || 0),
+    //     document.querySelectorAll('.module-group').length // Select section modules
+    // );
 
     // Function to toggle the visibility of section-related elements
     function toggleSections() {
@@ -67,25 +78,25 @@ document.addEventListener('DOMContentLoaded', function () {
             newSection.classList.add('form-section', 'section-group');
             newSection.id = `section-group-${sectionIndex}`;
             newSection.innerHTML = `
-                <h2>Section Details</h2>
+                <h2>${translations.sectionDetails}</h2>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_name">Section Name:</label>
+                    <label for="sections_${sectionIndex}_name">${translations.sectionName}</label>
                     <input type="text" id="sections_${sectionIndex}_name" name="sections[${sectionIndex}][name]" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_description">Section Description:</label>
+                    <label for="sections_${sectionIndex}_description">${translations.sectionDescription}</label>
                     <textarea id="sections_${sectionIndex}_description" name="sections[${sectionIndex}][description]" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_level">Section Level:</label>
+                    <label for="sections_${sectionIndex}_level">${translations.sectionLevel}</label>
                     <input type="number" id="sections_${sectionIndex}_level" name="sections[${sectionIndex}][level]" class="form-control">
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary add-module-btn desktop-only">Add Module</button>
+                    <button type="button" class="btn btn-secondary add-module-btn desktop-only">${translations.addModule}</button>
                     <button type="button" class="btn btn-secondary add-module-btn mobile-only">
                         <i class="fas fa-plus"></i>
                     </button>
-                    <button type="button" class="btn btn-danger cancel-section-btn desktop-only" data-index="${sectionIndex}">Cancel</button>
+                    <button type="button" class="btn btn-danger cancel-section-btn desktop-only" data-index="${sectionIndex}">${translations.cancel}</button>
                     <button type="button" class="btn btn-danger cancel-section-btn mobile-only" data-index="${sectionIndex}">
                         <i class="fas fa-arrow-left"></i>
                     </button>
@@ -102,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let addModuleBtn = document.getElementById('add-module-btn');
     if (addModuleBtn) {
         addModuleBtn.addEventListener('click', function () {
-            console.log('Add Module button clicked');
             let moduleIndex = moduleCount++;
             let moduleContainer = document.getElementById('module-container');
 
@@ -116,20 +126,20 @@ document.addEventListener('DOMContentLoaded', function () {
             newModule.classList.add('form-section', 'module-group');
             newModule.id = `module-group-${moduleIndex}`;
             newModule.innerHTML = `
-                <h2>Module Details</h2>
+                <h2>${translations.moduleDetails}</h2>
                 <div class="form-group">
-                    <label for="modules_${moduleIndex}_name">Module Name:</label>
+                    <label for="modules_${moduleIndex}_name">${translations.moduleName}</label>
                     <input type="text" id="modules_${moduleIndex}_name" name="modules[${moduleIndex}][name]" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="modules_${moduleIndex}_description">Module Description:</label>
+                    <label for="modules_${moduleIndex}_description">${translations.moduleDescription}</label>
                     <textarea id="modules_${moduleIndex}_description" name="modules[${moduleIndex}][description]" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="modules_${moduleIndex}_level">Module Level:</label>
+                    <label for="modules_${moduleIndex}_level">${translations.moduleLevel}</label>
                     <input type="number" id="modules_${moduleIndex}_level" name="modules[${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger cancel-module-btn desktop-only" data-index="${moduleIndex}" data-context="independent">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn desktop-only" data-index="${moduleIndex}" data-context="independent">${translations.cancel}</button>
                 <button type="button" class="btn btn-danger cancel-module-btn mobile-only" data-index="${moduleIndex}" data-context="independent">
                     <i class="fas fa-arrow-left"></i>
                 </button>
@@ -154,8 +164,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Handle cancel button for modules
         if (event.target && event.target.classList.contains('cancel-module-btn')) {
+            let sectionIndex = event.target.getAttribute('data-index');
             let moduleIndex = event.target.getAttribute('data-index');
-            let moduleGroup = document.querySelector(`#module-group-${moduleIndex}`);
+            let moduleGroup = document.querySelector(
+                `#module-group-${moduleIndex}, #section-${sectionIndex}-module-group-${moduleIndex}`
+            );
             if (moduleGroup) {
                 moduleGroup.remove();
             }
@@ -198,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const sectionId = event.target.getAttribute('data-section-id');
 
                     if (sectionId) {
-                    // Example of function call
+                        // Example of function call
                         deleteCourseSession(sectionId);
                     } else {
                         console.error('Section ID not found');
@@ -244,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const moduleId = event.target.getAttribute('data-module-id');
 
                     if (moduleId) {
-                    // Example of function call
+                        // Example of function call
                         deleteModule(moduleId);
                     } else {
                         console.error('Module ID not found');
@@ -258,25 +271,29 @@ document.addEventListener('DOMContentLoaded', function () {
             let sectionGroup = event.target.closest('.section-group');
             let moduleContainer = sectionGroup.querySelector('.module-container');
             let sectionIndex = Array.from(sectionGroup.parentNode.children).indexOf(sectionGroup);
+
+            // Set moduleIndex based on existing modules in the specific section
             let moduleIndex = moduleContainer.querySelectorAll('.module-group').length;
+
+            // Module creation
             let newModule = document.createElement('div');
             newModule.classList.add('form-section', 'module-group');
-            newModule.id = `module-group-${moduleIndex}`;
+            newModule.id = `section-${sectionIndex}-module-group-${moduleIndex}`; // Updated ID for uniqueness
             newModule.innerHTML = `
-                <h2>Module Details</h2>
+                <h2>${translations.moduleDetails}</h2>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_name">Module Name:</label>
+                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_name">${translations.moduleName}</label>
                     <input type="text" id="sections_${sectionIndex}_modules_${moduleIndex}_name" name="sections[${sectionIndex}][modules][${moduleIndex}][name]" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_description">Module Description:</label>
+                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_description">${translations.moduleDescription}</label>
                     <textarea id="sections_${sectionIndex}_modules_${moduleIndex}_description" name="sections[${sectionIndex}][modules][${moduleIndex}][description]" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_level">Module Level:</label>
+                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_level">${translations.moduleLevel}</label>
                     <input type="number" id="sections_${sectionIndex}_modules_${moduleIndex}_level" name="sections[${sectionIndex}][modules][${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger cancel-module-btn  desktop-only" data-index="${moduleIndex}" data-context="section">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn  desktop-only" data-index="${moduleIndex}" data-context="section">${translations.cancel}</button>
                 <button type="button" class="btn btn-danger cancel-module-btn mobile-only" data-index="${moduleIndex}" data-context="section">
                     <i class="fas fa-arrow-left"></i>
                 </button>

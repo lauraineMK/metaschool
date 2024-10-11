@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="container text-center pt-5">
-        <h1>Student Dashboard</h1>
+        <h1>{{ __('messages.student_dashboard') }}</h1>
 
-        <!-- Contenu spécifique aux étudiants -->
+        <!-- Student specific content -->
     </div>
 @endsection

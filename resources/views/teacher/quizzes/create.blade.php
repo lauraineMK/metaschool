@@ -34,7 +34,7 @@
 
         <!-- Quiz Description input -->
         <div class="form-group mt-3">
-            <label for="description">Quiz Description</label>
+            <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
         </div>
 
