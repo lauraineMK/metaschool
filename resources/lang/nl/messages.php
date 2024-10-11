@@ -4,6 +4,7 @@ return [
     /* Algemeen */
     'back' => 'Terug',
     'cancel' => 'Annuleren',
+    'clear' => 'Wissen',
     'login' => 'Inloggen',
     'logout' => 'Uitloggen',
     'register' => 'Registreren',
@@ -149,6 +150,8 @@ return [
     'course' => 'Cursus:',
 
     //        Bewerkweergave
+    'remove_document' => 'Document verwijderen',
+    'remove_video' => 'Video verwijderen',
     'update_lesson' => 'Les bijwerken',
 
     //        Indexweergave

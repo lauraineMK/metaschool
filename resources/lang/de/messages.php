@@ -4,6 +4,7 @@ return [
     /* Allgemein */
     'back' => 'Zurück',
     'cancel' => 'Abbrechen',
+    'clear' => 'Löschen',
     'login' => 'Anmelden',
     'logout' => 'Abmelden',
     'register' => 'Registrieren',
@@ -149,6 +150,8 @@ return [
     'course' => 'Kurs:',
 
     //        Bearbeitungsansicht
+    'remove_document' => 'Dokument entfernen',
+    'remove_video' => 'Video entfernen',
     'update_lesson' => 'Lektion aktualisieren',
 
     //        Indexansicht

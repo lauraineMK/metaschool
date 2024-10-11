@@ -4,6 +4,7 @@ return [
     /* General */
     'back' => 'Back',
     'cancel' => 'Cancel',
+    'clear' => 'Clear',
     'login' => 'Login',
     'logout' => 'Logout',
     'register' => 'Register',
@@ -149,6 +150,8 @@ return [
     'course' => 'Course:',
 
     //        Edit view
+    'remove_document' => 'Remove Document',
+    'remove_video' => 'Remove Video',
     'update_lesson' => 'Update Lesson',
 
     //        Index view

@@ -8,7 +8,7 @@
         <!-- Left sidebar for buttons -->
         <div class="sidebar">
             <!-- Button to edit the course -->
-            <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-warning mb-3 btn-block d-none d-md-block">Edit Course</a>
+            <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-warning mb-3 btn-block d-none d-md-block">{{ __('messages.edit_course') }}</a>
             <a href="{{ route('teacher.courses.edit', $course->id) }}" class="btn btn-warning mb-3 btn-block d-block d-md-none">
                 <i class="fa fa-pencil-alt"></i>
             </a>
@@ -17,14 +17,14 @@
             <form action="{{ route('teacher.courses.destroy', $course->id) }}" method="POST" style="display: inline;">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger mb-3 btn-block d-none d-md-block" onclick="return confirm('Are you sure you want to delete this course?')">Delete Course</button>
-                <button type="submit" class="btn btn-danger mb-3 btn-block d-block d-md-none" onclick="return confirm('Are you sure you want to delete this lesson?')">
+                <button type="submit" class="btn btn-danger mb-3 btn-block d-none d-md-block" onclick="return confirm('{{ __('messages.are_you_sure_you_want_to_delete_this_course') }}')">{{ __('messages.delete_course') }}</button>
+                <button type="submit" class="btn btn-danger mb-3 btn-block d-block d-md-none" onclick="return confirm('{{ __('messages.are_you_sure_you_want_to_delete_this_course') }}')">
                     <i class="fa fa-trash-alt"></i>
                 </button>
             </form>
 
             <!-- Button to go back to the courses list -->
-            <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary mt-4 btn-block d-none d-md-block">Back to Courses</a>
+            <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary mt-4 btn-block d-none d-md-block">{{ __('messages.back_to_courses') }}</a>
             <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary mt-4 btn-block d-block d-md-none">
                 <i class="fa fa-arrow-left"></i>
             </a>
@@ -38,18 +38,18 @@
             <p>{{ $course->description }}</p>
 
             <!-- Course Content -->
-            <h2 class="mt-5">Course Content</h2>
+            <h2 class="mt-5">{{ __('messages.course_content') }}</h2>
 
             <!-- First case: Sections -> Modules -> Lessons -->
             @if (!$course->sections->isEmpty())
             @foreach ($course->sections as $section)
             <div class="section mb-4">
-                <h3>Section: {{ $section->name }}</h3>
+                <h3>{{ __('messages.section') }} {{ $section->name }}</h3>
 
                 @if (!$section->modules->isEmpty())
                 @foreach ($section->modules as $module)
                 <div class="module ml-4 mb-3">
-                    <h4>Module: {{ $module->name }}</h4>
+                    <h4>{{ __('messages.module') }} {{ $module->name }}</h4>
 
                     @if (!$module->lessons->isEmpty())
                     <ul class="list-group ml-4">
@@ -60,12 +60,12 @@
                         @endforeach
                     </ul>
                     @else
-                    <p>No lessons available in this module.</p>
+                    <p>{{ __('messages.no_lessons_available_in_this_module') }}</p>
                     @endif
                 </div>
                 @endforeach
                 @else
-                <p>No modules available in this section.</p>
+                <p>{{ __('messages.no_modules_available_in_this_section') }}</p>
                 @endif
             </div>
             @endforeach
@@ -73,7 +73,7 @@
             @elseif (!$course->modules->isEmpty())
             @foreach ($course->modules as $module)
             <div class="module mb-4">
-                <h4>Module: {{ $module->name }}</h4>
+                <h4>{{ __('messages.module') }} {{ $module->name }}</h4>
 
                 @if (!$module->lessons->isEmpty())
                 <ul class="list-group ml-4">
@@ -84,7 +84,7 @@
                     @endforeach
                 </ul>
                 @else
-                <p>No lessons available in this module.</p>
+                <p>{{ __('messages.no_lessons_available_in_this_module') }}</p>
                 @endif
             </div>
             @endforeach
@@ -98,7 +98,7 @@
                 @endforeach
             </ul>
             @else
-            <p>No lessons available for this course.</p>
+            <p>{{ __('messages.no_lessons_available_for_this_course') }}</p>
             @endif
         </div>
     </div>

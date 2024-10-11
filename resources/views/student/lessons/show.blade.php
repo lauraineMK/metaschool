@@ -113,10 +113,10 @@
                     <a href="https://view.officeapps.live.com/op/view.aspx?src={{ urlencode(Storage::url($document->file)) }}" class="btn btn-info" target="_blank">{{ __('messages.view') }} {{ $document->title }}</a>
                     @elseif($fileExtension === 'txt')
                     <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" target="_blank">{{ __('messages.view') }} {{ $document->title }}</a>
-                    <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" download>Download {{ $document->title }}</a>
+                    <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" download>{{ __('messages.download') }} {{ $document->title }}</a>
                     @else
                     <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" target="_blank">{{ __('messages.view') }} {{ $document->title }}</a>
-                    <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" download>Download {{ $document->title }}</a>
+                    <a href="{{ url('storage/' . $document->file) }}" class="btn btn-info" download>{{ __('messages.download') }} {{ $document->title }}</a>
                     @endif
                     @else
                     <p>{{ __('messages.no_file_available_for_this_document') }}</p>

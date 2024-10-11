@@ -4,6 +4,7 @@ return [
     /* Général */
     'back' => 'Retour',
     'cancel' => 'Annuler',
+    'clear' => 'Effacer',
     'login' => 'Connexion',
     'logout' => 'Déconnexion',
     'register' => 'S\'inscrire',
@@ -149,6 +150,8 @@ return [
     'course' => 'Cours :',
 
     //        Vue modification
+    'remove_document' => 'Supprimer le document',
+    'remove_video' => 'Supprimer la vidéo',
     'update_lesson' => 'Mettre à jour la leçon',
 
     //        Vue index
