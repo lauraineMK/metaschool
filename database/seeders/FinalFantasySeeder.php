@@ -23,12 +23,26 @@ class FinalFantasySeeder extends Seeder
         // Path to the directory containing the files to copy
         $sourcePath = database_path('seeders/files');
 
-        // Path to the destination directory
-        $destinationPath = 'public/documents'; // This is relative to the 'storage/app' directory
+        // Path to the destination directory (relative to the 'storage/app' directory)
+        $destinationPath = 'public/documents';
+
+        // Checking source directory permissions
+        if (!File::isDirectory($sourcePath) || !File::isReadable($sourcePath)) {
+            dd("The source directory does not exist or is not readable: " . $sourcePath);
+        }
 
         // Create the destination directory if it does not exist
         if (!Storage::exists($destinationPath)) {
-            Storage::makeDirectory($destinationPath, 0755, true);
+            // Checking whether the destination directory can be created
+            if (!Storage::makeDirectory($destinationPath, 0755, true)) {
+                dd("Unable to create destination directory : " . $destinationPath);
+            }
+        }
+
+        // Checking destination directory permissions
+        $fullDestinationPath = storage_path('app/' . $destinationPath);
+        if (!File::isWritable($fullDestinationPath)) {
+            dd("The destination directory is not writable: " . $fullDestinationPath);
         }
 
         // Get the list of files in the source directory
@@ -36,13 +50,18 @@ class FinalFantasySeeder extends Seeder
 
         foreach ($files as $file) {
             // File name
-            $fileName = basename($file);
+            $fileName = $file->getFilename();
 
             // Full path of the destination file
             $destinationFile = $destinationPath . '/' . $fileName;
 
+            // Checking source file permissions
+            if (!File::isReadable($file)) {
+                dd("The source file is not readable: " . $file);
+            }
+
             // Copy the file to the destination directory
-            Storage::copy('seeders/files/' . $fileName, $destinationFile);
+            Storage::put($destinationFile, File::get($file));
         }
 
         // Create a user to be the author

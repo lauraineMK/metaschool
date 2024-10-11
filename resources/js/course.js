@@ -78,25 +78,25 @@ document.addEventListener('DOMContentLoaded', function () {
             newSection.classList.add('form-section', 'section-group');
             newSection.id = `section-group-${sectionIndex}`;
             newSection.innerHTML = `
-                <h2>Section Details</h2>
+                <h2>${translations.sectionDetails}</h2>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_name">Section Name:</label>
+                    <label for="sections_${sectionIndex}_name">${translations.sectionName}</label>
                     <input type="text" id="sections_${sectionIndex}_name" name="sections[${sectionIndex}][name]" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_description">Section Description:</label>
+                    <label for="sections_${sectionIndex}_description">${translations.sectionDescription}</label>
                     <textarea id="sections_${sectionIndex}_description" name="sections[${sectionIndex}][description]" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_level">Section Level:</label>
+                    <label for="sections_${sectionIndex}_level">${translations.sectionLevel}</label>
                     <input type="number" id="sections_${sectionIndex}_level" name="sections[${sectionIndex}][level]" class="form-control">
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary add-module-btn desktop-only">Add Module</button>
+                    <button type="button" class="btn btn-secondary add-module-btn desktop-only">${translations.addModule}</button>
                     <button type="button" class="btn btn-secondary add-module-btn mobile-only">
                         <i class="fas fa-plus"></i>
                     </button>
-                    <button type="button" class="btn btn-danger cancel-section-btn desktop-only" data-index="${sectionIndex}">Cancel</button>
+                    <button type="button" class="btn btn-danger cancel-section-btn desktop-only" data-index="${sectionIndex}">${translations.cancel}</button>
                     <button type="button" class="btn btn-danger cancel-section-btn mobile-only" data-index="${sectionIndex}">
                         <i class="fas fa-arrow-left"></i>
                     </button>
@@ -126,20 +126,20 @@ document.addEventListener('DOMContentLoaded', function () {
             newModule.classList.add('form-section', 'module-group');
             newModule.id = `module-group-${moduleIndex}`;
             newModule.innerHTML = `
-                <h2>Module Details</h2>
+                <h2>${translations.moduleDetails}</h2>
                 <div class="form-group">
-                    <label for="modules_${moduleIndex}_name">Module Name:</label>
+                    <label for="modules_${moduleIndex}_name">${translations.moduleName}</label>
                     <input type="text" id="modules_${moduleIndex}_name" name="modules[${moduleIndex}][name]" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="modules_${moduleIndex}_description">Module Description:</label>
+                    <label for="modules_${moduleIndex}_description">${translations.moduleDescription}</label>
                     <textarea id="modules_${moduleIndex}_description" name="modules[${moduleIndex}][description]" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="modules_${moduleIndex}_level">Module Level:</label>
+                    <label for="modules_${moduleIndex}_level">${translations.moduleLevel}</label>
                     <input type="number" id="modules_${moduleIndex}_level" name="modules[${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger cancel-module-btn desktop-only" data-index="${moduleIndex}" data-context="independent">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn desktop-only" data-index="${moduleIndex}" data-context="independent">${translations.cancel}</button>
                 <button type="button" class="btn btn-danger cancel-module-btn mobile-only" data-index="${moduleIndex}" data-context="independent">
                     <i class="fas fa-arrow-left"></i>
                 </button>
@@ -280,20 +280,20 @@ document.addEventListener('DOMContentLoaded', function () {
             newModule.classList.add('form-section', 'module-group');
             newModule.id = `section-${sectionIndex}-module-group-${moduleIndex}`; // Updated ID for uniqueness
             newModule.innerHTML = `
-                <h2>Module Details</h2>
+                <h2>${translations.moduleDetails}</h2>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_name">Module Name:</label>
+                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_name">${translations.moduleName}</label>
                     <input type="text" id="sections_${sectionIndex}_modules_${moduleIndex}_name" name="sections[${sectionIndex}][modules][${moduleIndex}][name]" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_description">Module Description:</label>
+                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_description">${translations.moduleDescription}</label>
                     <textarea id="sections_${sectionIndex}_modules_${moduleIndex}_description" name="sections[${sectionIndex}][modules][${moduleIndex}][description]" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_level">Module Level:</label>
+                    <label for="sections_${sectionIndex}_modules_${moduleIndex}_level">${translations.moduleLevel}</label>
                     <input type="number" id="sections_${sectionIndex}_modules_${moduleIndex}_level" name="sections[${sectionIndex}][modules][${moduleIndex}][level]" class="form-control">
                 </div>
-                <button type="button" class="btn btn-danger cancel-module-btn  desktop-only" data-index="${moduleIndex}" data-context="section">Cancel</button>
+                <button type="button" class="btn btn-danger cancel-module-btn  desktop-only" data-index="${moduleIndex}" data-context="section">${translations.cancel}</button>
                 <button type="button" class="btn btn-danger cancel-module-btn mobile-only" data-index="${moduleIndex}" data-context="section">
                     <i class="fas fa-arrow-left"></i>
                 </button>

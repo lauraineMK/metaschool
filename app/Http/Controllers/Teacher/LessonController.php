@@ -40,7 +40,7 @@ class LessonController extends Controller
         // If the lesson is not found, redirect to the lesson index with an error message
         if (!$lesson) {
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Lesson not found');
+                ->with('error', __('messages.lesson_not_found'));
         }
 
         // Retrieve the course associated with the lesson
@@ -106,7 +106,7 @@ class LessonController extends Controller
         // Check if the user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')
-                ->with('error', 'You must be logged in to create a lesson.');
+                ->with('error', __('messages.you_must_be_logged_in_to_create_a_lesson'));
         }
 
         // Data validation
@@ -129,7 +129,7 @@ class LessonController extends Controller
         $course = Course::find($validated['course_id']);
         if (!$course || Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Unauthorized');
+                ->with('error', __('messages.unauthorized'));
         }
 
         try {
@@ -184,11 +184,11 @@ class LessonController extends Controller
         } catch (\Exception $e) {
             // In case of creation error, redirection with error message
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Failed to create lesson: ' . $e->getMessage());
+                ->with('error', __('messages.failed_to_create_lesson') . $e->getMessage());
         }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
-            ->with('success', 'Lesson created successfully.');
+            ->with('success', __('messages.lesson_successfully_created'));
     }
 
     /**
@@ -208,7 +208,7 @@ class LessonController extends Controller
         // Check if the authenticated user is the author of the course
         if ($course && Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Unauthorized');
+                ->with('error', __('messages.unauthorized'));
         }
 
         // Retrieve lists of courses, modules and sections
@@ -249,7 +249,7 @@ class LessonController extends Controller
         $lesson = Lesson::find($id);
         if (!$lesson) {
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Lesson not found');
+                ->with('error', __('messages.lesson_not_found'));
         }
 
         // Check whether the course associated with the lesson belongs to the authenticated user
@@ -257,12 +257,12 @@ class LessonController extends Controller
             $course = Course::find($lesson->course_id);
             if (!$course) {
                 return redirect()->route('teacher.lessons.index')
-                    ->with('error', 'Course associated with the lesson not found');
+                    ->with('error', __('messages.course_associated_with_the_lesson_not_found'));
             }
 
             if (Auth::user()->id !== $course->author_id) {
                 return redirect()->route('teacher.lessons.index')
-                    ->with('error', 'Unauthorized');
+                    ->with('error', __('messages.unauthorized'));
             }
         }
 
@@ -366,11 +366,11 @@ class LessonController extends Controller
         } catch (\Exception $e) {
             // Redirect on update error with error message
             return redirect()->route('teacher.lessons.index')
-                ->with('Failed to update lesson: ' . $e->getMessage());
+                ->with(__('messages.failed_to_update_lesson') . $e->getMessage());
         }
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
-            ->with('success', 'Lesson updated successfully.');
+            ->with('success', __('messages.lesson_successfully_updated'));
     }
 
     /**
@@ -384,7 +384,7 @@ class LessonController extends Controller
         $lesson = Lesson::find($id);
         if (!$lesson) {
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Lesson not found');
+                ->with('error', __('messages.lesson_not_found'));
         }
 
         // Initialize course as null
@@ -409,13 +409,13 @@ class LessonController extends Controller
         // Check if the authenticated user is the author of the course
         if ($course && Auth::user()->id !== $course->author_id) {
             return redirect()->route('teacher.lessons.index')
-                ->with('error', 'Unauthorized');
+                ->with('error', __('messages.unauthorized'));
         }
 
         // Delete the lesson
         $lesson->delete();
 
         return redirect()->route('teacher.lessons.index')
-            ->with('success', 'Lesson deleted successfully.');
+            ->with('success', __('messages.lesson_successfully_deleted'));
     }
 }

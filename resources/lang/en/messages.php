@@ -4,6 +4,7 @@ return [
     /* General */
     'back' => 'Back',
     'cancel' => 'Cancel',
+    'clear' => 'Clear',
     'login' => 'Login',
     'logout' => 'Logout',
     'register' => 'Register',
@@ -56,6 +57,8 @@ return [
     //!/* --- Teacher --- */
     //        Controllers
     'unauthorized' => 'Unauthorized',
+    'failed_to_update_course(2)' => 'Failed to update course: ',
+    'request_data' => 'Request data: ',
 
     //        CRUD features
     'are_you_sure_you_want_to_delete_this_course' => 'Are you sure you want to delete this course?',
@@ -147,6 +150,8 @@ return [
     'course' => 'Course:',
 
     //        Edit view
+    'remove_document' => 'Remove Document',
+    'remove_video' => 'Remove Video',
     'update_lesson' => 'Update Lesson',
 
     //        Index view

@@ -5,8 +5,8 @@
 @section('content')
 <div class="container mt-5">
     <div class="header">
-        <h1>Create a New Course</h1>
-        <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary">Cancel</a>
+        <h1>{{ __('messages.create_a_new_course') }}</h1>
+        <a href="{{ route('teacher.courses.index') }}" class="btn btn-secondary">{{ __('messages.cancel') }}</a>
     </div>
 
     <!-- Form to create a new course -->
@@ -15,20 +15,20 @@
 
         <!-- Course Details -->
         <div class="form-section">
-            <h2>Course Details</h2>
+            <h2>{{ __('messages.course_details') }}</h2>
 
             <div class="form-group">
-                <label for="course_name">Course Name:</label>
+                <label for="course_name">{{ __('messages.course_name') }}</label>
                 <input type="text" id="course_name" name="name" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="course_description">Course Description:</label>
+                <label for="course_description">{{ __('messages.course_description') }}</label>
                 <textarea id="course_description" name="description" class="form-control"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="course_creation_date">Creation Date:</label>
+                <label for="course_creation_date">{{ __('messages.creation_date') }}</label>
                 <input type="date" id="course_creation_date" name="creation_date" class="form-control">
             </div>
 
@@ -38,7 +38,7 @@
         <!-- Toggle to show/hide sections and modules -->
         <div class="form-group">
             <label for="include_sections">
-                <input type="checkbox" id="include_sections" name="include_sections"> Include Sections and Modules
+                <input type="checkbox" id="include_sections" name="include_sections"> {{ __('messages.include_sections_and_modules') }}
             </label>
         </div>
 
@@ -53,10 +53,25 @@
         </div>
 
         <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn btn-secondary" id="add-section-btn" style="display: none;">Add Section</button>
-            <button type="button" class="btn btn-secondary" id="add-module-btn">Add Module</button>
-            <button type="submit" class="btn btn-primary">Create Course</button>
+            <button type="button" class="btn btn-secondary" id="add-section-btn" style="display: none;">{{ __('messages.add_section') }}</button>
+            <button type="button" class="btn btn-secondary" id="add-module-btn">{{ __('messages.add_module') }}</button>
+            <button type="submit" class="btn btn-primary">{{ __('messages.create_course') }}</button>
         </div>
     </form>
 </div>
 @endsection
+
+<script>
+    const translations = {
+        sectionDetails: '{{ __('messages.section_details') }}',
+        sectionName: '{{ __('messages.section_name') }}',
+        sectionDescription: '{{ __('messages.section_description') }}',
+        sectionLevel: '{{ __('messages.section_level') }}',
+        cancel: '{{ __('messages.cancel') }}',
+        addModule: '{{ __('messages.add_module') }}',
+        moduleDetails: '{{ __('messages.module_details') }}',
+        moduleName: '{{ __('messages.module_name') }}',
+        moduleDescription: '{{ __('messages.module_description') }}',
+        moduleLevel: '{{ __('messages.module_level') }}',
+    };
+</script>

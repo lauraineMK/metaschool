@@ -4,6 +4,7 @@ return [
     /* Allgemein */
     'back' => 'Zurück',
     'cancel' => 'Abbrechen',
+    'clear' => 'Löschen',
     'login' => 'Anmelden',
     'logout' => 'Abmelden',
     'register' => 'Registrieren',
@@ -56,6 +57,8 @@ return [
     //!/* --- Lehrer --- */
     //        Controller
     'unauthorized' => 'Unbefugt',
+    'failed_to_update_course(2)' => 'Kursaktualisierung fehlgeschlagen:',
+    'request_data' => 'Anfragedaten:',
 
     //        CRUD-Funktionen
     'are_you_sure_you_want_to_delete_this_course' => 'Sind Sie sicher, dass Sie diesen Kurs löschen möchten?',
@@ -147,6 +150,8 @@ return [
     'course' => 'Kurs:',
 
     //        Bearbeitungsansicht
+    'remove_document' => 'Dokument entfernen',
+    'remove_video' => 'Video entfernen',
     'update_lesson' => 'Lektion aktualisieren',
 
     //        Indexansicht
