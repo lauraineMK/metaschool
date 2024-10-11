@@ -167,3 +167,15 @@
 <div id="data-modules" data-modules='@json($modules)' style="display: none;"></div>
 
 @endsection
+
+<script>
+    const translations = {
+        documentTitle: '{{ __('messages.document_title') }}',
+        documentFile: '{{ __('messages.document_file') }}',
+        documentDescription: '{{ __('messages.document_description') }}',
+        videoTitle: '{{ __('messages.video_title') }}',
+        videoURL: '{{ __('messages.video_url') }}',
+        videoDescription: '{{ __('messages.video_description') }}',
+        cancel: '{{ __('messages.cancel') }}',
+    };
+</script>

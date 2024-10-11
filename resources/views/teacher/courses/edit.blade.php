@@ -135,3 +135,18 @@
     </form>
 </div>
 @endsection
+
+<script>
+    const translations = {
+        sectionDetails: '{{ __('messages.section_details') }}',
+        sectionName: '{{ __('messages.section_name') }}',
+        sectionDescription: '{{ __('messages.section_description') }}',
+        sectionLevel: '{{ __('messages.section_level') }}',
+        cancel: '{{ __('messages.cancel') }}',
+        addModule: '{{ __('messages.add_module') }}',
+        moduleDetails: '{{ __('messages.module_details') }}',
+        moduleName: '{{ __('messages.module_name') }}',
+        moduleDescription: '{{ __('messages.module_description') }}',
+        moduleLevel: '{{ __('messages.module_level') }}',
+    };
+</script>
