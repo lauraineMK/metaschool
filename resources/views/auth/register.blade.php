@@ -5,50 +5,73 @@
 @section('title', 'Register')
 
 @section('content')
-<div class="container">
-    <h1 class="page-title">{{ __('messages.register') }}</h1>
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 430px; width: 100%; border-radius: 1.5rem;">
+        <div class="text-center mb-4">
+            <a href="/" class="navbar-brand fw-bold d-flex align-items-center justify-content-center text-primary" style="font-size: 2rem; color: #7C3AED !important;">
+                <i class="fas fa-graduation-cap me-2" style="color: #FFD600; font-size: 1.5rem;"></i>MetaSchool
+            </a>
+            <h2 class="h4 mt-3 mb-2">Créer un compte</h2>
+            <p class="text-muted mb-0">Inscrivez-vous pour commencer à apprendre</p>
+        </div>
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <form method="POST" action="{{ url('register') }}">
+            @csrf
+            <div class="mb-3">
+                <label for="firstname" class="form-label">{{ __('messages.firstname') }}</label>
+                <input id="firstname" type="text" class="form-control rounded-pill @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autofocus>
+                @error('firstname')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="middlename" class="form-label">{{ __('messages.middlename') }}</label>
+                <input id="middlename" type="text" class="form-control rounded-pill @error('middlename') is-invalid @enderror" name="middlename" value="{{ old('middlename') }}" placeholder="Optional">
+                @error('middlename')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">{{ __('messages.lastname') }}</label>
+                <input id="lastname" type="text" class="form-control rounded-pill @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required>
+                @error('lastname')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">{{ __('messages.email') }}</label>
+                <input id="email" type="email" class="form-control rounded-pill @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
+                @error('email')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">{{ __('messages.password') }}</label>
+                <input id="password" type="password" class="form-control rounded-pill @error('password') is-invalid @enderror" name="password" required>
+                @error('password')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">{{ __('messages.confirm_password') }}</label>
+                <input id="password_confirmation" type="password" class="form-control rounded-pill" name="password_confirmation" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold mb-2">{{ __('messages.register') }}</button>
+        </form>
+        <div class="text-center mt-4">
+            <span class="text-muted">Déjà inscrit ?</span>
+            <a href="{{ route('login') }}" class="fw-bold text-primary ms-1">Se connecter</a>
+        </div>
     </div>
-    @endif
-
-    <form method="POST" action="{{ url('register') }}">
-        @csrf
-        <div class="form-group">
-            <label for="firstname">{{ __('messages.firstname') }}</label>
-            <input type="text" class="form-control" id="firstname" name="firstname" required>
-        </div>
-        <div class="form-group mt-3">
-            <label for="middlename">{{ __('messages.middlename') }}</label>
-            <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Optional">
-        </div>
-        <div class="form-group mt-3">
-            <label for="lastname">{{ __('messages.lastname') }}</label>
-            <input type="text" class="form-control" id="lastname" name="lastname" required>
-        </div>
-        <div class="form-group">
-            <label for="email">{{ __('messages.email') }}</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">{{ __('messages.password') }}</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        <div class="form-group mb-3">
-            <label for="password_confirmation">{{ __('messages.confirm_password') }}</label>
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-        </div>
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">{{ __('messages.register') }}</button>
-            <a class="btn btn-secondary" href="{{ url('/') }}" id="backButton">{{ __('messages.back') }}</a>
-            <!-- <a class="btn btn-secondary" href="{{ $isMobile ? url('/account') : url('/') }}" id="backButton">{{ __('messages.back') }}</a> -->
-        </div>
-    </form>
 </div>
 @endsection

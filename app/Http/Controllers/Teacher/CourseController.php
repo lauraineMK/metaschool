@@ -9,57 +9,122 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class CourseController extends Controller
 {
     /**
      * Teachers' access
      *
-     * @return void
+     * @return View
      */
     public function teacher_dashboard()
     {
-        // Return the view for the teacher dashboard
-        return view('teacher.dashboard');
+        $user = Auth::user();
+        $courses = \App\Models\Course::where('author_id', $user->id)->get();
+        $courses_count = $courses->count();
+        $lessons_count = \App\Models\Lesson::whereIn('course_id', $courses->pluck('id'))->count();
+        $quizzes_count = \App\Models\Quiz::whereIn('lesson_id', \App\Models\Lesson::whereIn('course_id', $courses->pluck('id'))->pluck('id'))->count();
+
+        $courses_stats = [];
+        foreach ($courses as $course) {
+            $lessons = $course->lessons;
+            $lessonIds = $lessons->pluck('id');
+            // Étudiants ayant une entrée dans progress pour ce cours
+            $studentIds = \DB::table('progress')
+                ->whereIn('lesson_id', $lessonIds)
+                ->distinct('user_id')
+                ->pluck('user_id');
+            $students_count = $studentIds->count();
+            // Progression moyenne
+            $progressions = [];
+            foreach ($studentIds as $studentId) {
+                $completed = \DB::table('progress')
+                    ->where('user_id', $studentId)
+                    ->whereIn('lesson_id', $lessonIds)
+                    ->where('completed', true)
+                    ->count();
+                $progressions[] = $lessons->count() > 0 ? ($completed / $lessons->count()) * 100 : 0;
+            }
+            $avg_progress = count($progressions) > 0 ? round(array_sum($progressions) / count($progressions), 1) : 0;
+            // Étudiants ayant commencé (au moins une leçon complétée)
+            $started = 0;
+            $not_started = 0;
+            foreach ($studentIds as $studentId) {
+                $hasStarted = \DB::table('progress')
+                    ->where('user_id', $studentId)
+                    ->whereIn('lesson_id', $lessonIds)
+                    ->where('completed', true)
+                    ->exists();
+                if ($hasStarted) {
+                    $started++;
+                } else {
+                    $not_started++;
+                }
+            }
+            $courses_stats[] = [
+                'course' => $course,
+                'students_count' => $students_count,
+                'avg_progress' => $avg_progress,
+                'started' => $started,
+                'not_started' => $not_started,
+            ];
+        }
+        return view('teacher.dashboard', compact('courses_count', 'lessons_count', 'quizzes_count', 'courses_stats'));
     }
 
     /**
      * Display the course list
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
-        $courses = Course::all();
-
+        $courses = Course::where('author_id', Auth::id())->get();
         return view('teacher.courses.index', ['courses' => $courses]);
     }
 
     /**
      * Show details of a specific course
      *
-     * @param [type] $id
-     * @return \Illuminate\View\View
+     * @param int $id
+     * @return View|RedirectResponse
      */
     public function show($id)
     {
-        // Retrieve the course with related sections, modules, and lessons
-        $course = Course::with('sections.modules.lessons')->find($id);
+        // Récupère le cours avec toutes les relations nécessaires pour la vue, y compris ressources
+        $course = Course::with([
+            'sections.modules.lessons.documents',
+            'sections.modules.lessons.videos',
+            'sections.modules.lessons.quiz',
+            'sections.lessons.documents',
+            'sections.lessons.videos',
+            'sections.lessons.quiz',
+            'modules.lessons.documents',
+            'modules.lessons.videos',
+            'modules.lessons.quiz',
+            'lessons.documents',
+            'lessons.videos',
+            'lessons.quiz',
+            'sections.modules',
+            'sections.lessons',
+            'modules.lessons',
+            'lessons'
+        ])->find($id);
 
-        // If the course is not found, redirect to the course index with an error message
         if (!$course) {
             return redirect()->route('teacher.courses.index')
                 ->with('error',  __('messages.course_not_found'));
         }
 
-        // Pass the course details to the view
         return view('teacher.courses.show', ['course' => $course]);
     }
 
     /**
      * Display the form for creating a new course
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -87,7 +152,7 @@ class CourseController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'creation_date' => 'nullable|date',
-            'author_id' => 'required|exists:users,id',
+            // 'author_id' => 'required|exists:users,id', // Supprimé pour sécurité
             'sections' => 'nullable|array',
             'sections.*.name' => 'nullable|string|max:255',
             'sections.*.description' => 'nullable|string',
@@ -105,8 +170,12 @@ class CourseController extends Controller
             'modules.*.order' => 'nullable|integer',
         ]);
 
-        // Set the author_id to the authenticated user
+        // Forcer l'auteur à l'utilisateur connecté
         $validated['author_id'] = Auth::id();
+        // Forcer description à une chaîne vide si null ou absente
+        if (empty($validated['description'])) {
+            $validated['description'] = '';
+        }
 
         // Course creation
         $course = Course::create([

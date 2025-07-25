@@ -37,4 +37,22 @@ class Course extends Model
     {
         return $this->hasMany(Lesson::class)->orderBy('order');
     }
+
+    public function literature()
+    {
+        return $this->hasMany(Document::class)->where('type', 'literature');
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(\App\Models\Quiz::class);
+    }
+
+    /**
+     * Get all progresses for this course (via lessons).
+     */
+    public function progresses()
+    {
+        return $this->hasManyThrough(\App\Models\Progress::class, \App\Models\Lesson::class, 'course_id', 'lesson_id', 'id', 'id');
+    }
 }

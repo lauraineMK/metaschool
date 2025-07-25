@@ -22,7 +22,9 @@ class LessonController extends Controller
      */
     public function index()
     {
-        $lessons = Lesson::all();
+        $user = Auth::user();
+        $courseIds = \App\Models\Course::where('author_id', $user->id)->pluck('id');
+        $lessons = \App\Models\Lesson::whereIn('course_id', $courseIds)->get();
         return view('teacher.lessons.index', ['lessons' => $lessons]);
     }
 
@@ -186,6 +188,10 @@ class LessonController extends Controller
             return redirect()->route('teacher.lessons.index')
                 ->with('error', __('messages.failed_to_create_lesson') . $e->getMessage());
         }
+
+
+        // Met à jour le cours en cours pour tous les utilisateurs inscrits
+        \App\Models\User::whereNotNull('email')->update(['current_course_id' => $lesson->course_id]);
 
         return redirect()->route('teacher.lessons.show', $lesson->id)
             ->with('success', __('messages.lesson_successfully_created'));

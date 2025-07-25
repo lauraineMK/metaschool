@@ -1,160 +1,83 @@
 <!-- Header Content -->
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url('/') }}">MetaSchool</a>
-
-        <!-- Hamburger menu button for screens between 600px and 767px -->
+<header class="shadow-sm bg-white border-bottom">
+    <nav class="navbar navbar-expand-lg navbar-light container-fluid px-4">
+        <a class="navbar-brand fw-bold d-flex align-items-center text-primary" href="{{ url('/') }}" style="font-size: 2rem; color: #7C3AED !important; letter-spacing: 1px; font-family: 'Inter', 'Segoe UI', Arial, sans-serif;">
+            <i class="fas fa-graduation-cap me-2" style="color: #FFD600; font-size: 1.7rem;"></i>MetaSchool
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-            <span class="navbar-toggler-icon">☰</span>
-            <span class="navbar-toggler-close" style="display: none;">✖</span>
+            <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- Main navigation for larger screens (from 758px) -->
         <div class="collapse navbar-collapse d-lg-flex" id="mainNavbar">
-            @auth
-            <!-- Links for Authenticated Users -->
-            <ul class="navbar-nav me-auto">
-                <!-- Check if the user is a teacher -->
-                @if (auth()->user()->role == 'teacher')
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('teachers/courses') ? 'active' : '' }}" href="{{ url('teachers/courses') }}">{{ __('messages.courses') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('teachers/lessons') ? 'active' : '' }}" href="{{ url('teachers/lessons') }}">{{ __('messages.lessons') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('teachers/quizzes') ? 'active' : '' }}" href="{{ url('teachers/quizzes') }}">{{ __('messages.quizzes') }}</a>
-                </li>
-                <!-- Check if the user is a student -->
-                @elseif (auth()->user()->role == 'student')
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('students/courses') ? 'active' : '' }}" href="{{ url('students/courses') }}">{{ __('messages.courses') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('students/lessons') ? 'active' : '' }}" href="{{ url('students/lessons') }}">{{ __('messages.lessons') }}</a>
-                </li>
-                @endif
-
-                <!-- Common links for all users -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">{{ __('messages.about') }}</a>
-                </li>
+            <ul class="navbar-nav me-auto gap-2 align-items-center">
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url('/courses/browse') }}"><i class="fas fa-th-list me-1"></i> Tous les cours</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url('/about') }}"><i class="fas fa-info-circle me-1"></i> À propos</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url('/contact') }}"><i class="fas fa-envelope me-1"></i> Contact</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url('/faq') }}"><i class="fas fa-question me-1"></i> FAQ</a></li>
             </ul>
-            @endauth
-
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto gap-2 align-items-center">
                 @guest
-                <!-- Links for Guests -->
-                @if(Request::is('login'))
-                <!-- On the login page -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">{{ __('messages.back') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link register-link" href="{{ url('/register') }}">{{ __('messages.register') }}</a>
-                </li>
-                @elseif(Request::is('register'))
-                <!-- On the register page -->
-                <li class="nav-item">
-                    <a class="nav-link login-link" href="{{ url('/login') }}">{{ __('messages.login') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">{{ __('messages.back') }}</a>
-                </li>
+                    <li class="nav-item"><a class="nav-link login-link px-3" href="{{ url('/login') }}"><i class="fas fa-sign-in-alt me-1"></i> Connexion</a></li>
+                    <li class="nav-item"><a class="nav-link register-link px-3" href="{{ url('/register') }}"><i class="fas fa-user-plus me-1"></i> Inscription</a></li>
                 @else
-                <!-- Default Links for Guests -->
-                <li class="nav-item">
-                    <a class="nav-link login-link" href="{{ url('/login') }}">{{ __('messages.login') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link register-link" href="{{ url('/register') }}">{{ __('messages.register') }}</a>
-                </li>
-                @endif
-                @else
-                <!-- Links for Authenticated Users -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('account') ? 'active' : '' }}" href="{{ url('/account') }}">{{ __('messages.account') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link logout-link" href="{{ url('/logout') }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                        {{ __('messages.logout') }}
-                    </a>
-                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{{ url('/account') }}"><i class="fas fa-user me-1"></i> Mon compte</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link logout-link px-3 text-danger" href="{{ url('/logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">@csrf</form>
+                    </li>
                 @endguest
             </ul>
         </div>
-
-        <!-- Dropdown menu for screens between 600px and 767px -->
-        <div class="collapse d-lg-none" id="dropdownMenu">
-            <ul class="navbar-nav">
-                <!-- Main Navigation Links -->
-                @auth
-                <!-- Check if the user is a teacher -->
-                @if (auth()->user()->role == 'teacher')
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('teachers/courses') ? 'active' : '' }}" href="{{ url('teachers/courses') }}">{{ __('messages.courses') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('teachers/lessons') ? 'active' : '' }}" href="{{ url('teachers/lessons') }}">{{ __('messages.lessons') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('teachers/quizzes') ? 'active' : '' }}" href="{{ url('teachers/quizzes') }}">{{ __('messages.quizzes') }}</a>
-                </li>
-                <!-- Check if the user is a student -->
-                @elseif (auth()->user()->role == 'student')
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('students/courses') ? 'active' : '' }}" href="{{ url('students/courses') }}">{{ __('messages.courses') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('students/lessons') ? 'active' : '' }}" href="{{ url('students/lessons') }}">{{ __('messages.lessons') }}</a>
-                </li>
-                @endif
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/about') }}">{{ __('messages.about') }}</a>
-                </li>
-                @else
-                <li class="nav-item">
-                    <a class="nav-link login-link" href="{{ url('/login') }}">{{ __('messages.login') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link register-link" href="{{ url('/register') }}">{{ __('messages.register') }}</a>
-                </li>
-                @endif
-            </ul>
-            <ul class="navbar-nav mt-2">
-                <!-- Authenticated User Links -->
-                @auth
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('account') ? 'active' : '' }}" href="{{ url('/account') }}">{{ __('messages.account') }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link logout-link" href="{{ url('/logout') }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                        {{ __('messages.logout') }}
-                    </a>
-                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
-                @endauth
-            </ul>
-        </div>
-
-        <!-- Account and Home buttons for screens less than 599px -->
-        <div class="home-and-account-btn-container">
-            <a class="nav-link home-btn" href="{{ url('/') }}">
-                <i class="fas fa-home"></i>
-            </a>
-            <a class="nav-link account-btn" href="{{ url('/account') }}">
-                <i class="fas fa-user"></i>
-            </a>
-        </div>
-
     </nav>
 </header>
+
+<style>
+.navbar {
+    background: #fff !important;
+    min-height: 70px;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 2px 16px 0 rgba(124,58,237,0.07);
+}
+.navbar-brand {
+    font-size: 2rem;
+    color: #7C3AED !important;
+    letter-spacing: 1px;
+    text-shadow: none;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+}
+.nav-link {
+    color: #23272F;
+    font-weight: 500;
+    border-radius: 2rem;
+    transition: background 0.2s, color 0.2s;
+    font-size: 1.08rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.nav-link.active, .nav-link:hover {
+    background: #F0F4FF;
+    color: #7C3AED !important;
+}
+.login-link, .register-link {
+    font-weight: 600;
+}
+.logout-link {
+    color: #E53E3E !important;
+}
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+@media (max-width: 991px) {
+    .navbar-brand { font-size: 1.3rem; }
+    .nav-link { font-size: 1rem; }
+}
+</style>

@@ -3,46 +3,51 @@
 @section('title', 'Quizzes - MetaSchool')
 
 @section('content')
-<div class="container mt-5 quizzes-view">
-    <h1>Quizzes</h1>
-
-    @if ($quizzes->isEmpty())
-    <p>No quizzes available.</p>
-    @else
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Quiz Title</th>
-                <th class="hide-on-small-mobile">Description</th>
-                <th>Lesson</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($quizzes as $quiz)
-            <tr>
-                <td>{{ $quiz->id }}</td>
-                <td>{{ $quiz->title }}</td>
-                <td class="hide-on-small-mobile">{{ $quiz->description }}</td>
-                <td>
-                    <a href="{{ route('student.lessons.show', $quiz->lesson->id) }}">
-                        {{ $quiz->lesson ? $quiz->lesson->title : 'N/A' }}
-                    </a>
-                </td>
-                <td>
-                    <div class="btn-container">
-                        <!-- View Button (Student can only view the quiz) -->
-                        <a href="{{ route('student.quizzes.show', $quiz->id) }}" class="btn btn-info btn-sm btn-view">
-                            <span class="text-view">View</span>
-                            <i class="fas fa-eye"></i> <!-- Eye icon -->
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    @endif
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 rounded-4 mb-4">
+                <div class="card-body p-5">
+                    <h1 class="fw-bold mb-4" style="color: #7C3AED;"><i class="fas fa-question-circle me-2"></i>Mes Quiz</h1>
+                    @if ($quizzes->isEmpty())
+                        <div class="alert alert-info">Aucun quiz disponible pour le moment.</div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Titre</th>
+                                        <th class="d-none d-md-table-cell">Description</th>
+                                        <th>Leçon</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($quizzes as $quiz)
+                                    <tr>
+                                        <td><span class="badge bg-primary">{{ $quiz->id }}</span></td>
+                                        <td class="fw-bold">{{ $quiz->title }}</td>
+                                        <td class="d-none d-md-table-cell">{{ $quiz->description }}</td>
+                                        <td>
+                                            <a href="{{ route('student.lessons.show', $quiz->lesson->id) }}" class="text-decoration-underline">
+                                                {{ $quiz->lesson ? $quiz->lesson->title : 'N/A' }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('student.quizzes.show', $quiz->id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                                <i class="fas fa-eye me-1"></i> Voir
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

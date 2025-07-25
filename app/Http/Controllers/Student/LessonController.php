@@ -10,22 +10,28 @@ use Illuminate\Support\Facades\Auth;
 class LessonController extends Controller
 {
     /**
-     * Display the lesson list
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * Affiche la liste des leçons de l'étudiant
      */
     public function index()
     {
-        $lessons = Lesson::all();
-        return view('student.lessons.index', ['lessons' => $lessons]);
+        // Récupère toutes les leçons (à adapter selon la logique d'inscription)
+        $lessons = Lesson::orderBy('order')->get();
+        return view('student.lessons.index', compact('lessons'));
     }
+    /**
+     * Display the lesson list
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
 
     /** //? previous/next module buttons to be added! and content drip to handle
      * Show details of a specific lesson by its id
      *
      * @param \Illuminate\Http\Request $request
      * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
     {
@@ -47,22 +53,20 @@ class LessonController extends Controller
 
         // Determine the next and previous lessons
         if ($course) {
-            // Sort lessons by their order within the course
-            $lessons = $course->lessons->sortBy('order');
-
-            // Find the index of the current lesson
-            $lessonIndex = $lessons->search(fn($item) => $item->id === $lesson->id);
-
-            // Determine the previous and next lessons
-            $previousLesson = $lessonIndex > 0 ? $lessons->slice($lessonIndex - 1, 1)->first() : null;
-            $nextLesson = $lessonIndex < $lessons->count() - 1 ? $lessons->slice($lessonIndex + 1, 1)->first() : null;
-
-            // // If there is a previous lesson, check if the user has completed it
-            // if ($previousLesson && !$request->user()->hasCompletedLesson($previousLesson->id)) {
-            //     // Redirect if the user hasn't completed the previous lesson
-            //     return redirect()->route('student.lessons.index')
-            //         ->with('error', 'You must complete the previous lesson before accessing this one.');
-            // }
+            // Récupère toutes les leçons du cours, triées
+            $lessons = $course->lessons->sortBy('order')->values();
+            // Trouve l'index de la leçon courante
+            $lessonIndex = $lessons->search(function($item) use ($lesson) {
+                return $item->id == $lesson->id;
+            });
+            // Détermine la leçon précédente
+            $previousLesson = $lessonIndex > 0 ? $lessons[$lessonIndex - 1] : null;
+            $nextLesson = $lessonIndex < $lessons->count() - 1 ? $lessons[$lessonIndex + 1] : null;
+            // Blocage strict si la leçon précédente n'est pas terminée
+            if ($previousLesson && !Auth::user()->hasCompletedLesson($previousLesson->id)) {
+                return redirect()->route('student.lessons.index')
+                    ->with('error', "Vous devez terminer la leçon précédente avant d'accéder à celle-ci.");
+            }
         }
 
         // Retrieve the videos, documents, and quiz associated with the lesson
@@ -89,39 +93,10 @@ class LessonController extends Controller
      * @param int $id The ID of the lesson to mark as completed.
      * @return \Illuminate\Http\RedirectResponse
      */
-    // public function completeCurrentLesson(Request $request, $lessonId)
-    // {
-    //     // Retrieve the authenticated user
-    //     $user = $request->user();
-
-    //     /// Mark the lesson as completed
-    //     $user->completeLesson($lessonId);
-
-    //     // Retrieve the current lesson
-    //     $lesson = Lesson::find($lessonId);
-
-    //     // If the lesson is not found, redirect with an error message
-    //     if (!$lesson) {
-    //         return redirect()->route('student.lessons.index')->with('error', 'Lesson not found.');
-    //     }
-
-    //     // Retrieve the associated course
-    //     $course = $lesson->course;
-
-    //     // Retrieve the lessons sorted by order
-    //     $lessons = $course->lessons->sortBy('order');
-    //     $lessonIndex = $lessons->search(fn($item) => $item->id === $lesson->id);
-
-    //     // Determine the next lesson
-    //     $nextLesson = $lessonIndex < $lessons->count() - 1 ? $lessons->slice($lessonIndex + 1, 1)->first() : null;
-
-    //     // Unlock the next lesson if it exists
-    //     if ($nextLesson) {
-    //         $user->unlockLesson($nextLesson->id);
-    //         return redirect()->route('student.lessons.show', $nextLesson->id);
-    //     }
-
-    //     // If no next lesson exists, redirect to the lessons index
-    //     return redirect()->route('student.lessons.index')->with('success', 'Lesson completed, you have finished the course.');
-    // }
+    public function complete(Request $request, $id)
+    {
+        $user = $request->user();
+        $user->completeLesson($id);
+        return redirect()->route('student.lessons.show', $id)->with('success', 'Leçon marquée comme terminée.');
+    }
 }

@@ -19,7 +19,10 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $quizzes = Quiz::all();
+        $user = auth()->user();
+        $courseIds = \App\Models\Course::where('author_id', $user->id)->pluck('id');
+        $lessonIds = \App\Models\Lesson::whereIn('course_id', $courseIds)->pluck('id');
+        $quizzes = \App\Models\Quiz::whereIn('lesson_id', $lessonIds)->get();
         return view('teacher.quizzes.index', compact('quizzes'));
     }
 

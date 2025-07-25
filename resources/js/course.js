@@ -179,44 +179,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (confirm('Are you sure you want to remove this section?')) {
                 let sectionGroup = event.target.closest('.section-group');
                 if (sectionGroup) {
-                    // Mark the section for deletion
-                    let deleteInput = sectionGroup.querySelector('input[name$="[delete]"]');
+                    // Mark the section for deletion (robust: [delete] or [_delete])
+                    let deleteInput = sectionGroup.querySelector('input[name$="[delete]"]') || sectionGroup.querySelector('input[name$="[_delete]"]');
                     if (deleteInput) {
                         deleteInput.value = '1'; // Mark as deleted
+                    } else {
+                        alert('Aucun input de suppression trouvé dans la section.');
                     }
                     sectionGroup.remove();
-
-                    const deleteCourseSession = async (sessionId) => {
-                        try {
-                            const response = await fetch(`/section/${sessionId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                }
-                            });
-
-                            if (response.ok) {
-                                // The request was successful, you can process the response here
-                                console.log('Session successfully deleted.');
-                            } else {
-                                console.error('Session deletion error.');
-                            }
-                        } catch (error) {
-                            console.error('An error has occurred :', error);
-                        }
-                    };
-
-
-                    const sectionId = event.target.getAttribute('data-section-id');
-
-                    if (sectionId) {
-                        // Example of function call
-                        deleteCourseSession(sectionId);
-                    } else {
-                        console.error('Section ID not found');
-                    }
-
                 }
             }
         }
@@ -226,42 +196,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (confirm('Are you sure you want to remove this module?')) {
                 let moduleGroup = event.target.closest('.module-group');
                 if (moduleGroup) {
-                    // Mark the module for deletion
-                    let deleteInput = moduleGroup.querySelector('input[name$="[delete]"]');
+                    // Mark the module for deletion (robust: [delete] or [_delete])
+                    let deleteInput = moduleGroup.querySelector('input[name$="[delete]"]') || moduleGroup.querySelector('input[name$="[_delete]"]');
                     if (deleteInput) {
                         deleteInput.value = '1'; // Mark as deleted
+                    } else {
+                        alert('Aucun input de suppression trouvé dans le module.');
                     }
                     moduleGroup.remove();
-
-                    const deleteModule = async (moduleId) => {
-                        try {
-                            const response = await fetch(`/module/${moduleId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                }
-                            });
-
-                            if (response.ok) {
-                                console.log('Module successfully deleted.');
-                                // Here you can add actions such as updating the UI
-                            } else {
-                                console.error('Module deletion error.');
-                            }
-                        } catch (error) {
-                            console.error('An error has occurred :', error);
-                        }
-                    };
-
-                    const moduleId = event.target.getAttribute('data-module-id');
-
-                    if (moduleId) {
-                        // Example of function call
-                        deleteModule(moduleId);
-                    } else {
-                        console.error('Module ID not found');
-                    }
                 }
             }
         }

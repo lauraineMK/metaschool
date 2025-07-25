@@ -40,5 +40,30 @@ class QuestionSeeder extends Seeder
                 'question_text' => 'Which of the following is a feature of ' . $quiz->title . '?', // Multiple-choice question
             ]);
         }
+
+        // Exemple pour le cours "Introduction to Programming"
+        $quiz = \App\Models\Quiz::whereHas('lesson.course', function($q) {
+            $q->where('name', 'Introduction to Programming');
+        })->first();
+        if ($quiz) {
+            // Question 1
+            \App\Models\Question::create([
+                'quiz_id' => $quiz->id,
+                'type' => 'multiple_choice',
+                'question_text' => 'Qu\'est-ce qu\'une variable en programmation ?'
+            ]);
+            // Question 2
+            \App\Models\Question::create([
+                'quiz_id' => $quiz->id,
+                'type' => 'multiple_choice',
+                'question_text' => 'Quel langage est principalement utilisé pour le web côté client ?'
+            ]);
+            // Question 3
+            \App\Models\Question::create([
+                'quiz_id' => $quiz->id,
+                'type' => 'multiple_choice',
+                'question_text' => 'À quoi sert une boucle for ?'
+            ]);
+        }
     }
 }

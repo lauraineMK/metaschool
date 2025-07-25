@@ -60,22 +60,21 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    // public function hasCompletedLesson($lessonId)
-    // {
-    //     return $this->lessons()
-    //         ->where('lesson_id', $lessonId)
-    //         ->wherePivot('completed', true)
-    //         ->exists();
-    // }
+    public function hasCompletedLesson($lessonId)
+    {
+        return $this->lessons()
+            ->where('lesson_id', $lessonId)
+            ->wherePivot('completed', true)
+            ->exists();
+    }
 
     // // Mark a lesson as completed
-    // public function completeLesson($lessonId)
-    // {
-    //     // Check if the lesson is already completed
-    //     if (!$this->hasCompletedLesson($lessonId)) {
-    //         $this->lessons()->attach($lessonId, ['completed' => true, 'completion_date' => now()]);
-    //     }
-    // }
+    public function completeLesson($lessonId)
+    {
+        if (!$this->hasCompletedLesson($lessonId)) {
+            $this->lessons()->attach($lessonId, ['completed' => true, 'completion_date' => now()]);
+        }
+    }
 
     // // AUnlock the next lesson
     // public function unlockLesson($lessonId)
@@ -108,5 +107,43 @@ class User extends Authenticatable
     public function isStudent()
     {
         return $this->role === 'student';
+    }
+
+    public function enrolledCourses()
+    {
+        // Pour supporter plusieurs cours inscrits à l'avenir, on suppose une table d'inscription (pivot)
+        // Ici, on retourne le current_course_id comme unique cours inscrit
+        return $this->current_course_id
+            ? Course::where('id', $this->current_course_id)->get()
+            : collect();
+    }
+    public function completedCourses()
+    {
+        // Un cours est terminé si toutes ses leçons sont marquées completed
+        $courses = $this->enrolledCourses();
+        return $courses->filter(function($course) {
+            $total = $course->sections->flatMap(fn($section) => $section->modules->flatMap(fn($module) => $module->lessons))->count();
+            $completed = $this->lessons()->wherePivot('completed', true)
+                ->whereHas('module', function($q) use ($course) {
+                    $q->whereHas('section', function($q2) use ($course) {
+                        $q2->where('course_id', $course->id);
+                    });
+                })->count();
+            return $total > 0 && $completed >= $total;
+        });
+    }
+    public function inProgressCourses()
+    {
+        $courses = $this->enrolledCourses();
+        return $courses->filter(function($course) {
+            $total = $course->sections->flatMap(fn($section) => $section->modules->flatMap(fn($module) => $module->lessons))->count();
+            $completed = $this->lessons()->wherePivot('completed', true)
+                ->whereHas('module', function($q) use ($course) {
+                    $q->whereHas('section', function($q2) use ($course) {
+                        $q2->where('course_id', $course->id);
+                    });
+                })->count();
+            return $total > 0 && $completed < $total;
+        });
     }
 }

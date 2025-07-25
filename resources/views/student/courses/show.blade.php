@@ -3,96 +3,76 @@
 @section('title', 'Course Details - MetaSchool')
 
 @section('content')
-<div class="container mt-5">
-    <div class="wrapper">
-        <!-- Left sidebar for buttons -->
-        <div class="sidebar">
-            <!-- Button to go back to the courses list -->
-            <a href="{{ route('student.courses.index') }}" class="btn btn-secondary mt-4 btn-block d-none d-md-block">{{ __('messages.back_to_courses') }}</a>
-            <a href="{{ route('student.courses.index') }}" class="btn btn-secondary mt-4 btn-block d-block d-md-none">
-                <i class="fa fa-arrow-left"></i>
-            </a>
-        </div>
-
-        <!-- Right section for course details -->
-        <div class="content">
-            <h1>{{ $course->name }}</h1>
-
-            <!-- Course Description -->
-            <p>{{ $course->description }}</p>
-
-            <!-- Course Content -->
-            <h2 class="mt-5">{{ __('messages.course_content') }}</h2>
-
-            <!-- First case: Sections -> Modules -> Lessons -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-body">
+                    <h1 class="card-title mb-3" style="color: #1c1d1f;">{{ $course->name }}</h1>
+                    <p class="card-text text-muted">{{ $course->description }}</p>
+                </div>
+            </div>
+            <h2 class="fw-bold mb-3" style="color: #1c1d1f;">{{ __('messages.course_content') }}</h2>
             @if (!$course->sections->isEmpty())
-            @foreach ($course->sections as $section)
-            <div class="section mb-4">
-                <h3>{{ __('messages.section') }} {{ $section->name }}</h3>
-
-                @if (!$section->modules->isEmpty())
-                @foreach ($section->modules as $module)
-                <div class="module ml-4 mb-3">
-                    <h4>{{ __('messages.module') }} {{ $module->name }}</h4>
-
-                    @if (!$module->lessons->isEmpty())
-                    <ul class="list-group ml-4">
-                        @foreach ($module->lessons as $lesson)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="{{ route('student.lessons.show', $lesson->id) }}">{{ $lesson->title }}</a>
-                            <button id="lesson-viewed-btn-course" data-lesson-id="{{ $lesson->id }}" class="btn btn-outline-secondary">
-                                <span class="fa fa-check-circle"></span>
-                            </button>
-                        </li>
+                @foreach ($course->sections as $section)
+                <div class="mb-4">
+                    <h4 class="fw-bold" style="color: #6C63FF;">{{ __('messages.section') }} {{ $section->name }}</h4>
+                    @if (!$section->modules->isEmpty())
+                        @foreach ($section->modules as $module)
+                        <div class="mb-3 ms-3">
+                            <h5 class="fw-bold" style="color: #fbb034;">{{ __('messages.module') }} {{ $module->name }}</h5>
+                            @if (!$module->lessons->isEmpty())
+                                <ul class="list-group ms-3">
+                                    @foreach ($module->lessons as $lesson)
+                                    @php
+                                        $isCompleted = in_array($lesson->id, $completedLessons ?? []);
+                                    @endphp
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="fas fa-play-circle text-primary"></i>
+                                            <span class="fw-bold">{{ $lesson->title }}</span>
+                                            @if($isCompleted)
+                                                <span class="badge bg-success ms-2">Terminé</span>
+                                            @endif
+                                        </div>
+                                        <a href="{{ route('student.lessons.show', $lesson->id) }}" class="btn btn-outline-primary btn-sm rounded-pill">
+                                            <i class="fas fa-play me-1"></i> {{ $isCompleted ? 'Revoir' : 'Commencer' }}
+                                        </a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-muted ms-3">{{ __('messages.no_lessons_available_in_this_module') }}</p>
+                            @endif
+                        </div>
                         @endforeach
-                    </ul>
                     @else
-                    <p>{{ __('messages.no_lessons_available_in_this_module') }}</p>
+                        <p class="text-muted ms-3">{{ __('messages.no_modules_available_in_this_section') }}</p>
                     @endif
                 </div>
                 @endforeach
-                @else
-                <p>{{ __('messages.no_modules_available_in_this_section') }}</p>
-                @endif
-            </div>
-            @endforeach
-            <!-- Second case: Modules -> Lessons -->
-            @elseif (!$course->modules->isEmpty())
-            @foreach ($course->modules as $module)
-            <div class="module mb-4">
-                <h4>{{ __('messages.module') }} {{ $module->name }}</h4>
-
-                @if (!$module->lessons->isEmpty())
-                <ul class="list-group ml-4">
-                    @foreach ($module->lessons as $lesson)
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="{{ route('student.lessons.show', $lesson->id) }}">{{ $lesson->title }}</a>
-                        <button id="lesson-viewed-btn-course" data-lesson-id="{{ $lesson->id }}" class="btn btn-outline-secondary">
-                            <span class="fa fa-check-circle"></span>
-                        </button>
-                    </li>
-                    @endforeach
-                </ul>
-                @else
-                <p>{{ __('messages.no_lessons_available_in_this_module') }}</p>
-                @endif
-            </div>
-            @endforeach
-            <!-- Third case: Direct lessons from the course -->
-            @elseif (!$course->lessons->isEmpty())
-            <ul class="list-group">
-                @foreach ($course->lessons as $lesson)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{{ route('student.lessons.show', $lesson->id) }}">{{ $lesson->title }}</a>
-                    <button id="lesson-viewed-btn-course" data-lesson-id="{{ $lesson->id }}" class="btn btn-outline-secondary">
-                        <span class="fa fa-check-circle"></span>
-                    </button>
-                </li>
-                @endforeach
-            </ul>
             @else
-            <p>{{ __('messages.no_lessons_available_for_this_course') }}</p>
+                <p class="text-muted">{{ __('messages.no_sections_available_in_this_course') }}</p>
             @endif
+
+            @if($literature->count() > 0)
+                <div class="mt-4">
+                    <h3 class="fw-bold" style="color: #7C3AED;">Littérature / Documents du cours</h3>
+                    <ul class="list-group">
+                        @foreach($literature as $doc)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ $doc->title }}</span>
+                                <a href="{{ url('storage/' . $doc->file) }}" class="btn btn-outline-info btn-sm rounded-pill" download>
+                                    <i class="fa fa-download me-1"></i> Télécharger
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+        <div class="col-md-4">
+            <a href="{{ route('student.courses.index') }}" class="btn btn-secondary w-100 mb-3" style="border-radius: 30px;">{{ __('messages.back_to_courses') }}</a>
         </div>
     </div>
 </div>
