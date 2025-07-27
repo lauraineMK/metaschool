@@ -217,10 +217,11 @@ class LessonController extends Controller
                 ->with('error', __('messages.unauthorized'));
         }
 
-        // Retrieve lists of courses, modules and sections
+        // Retrieve lists of courses
         $courses = Course::all();
-        $sections = Section::all();
-        $modules = Module::all();
+        // Filtrer les sections et modules selon le cours sélectionné
+        $sections = Section::where('course_id', $lesson->course_id)->get();
+        $modules = Module::whereIn('section_id', $sections->pluck('id'))->get();
 
         return view('teacher.lessons.edit', compact('lesson', 'courses', 'modules', 'sections'));
     }

@@ -1,3 +1,25 @@
+# Gestion des cours
+## Structure
+- Un cours contient des sections
+- Une section contient des modules
+- Un module contient des leçons
+- Une leçon peut contenir vidéos, documents, quiz
+## Actions principales
+- Créer/éditer/supprimer cours, section, module, leçon
+- Ajouter vidéos/documents/quiz à une leçon
+- Suppression sécurisée avec confirmation
+## Changements récents
+- Correction des erreurs Blade sur la page détail cours
+- Design modernisé et compact pour la gestion des cours
+- Affichage dynamique des modules, leçons, vidéos, documents, quiz
+- Suppression des doublons header/footer
+## Points à améliorer
+- Ajout de filtres par cours
+- Pagination des modules/sections
+- Optimisation des requêtes Eloquent
+- Finalisation de la logique quiz/module
+## Historique
+Consultez le CHANGELOG pour les dernières modifications.
 # Contributing to the Project
 
 Thank you for contributing to our project! To help streamline the process, please follow the guidelines below, especially when addressing issues related to code functionality and improvements.

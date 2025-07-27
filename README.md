@@ -2,176 +2,144 @@
 
 **MetaSchool** is a web application for managing courses, sections, modules, and lessons, developed with Laravel. It allows teachers to create and manage courses and students to view available courses.
 
-## Table of Contents
+---
+
+## Sommaire
 
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Usage](#usage)
+- [Utilisation](#utilisation)
+- [Organisation des cours](#organisation-des-cours)
 - [Contributions](#contributions)
-- [License](#license)
+- [Documentation](#documentation)
+- [Licence](#licence)
+
 
 ## Introduction
 
-MetaSchool provides an interface for teachers to create and organize courses, as well as for students to explore and follow courses.
+MetaSchool est une application web permettant aux enseignants de créer et organiser des cours, et aux étudiants de les explorer et suivre leur progression.
+
 
 ## Installation
 
-### Prerequisites
+### Prérequis
 
 - PHP >= 7.4
 - Composer
-- ~~Node.js (for frontend assets, if applicable)~~
 
-### Clone the Repository
-
-Clone the Git repository to your local machine:
+### Cloner le dépôt
 
 ```bash
 git clone https://github.com/yourusername/metaschool.git
-cd metaschool
-```
 
-### Install Dependencies
+# MetaSchool LMS
 
-#### Install PHP dependencies via Composer
+## Installation
+1. Clonez le repo
+2. Installez les dépendances PHP (`composer install`)
+3. Installez les dépendances JS (`npm install`)
+4. Configurez le fichier `.env`
+5. Lancez les migrations (`php artisan migrate`)
+6. Compilez les assets (`npm run dev`)
 
-```bash
-composer install
-```
+## Fonctionnalités principales
+- Gestion des cours, sections, modules, leçons
+- Ajout de vidéos et documents (YouTube, PDF, images)
+- Quiz par leçon
+- Suivi de progression
+- Interface enseignant et élève
+- Design moderne et compact (voir page détail cours)
 
-#### Install JavaScript dependencies via npm (or Yarn)
+## Structure
+- `app/Models` : Eloquent models
+- `app/Http/Controllers` : Contrôleurs
+- `resources/views` : Blade templates
+- `routes/web.php` : Routes principales
+- `database/migrations` : Migrations
+- `database/seeders` : Seeders
 
-```bash
-npm install
-# or
-yarn install
-```
+## Changements récents
+- Correction des erreurs de syntaxe Blade
+- Refonte du design de la page détail cours (moderne, compact, responsive)
+- Suppression des doublons header/footer (utilisation du layout principal)
+- Mise à jour de la documentation
 
-#### After installing JavaScript dependencies, you may also need to build frontend assets
+## TODO
+- Finaliser la logique quiz/module
+- Ajouter des tests unitaires
+- Compléter la documentation (voir docs/)
 
-```bash
-npm run dev
-# or
-yarn run dev
-```
-
-### Configure the Environment
-
-Copy the .env.example file to .env:
-
-```bash
-cp .env.example .env
-```
-
-### Generate the Application Key
-
-```bash
-php artisan key:generate
-```
-
-Configure your environment settings in the .env file. Make sure to set your database connection details and other specific parameters.
-
-### Create Storage Link
-
-Create a symbolic link to the storage directory to access uploaded files:
-
-```bash
-php artisan storage:link
-```
-
-### Database Migration
-
-Run migrations to set up your database:
-
-```bash
-php artisan migrate
-```
-
-If you have test data, you can import it using seeders:
-
-```bash
-php artisan db:seed
-```
-
-### Run the Server
-
-Start the Laravel development server:
+## Changelog
+Consultez `docs/CHANGELOG.md` pour l'historique des modifications.
+### Lancer le serveur
 
 ```bash
 php artisan serve
 ```
 
-Access the application at <http://localhost:8000>.
+Accédez à l'application sur <http://localhost:8000>.
+
 
 ## Configuration
 
-### Routes
+Les principales routes sont définies dans `routes/web.php`.
+Le middleware des rôles est dans `app/Http/Middleware/RoleMiddleware.php`.
+L'authentification est personnalisable dans `app/Http/Controllers/Auth`.
 
-The main routes of the application are defined in routes/web.php.
 
-### Middleware
+## Utilisation
 
-The application's middleware is configured in app/Http/Middleware/RoleMiddleware.php. Ensure that protected routes are correctly set up for roles and permissions.
+- Créer un cours : <http://localhost:8000/teachers/courses/create>
+- Voir les cours : <http://localhost:8000/teachers/courses>
+- Modifier un cours : <http://localhost:8000/teachers/courses/{id}/edit>
+- Supprimer un cours : bouton supprimer sur la liste des cours
 
-### Authentication
 
-Authentication routes are defined in routes/web.php. You can customize authentication views and controllers in the app/Http/Controllers/Auth directory.
+## Organisation des cours
 
-## Usage
+Pour ordonner les leçons, modules et sections dans la base de données, utilisez les commandes Artisan suivantes :
 
-- Create a Course: Go to <http://localhost:8000/teachers/courses/create> to add a new course.
-- View Courses: Go to <http://localhost:8000/teachers/courses> to see the list of courses.
-- Edit a Course: Go to <http://localhost:8000/teachers/courses/{id}/edit> to edit an existing course.
-- Delete a Course: Use the delete button on the course list page.
+- Mettre à jour l'ordre des leçons :
+  ```bash
+  php artisan lessons:update-order
+  ```
+- Mettre à jour l'ordre des modules :
+  ```bash
+  php artisan modules:update-order
+  ```
+- Mettre à jour l'ordre des sections :
+  ```bash
+  php artisan sections:update-order
+  ```
 
-## Ordering Lessons, Modules, and Sections
-
-To ensure that lessons, modules, and sections are ordered correctly in the database, you can use the provided Artisan commands. These commands update the order of lessons, modules, and sections based on their creation time or any other criteria you specify.
-
-### Update Lesson Order
-
-To update the order of lessons based on their course_id, use the following command:
-
-```bash
-php artisan lessons:update-order
-```
-
-This command will iterate through all lessons, order them by their creation time, and update their order in the database.
-
-### Update Module and Section Order
-
-If you have similar commands for modules and sections, you can run them in a similar way. If such commands are not provided yet, you might need to create them following the pattern used for lessons. For example:
-
-#### Update Module Order
-
-```bash
-php artisan modules:update-order
-```
-
-#### Update Section Order
-
-```bash
-php artisan sections:update-order
-```
-
-Ensure you replace the placeholders with the actual command names and functionality if they exist.
 
 ## Contributions
 
-Contributions are welcome! Please follow these steps to contribute:
+Les contributions sont les bienvenues !
+Merci de :
+1. Forker le dépôt
+2. Créer une branche (`git checkout -b feature/ma-feature`)
+3. Apporter vos modifications
+4. Documenter la correction dans le dossier `docs/` et dans `CHANGELOG.md`
+5. Commit (`git commit -am 'Ajout de la feature'`)
+6. Push (`git push origin feature/ma-feature`)
+7. Ouvrir une Pull Request
 
-1. Fork the repository
-2. Create a branch (git checkout -b feature/amazing-feature)
-3. Make your changes
-4. Commit your changes (git commit -am 'Add some amazing feature')
-5. Push to the branch (git push origin feature/amazing-feature)
-6. Open a Pull Request
+Avant de soumettre :
+- Vérifiez que les tests unitaires passent
+- Vérifiez que les pages d’édition (cours, leçon) sont fonctionnelles et stylées
+- Documentez ou corrigez les bugs connus
+
 
 ## Documentation
 
-There are files related to issues that need to be resolved located in the `docs` folder.
+Tous les détails techniques et bugs sont dans le dossier `docs/` :
+- COURSE_MANAGEMENT.md : gestion des cours, sections, modules
+- QUIZ_MANAGEMENT.md : gestion des quiz et bugs SQL
+- ERROR_MANAGEMENT.md : erreurs récentes et suggestions de correction
 
-## License
 
-This project is licensed under the MIT License.
+## Licence
+
+Ce projet est sous licence MIT.
