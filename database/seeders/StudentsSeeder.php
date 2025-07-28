@@ -16,7 +16,7 @@ class StudentsSeeder extends Seeder
     public function run()
     {
         $students = [
-            ['firstname' => 'Eric', 'middlename' => 'M.', 'lastname' => 'Johnson', 'email' => 'eric.johnson@example.com', 'password' => 'password123'],
+            ['firstname' => 'Erick', 'middlename' => 'M.', 'lastname' => 'Johnson', 'email' => 'erick.johnson@example.com', 'password' => 'password123'],
             ['firstname' => 'Anna', 'middlename' => 'L.', 'lastname' => 'Davis', 'email' => 'anna.davis@example.com', 'password' => 'password123'],
             ['firstname' => 'Michael', 'middlename' => 'C.', 'lastname' => 'Johnson', 'email' => 'michael.johnson@example.com', 'password' => 'password123'],
             ['firstname' => 'Emily', 'middlename' => 'D.', 'lastname' => 'Williams', 'email' => 'emily.williams@example.com', 'password' => 'password123'],
