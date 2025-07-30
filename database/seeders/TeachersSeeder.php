@@ -23,11 +23,12 @@ class TeachersSeeder extends Seeder
         ];
 
         foreach ($teachers as $teacher) {
-            User::create([
+            User::query()->firstOrCreate([
                 'firstname' => $teacher['firstname'],
                 'middlename' => $teacher['middlename'],
                 'lastname' => $teacher['lastname'],
                 'email' => $teacher['email'],
+            ], [
                 'password' => Hash::make($teacher['password']),
                 'role' => 'teacher',
             ]);
